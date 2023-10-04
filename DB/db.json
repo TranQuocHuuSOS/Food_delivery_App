@@ -1,0 +1,92 @@
+{
+    "categories": [
+      {
+        "id": 1,
+        "name": "Superstar"
+      },
+      {
+        "id": 2,
+        "name": "Star"
+      },
+      {
+        "id": 3,
+        "name": "Legend"
+      }
+    ],
+    "players": [
+      {
+        "id": 1,
+        "name": "Kylian Mbappe",
+        "age": "27",
+        "country": "France",
+        "image": "mbappe.jpg",
+        "category_id": 1,
+        "club_id": 1
+      },
+      {
+        "id": 2,
+        "name": "Xabi Alonso",
+        "age": "18",
+        "country": "Spain",
+        "image": "xabi.jpg",
+        "category_id": 1,
+        "club_id": 0
+      },
+      {
+        "id": 3,
+        "name": "Rafeal Leao",
+        "age": "19",
+        "image": "leao.jpg",
+        "country": "Portugal",
+        "category_id": 1,
+        "club_id": 3
+      },
+      {
+        "id": 4,
+        "name": "Phil Foden",
+        "age": "32",
+        "image": "foden.jpg",
+        "country": "England",
+        "category_id": 1,
+        "club_id": 2
+      }
+    ],
+    "clubs": [
+      {
+        "id": 0,
+        "name": "Retire"
+      },
+      {
+        "id": 1,
+        "name": "PSG"
+      },
+      {
+        "id": 2,
+        "name": "Manchester City"
+      },
+      {
+        "id": 3,
+        "name": "AC Milan"
+      }
+    ],
+    "user": [
+      {
+        "id": 1,
+        "name": "huu",
+        "email": "huu@gmail.com",
+        "password": "123"
+      },
+      {
+        "name": "khanh",
+        "email": "khanh@gmail.com",
+        "password": "456",
+        "id": 2
+      },
+      {
+        "name": "haha",
+        "email": "haha@gmail.com",
+        "password": "098",
+        "id": 3
+      }
+    ]
+  }
