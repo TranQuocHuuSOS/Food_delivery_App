@@ -9,6 +9,7 @@ import Message from "./Screen/Message/Message";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
 const Tab = createBottomTabNavigator();
+
 const screenOptions = {
   tabBarShowLabel: true,
   headerShown: true,
@@ -31,9 +32,7 @@ export default function App() {
       >
         <Tab.Screen
           style={{
-            textAlign: "center",
-            alignItems: "center",
-            justifyContent: "center",
+           
           }}
           name="Home"
           component={Home}
