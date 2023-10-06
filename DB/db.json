@@ -1,75 +1,107 @@
 {
-    "categories": [
+    "dishs": [
       {
         "id": 1,
-        "name": "Superstar"
+        "type_food":"soup",
+        "restaurant_id":1,
+        "name_food": "crab soup",
+        "price":100000,
+        "img":"https://img-global.cpcdn.com/recipes/cbe0e99d0067823c/300x220cq70/sup-cua-oc-heo-recipe-main-photo.webp",
+        "description":"There is nothing more delicious, clean, and reassuring than ingredients selected by yourself. This dish, in addition to gathering enough ingredients, is also quick to cook. Notice that when you have a few ingredients left over in the kitchen, try making them. Recently when I visited home, my mother gave me some home-grown sweet corn"
       },
       {
         "id": 2,
-        "name": "Star"
+        "type_food":"soup",
+        "restaurant_id":2,
+        "name_food": "chicken mushroom corn soup",
+        "price":250000,
+        "img":"https://img-global.cpcdn.com/recipes/21e058763a307f87/450x300cq70/sup-ga-ngo-ng%E1%BB%8Dt-recipe-main-photo.webp",
+        "description":"Save time searching, and always quickly find proven items. Like these Chicken Mushroom Corn Soups."
+
       },
       {
         "id": 3,
-        "name": "Legend"
+        "type_food":"Tapas",
+        "restaurant_id":3,
+        "name_food": "fried squid with fish sauce",
+        "price":350000,
+        "img":"https://cookbeo.com/media/2022/01/muc-chien-nuoc-mam/muc-chien-nuoc-mam.jpg",
+        "description":"How to make delicious fried squid with fish sauce, delicious sweet and salty taste from Cookbeo. In particular, the ink is fragrant and..."
+
       }
     ],
-    "players": [
+    "restaurants": [
       {
         "id": 1,
-        "name": "Kylian Mbappe",
-        "age": "27",
+        "name": "restaurant A",
         "country": "France",
-        "image": "mbappe.jpg",
-        "category_id": 1,
-        "club_id": 1
+        "image": "https://image.anninhthudo.vn/1200x630/Uploaded/2023/cqjwqkrwq/2013_10_09/French%20Grill%20Restaurant_2.JPG",
+        "address": "Cordial Grand Hotel, 21th floor, 27-29 Loseby",
+        "distance": "10 km"
       },
       {
         "id": 2,
-        "name": "Xabi Alonso",
-        "age": "18",
-        "country": "Spain",
-        "image": "xabi.jpg",
-        "category_id": 1,
-        "club_id": 0
+        "name": "restaurant B",
+        "country": "France",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmaK-Ez1lvgor5ZtmdU5ygBOfYJM1hqmKaqX7kBQu7pc8MZbW9Xk7dfQCDjRaC85Jxgqg&usqp=CAU",
+        "address": "16 Chế Lan Viên, Bắc Mỹ An, Ngũ Hành Sơn, Đà Nẵng 550000",
+        "distance": "1 km"
       },
       {
         "id": 3,
-        "name": "Rafeal Leao",
-        "age": "19",
-        "image": "leao.jpg",
-        "country": "Portugal",
-        "category_id": 1,
-        "club_id": 3
+        "name": "restaurant C",
+        "country": "France",
+        "image": "https://tourbana.vn/uploads/images/images/nha-hang-tai-mucure-ba-na-hill.jpg",
+        "address": "122/11 Quang Trung, Thạch Thang, Hải Châu, Đà Nẵng 550000",
+        "distance": "5 km"
       },
       {
         "id": 4,
-        "name": "Phil Foden",
-        "age": "32",
-        "image": "foden.jpg",
-        "country": "England",
-        "category_id": 1,
-        "club_id": 2
+        "name": "restaurant D",
+        "country": "France",
+        "image": "https://thebluebirdvn.com/upload/hinhanh/9ce41e0b-af51-48e9-a1e0-37cf629c179e-4970294_1920x923.jpeg",
+        "address": " Cordial Grand Hotel, 21th floor, 27-29 Loseby, Street, Sơn Trà, Đà Nẵng",
+        "distance": "7 km"
       }
     ],
-    "clubs": [
+    "orders": [
       {
         "id": 0,
-        "name": "Retire"
+        "dish_id": 1,
+        "amount":2,
+        "user_id":1
       },
       {
         "id": 1,
-        "name": "PSG"
+        "dish_id": 2,
+        "amount":1,
+        "user_id":2
       },
       {
         "id": 2,
-        "name": "Manchester City"
-      },
-      {
-        "id": 3,
-        "name": "AC Milan"
+        "dish_id": 3,
+        "amount":4,
+        "user_id":3
       }
     ],
-    "user": [
+    "favorite_dish": [
+      {
+        "id": 1,
+        "dish_id": 1,
+        "user_id":3
+      },
+      {
+        "dish_id": 2,
+        "user_id":3,
+        "id": 2
+      },
+      {
+        "dish_id": 1,
+        "user_id":2,
+        "id": 3
+      }
+    ],
+    "users": [
       {
         "id": 1,
         "name": "huu",
