@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 import Home from "./Screen/Home/Home";
 import Profile from "./Screen/Profile/Profile";
 import Cart from "./Screen/Cart/Cart";
@@ -10,8 +11,8 @@ import Menu from "./Screen/Menu/Menu";
 import Filter from "./Screen/Filter/Filter";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
-const Tab = createBottomTabNavigator();
-
+import Detail from "./Screen/Detail/Detail";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const screenOptions = {
   tabBarShowLabel: true,
   headerShown: true,
@@ -26,9 +27,11 @@ const screenOptions = {
   },
 };
 export default function App() {
-  return (
-    <NavigationContainer style={{ backgroundColor:"black"}}>
-      <Tab.Navigator
+  const Stack = createNativeStackNavigator();
+  const Tab = createBottomTabNavigator();
+  function BottomTabs() {
+     return (
+       <Tab.Navigator
         screenOptions={screenOptions}
         style={{ position: "absolute", backgroundColor: "black" }}
       >
@@ -38,7 +41,7 @@ export default function App() {
           }}
           name="Home"
           component={Home}
-          options={{
+          options={{ headerShown:false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View style={{}}>
@@ -153,15 +156,26 @@ export default function App() {
           }}
         ></Tab.Screen>
       </Tab.Navigator>
+         );
+        }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+      <Stack.Screen
+          name="Main"
+          component={BottomTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Detail"
+          component={Detail}
+          options={{ headerShown: false }}
+        />
+      
+       
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+
