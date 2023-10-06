@@ -7,6 +7,8 @@ import Home from "./Screen/Home/Home";
 import Profile from "./Screen/Profile/Profile";
 import Cart from "./Screen/Cart/Cart";
 import Message from "./Screen/Message/Message";
+import Menu from "./Screen/Menu/Menu";
+import Filter from "./Screen/Filter/Filter";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
 import Detail from "./Screen/Detail/Detail";
@@ -129,6 +131,30 @@ export default function App() {
             },
           }}
         ></Tab.Screen>
+        <Tab.Screen
+          style={{
+            textAlign: "center",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          name="Menu"
+          component={Menu}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View
+                  style={{ alignItems: "center", justifyContent: "center" }}
+                >
+                  <Entypo
+                    name="menu"
+                    size={24}
+                    color={focused ? "#6B50F6" : "#6B50F6"}
+                  />
+                </View>
+              );
+            },
+          }}
+        ></Tab.Screen>
       </Tab.Navigator>
          );
         }
@@ -146,7 +172,12 @@ export default function App() {
           options={{ headerShown: false }}
         />
       
-       
+      <Stack.Screen
+          name="Filter"
+          component={Filter}
+          // options={{ headerShown: false }}
+        />
+      
       </Stack.Navigator>
     </NavigationContainer>
   );
