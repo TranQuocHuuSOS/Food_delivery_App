@@ -107,6 +107,7 @@ const Home = () => {
                 justifyContent: "center",
                 borderRadius: 14,
               }}
+              onPress={() => navigation.navigate("Filter")}
             >
               <Ionicons
                 name="notifications-outline"

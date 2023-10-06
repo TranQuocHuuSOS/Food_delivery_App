@@ -172,7 +172,12 @@ export default function App() {
           options={{ headerShown: false }}
         />
       
-       
+      <Stack.Screen
+          name="Filter"
+          component={Filter}
+          // options={{ headerShown: false }}
+        />
+      
       </Stack.Navigator>
     </NavigationContainer>
   );
