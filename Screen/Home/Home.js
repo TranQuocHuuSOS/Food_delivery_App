@@ -13,8 +13,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { useNavigation } from "@react-navigation/native";
 const Home = () => {
+  const navigation = useNavigation();
   const listRestaurant = [
     {
       id: "0",
@@ -216,7 +217,7 @@ const Home = () => {
             <Text style={{ fontWeight: "700", fontSize: 17 }}>
               Nearest Restaurant
             </Text>
-            <Pressable>
+            <Pressable  onPress={() => navigation.navigate("Detail")}>
               <Text style={{ fontSize: 12, color: "#6B50F6" }}>View More</Text>
             </Pressable>
           </View>
