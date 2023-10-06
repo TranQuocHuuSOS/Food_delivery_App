@@ -36,7 +36,7 @@ export default function App() {
           }}
           name="Home"
           component={Home}
-          options={{
+          options={{ headerShown:false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View style={{}}>
