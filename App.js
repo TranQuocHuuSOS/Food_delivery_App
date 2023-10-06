@@ -8,7 +8,7 @@ import Cart from "./Screen/Cart/Cart";
 import Message from "./Screen/Message/Message";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React from "react";
-import "react-native-gesture-handler";
+
 
 
 const Tab = createBottomTabNavigator();

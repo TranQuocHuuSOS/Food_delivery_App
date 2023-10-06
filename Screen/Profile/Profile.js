@@ -7,37 +7,44 @@ import {
 } from "react-native";
 import React, { useCallback, useMemo, useRef } from "react";
 import styles from "./styles";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet';
-
-
-// import { GestureHandlerRootView } from "react-native-gesture-handler";
-// import BottomSheet from "reanimated-bottom-sheet";
+import { AppRegistry } from 'react-native';
+import { useSharedValue, withSpring, valueUnpacker } from 'react-native-reanimated';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import BottomSheet, { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 // import Animated from "react-native-reanimated";
+import {name as appName} from "../../app.json";
+
+AppRegistry.registerComponent(appName, () => App);
+
 const image_profile = require("../../assets/images_profile/Photo_Profile.png");
 const Profile = () => {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-  const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-  }, []);
-
+  const snapPoints = useMemo(() => ["25%"], []);
+  const animateValue = (value) => {
+    'worklet';
+    return withSpring(value);
+  };
+  
+  const mySharedValue = useSharedValue(0);
+  
+  // Sử dụng `valueUnpacker` trong một Worklet Function
+  const animatedValue = valueUnpacker(() => animateValue(mySharedValue.value));
+  
+  // Sử dụng animatedValue trong UI hoặc trong các animation khác
   return (
     <View style={styles.container}>
       <ImageBackground
         source={image_profile}
         resizeMode="cover"
         style={styles.image}
-      ></ImageBackground>
+      >
+        <GestureHandlerRootView>
+        <BottomSheet snapPoints={snapPoints}>
+        <View style={styles.contentContainer}>
+          <BottomSheetTextInput value="Awesome 🎉" style={styles.textInput} />
+        </View>
+      </BottomSheet>
+        </GestureHandlerRootView>
+      </ImageBackground>
   
       
    
@@ -72,25 +79,7 @@ const Profile = () => {
           <Text style={{ color: "white" }}>hahah</Text>
           
         </View> */}
-      <BottomSheetModalProvider>
-      <View style={styles.container}>
-        <Button
-          onPress={handlePresentModalPress}
-          title="Present Modal"
-          color="black"
-        />
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-        >
-          <View style={styles.contentContainer}>
-            <Text>Awesome 🎉</Text>
-          </View>
-        </BottomSheetModal>
-      </View>
-    </BottomSheetModalProvider>
+      
     </View>
   );
 };
