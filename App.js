@@ -8,6 +8,9 @@ import Cart from "./Screen/Cart/Cart";
 import Message from "./Screen/Message/Message";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
+import "react-native-gesture-handler";
+
+
 const Tab = createBottomTabNavigator();
 
 const screenOptions = {
@@ -24,6 +27,13 @@ const screenOptions = {
   },
 };
 export default function App() {
+
+  const [isOpen, setOpen] = useState(false);
+  const [accent, setAccent] = useState("#782AEB");
+
+  const toggleSheet = () => {
+    setOpen(!isOpen);
+  };
   return (
     <NavigationContainer style={{ backgroundColor:"black"}}>
       <Tab.Navigator
@@ -62,6 +72,7 @@ export default function App() {
           }}
           name="Profile"
           component={Profile}
+          onPress={toggleSheet}
           options={{
             tabBarIcon: ({ focused }) => {
               return (
