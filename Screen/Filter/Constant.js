@@ -62,24 +62,3 @@ export const foods= [
 	},
     
 ];
-
-export const popularMenuData = [
-	{
-	  id: '1',
-	  name: 'Pizza',
-	  price: '$5',
-	  image: require('../.././assets/searchimage/pizza.jpg'),
-	},
-	{
-	  id: '2',
-	  name: 'Carbonara',
-	  price: '$6',
-	  image: require('../.././assets/searchimage/pizza.jpg'),
-	},
-	{
-	  id: '3',
-	  name: 'Salad',
-	  price: '$99',
-	  image: require('../.././assets/searchimage/pizza.jpg'),
-	},
-  ];
