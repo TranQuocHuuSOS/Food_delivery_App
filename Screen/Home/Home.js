@@ -107,7 +107,7 @@ const Home = () => {
                 justifyContent: "center",
                 borderRadius: 14,
               }}
-              onPress={() => navigation.navigate("Filter")}
+              
             >
               <Ionicons
                 name="notifications-outline"
@@ -133,7 +133,7 @@ const Home = () => {
                 backgroundColor: "#f1eeff",
                 borderRadius: 10,
                 paddingVertical: 10,
-              }}
+              }} 
             >
               <AntDesign
                 style={{ paddingLeft: 10 }}
@@ -144,7 +144,7 @@ const Home = () => {
               <TextInput
                 placeholder="What do you want to order?"
                 placeholderTextColor="#6B50F6"
-                width={220}
+                width={220} 
               />
             </Pressable>
             <Pressable
@@ -154,13 +154,13 @@ const Home = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 10,
-              }}
+              }} onPress={() => navigation.navigate("Filter")}
             >
               <MaterialIcons
                 name="mic-none"
                 size={22}
                 color="black"
-                marginHorizontal={12}
+                marginHorizontal={12} 
               />
             </Pressable>
           </View>
