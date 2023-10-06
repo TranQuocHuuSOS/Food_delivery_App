@@ -5,16 +5,32 @@ import {
   ImageBackground,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import styles from "./styles";
-import { HEIGHT, OVERDRAG } from "../../misc/consts";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import AccentPicker from "../../Component/AccentPicker";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
+
+
+// import { GestureHandlerRootView } from "react-native-gesture-handler";
 // import BottomSheet from "reanimated-bottom-sheet";
 // import Animated from "react-native-reanimated";
 const image_profile = require("../../assets/images_profile/Photo_Profile.png");
 const Profile = () => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -22,7 +38,9 @@ const Profile = () => {
         resizeMode="cover"
         style={styles.image}
       ></ImageBackground>
-    
+  
+      
+   
         {/* <View style={styles.info}>
           <Text style={{ color: "white" }}>hahah</Text>
           <Text style={{ color: "white" }}>hahah</Text>
@@ -54,7 +72,25 @@ const Profile = () => {
           <Text style={{ color: "white" }}>hahah</Text>
           
         </View> */}
-     
+      <BottomSheetModalProvider>
+      <View style={styles.container}>
+        <Button
+          onPress={handlePresentModalPress}
+          title="Present Modal"
+          color="black"
+        />
+        <BottomSheetModal
+          ref={bottomSheetModalRef}
+          index={1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+        >
+          <View style={styles.contentContainer}>
+            <Text>Awesome 🎉</Text>
+          </View>
+        </BottomSheetModal>
+      </View>
+    </BottomSheetModalProvider>
     </View>
   );
 };

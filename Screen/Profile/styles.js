@@ -12,5 +12,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
 });
 export default styles;
