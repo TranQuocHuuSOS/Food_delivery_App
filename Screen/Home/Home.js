@@ -223,7 +223,7 @@ const Home = () => {
                 Nearest Restaurant
               </Text>
 
-              <Pressable onPress={() => navigation.navigate("Detail")}>
+              <Pressable onPress={() => navigation.navigate("RestaurantDetail")}>
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
@@ -285,7 +285,7 @@ const Home = () => {
               <Text style={{ fontWeight: "700", fontSize: 17 }}>
                 Popular Menu
               </Text>
-              <Pressable>
+              <Pressable onPress={() => navigation.navigate("MenuDetail")}>
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
