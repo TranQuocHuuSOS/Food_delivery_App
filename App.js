@@ -6,12 +6,12 @@ import Home from "./Screen/Home/Home";
 import Profile from "./Screen/Profile/Profile";
 import Cart from "./Screen/Cart/Cart";
 import Message from "./Screen/Message/Message";
+import Filter from "./Screen/Filter/Filter";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
-import React from "react";
-
-
-
-const Tab = createBottomTabNavigator();
+import React, { useState } from "react";
+import RestaurantDetail from "./Screen/RestaurantDetail/RestaurantDetail";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MenuDetail from "./Screen/MenuDetail/MenuDetail";
 
 const screenOptions = {
   tabBarShowLabel: true,
@@ -27,19 +27,20 @@ const screenOptions = {
   },
 };
 export default function App() {
-  return (
-    <NavigationContainer style={{ backgroundColor:"black"}}>
+  const Stack = createNativeStackNavigator();
+  const Tab = createBottomTabNavigator();
+  function BottomTabs() {
+    return (
       <Tab.Navigator
         screenOptions={screenOptions}
         style={{ position: "absolute", backgroundColor: "black" }}
       >
         <Tab.Screen
-          style={{
-           
-          }}
+          style={{}}
           name="Home"
           component={Home}
           options={{
+            headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View style={{}}>
@@ -66,6 +67,7 @@ export default function App() {
           name="Profile"
           component={Profile}
           options={{
+            headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
@@ -90,6 +92,7 @@ export default function App() {
           name="Cart"
           component={Cart}
           options={{
+            headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
@@ -114,6 +117,7 @@ export default function App() {
           name="Message"
           component={Message}
           options={{
+            headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
@@ -130,15 +134,32 @@ export default function App() {
           }}
         ></Tab.Screen>
       </Tab.Navigator>
+    );
+  }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Main"
+          component={BottomTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RestaurantDetail"
+          component={RestaurantDetail}
+          //  options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MenuDetail"
+          component={MenuDetail}
+          //  options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Filter"
+          component={Filter}
+          // options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
