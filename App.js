@@ -10,7 +10,7 @@ import Message from "./Screen/Message/Message";
 import Filter from "./Screen/Filter/Filter";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
-import Detail from "./Screen/Detail/Detail";
+import RestaurantDetail from "./Screen/RestaurantDetail/RestaurantDetail";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const screenOptions = {
   tabBarShowLabel: true,
@@ -143,14 +143,17 @@ export default function App() {
         />
         <Stack.Screen
           name="Detail"
-          component={Detail}
-          options={{ headerShown: false }}
+          component={RestaurantDetail}
+        //  options={{ headerShown: false }}
+          
         />
       
       <Stack.Screen
           name="Filter"
           component={Filter}
           // options={{ headerShown: false }}
+         
+          
         />
       
       </Stack.Navigator>
