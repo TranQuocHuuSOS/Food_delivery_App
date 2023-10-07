@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import Home from "./Screen/Home/Home";
 import Profile from "./Screen/Profile/Profile";
 import Cart from "./Screen/Cart/Cart";
@@ -66,7 +65,7 @@ export default function App() {
           }}
           name="Profile"
           component={Profile}
-          options={{
+          options={{ headerShown:false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
@@ -90,7 +89,7 @@ export default function App() {
           }}
           name="Cart"
           component={Cart}
-          options={{
+          options={{headerShown:false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
@@ -114,7 +113,7 @@ export default function App() {
           }}
           name="Message"
           component={Message}
-          options={{
+          options={{headerShown:false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
@@ -146,13 +145,11 @@ export default function App() {
           component={Detail}
           options={{ headerShown: false }}
         />
-      
       <Stack.Screen
           name="Filter"
           component={Filter}
           // options={{ headerShown: false }}
         />
-      
       </Stack.Navigator>
     </NavigationContainer>
   );
