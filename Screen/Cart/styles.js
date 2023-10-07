@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     backgroundColor:"",
     marginTop: 20,
     flexDirection:"row",
-    padding: 5,
+    padding: 15,
     borderRadius: 10,
     
   },
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems:"center",
     
   },
-    minus:{
+  minus:{
     width: 30,
     height:30,
     borderRadius: 5,
@@ -168,19 +168,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderBottomColor: '#E0E0E0',
     borderBottomWidth: 1,
-    
-    padding: 10,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
+    padding: 15,
+    borderRadius: 25,
     marginBottom: 10,
   },
   itemText: {
     color: '#333',
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   hiddenContainer: {
@@ -188,8 +182,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: '#6B50F6',
-    padding: 6,
-    borderRadius: 20,
+    padding: 25,
+    borderRadius: 25,
   },
   hiddenButton: {
     justifyContent: 'center',
@@ -210,5 +204,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  images_dish:{
+    width: 50,
+    height: 50
+  }
 });
 export default styles;

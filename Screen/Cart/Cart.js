@@ -24,7 +24,6 @@ const Cart = () => {
     { key: '3', name_dish: 'Spacy Fresh crab', name_restaurant:"kita", price:"35", menuImage: require("../../assets/MenuPhoto2.png")  },
     { key: '4', name_dish: 'Spacy Fresh crab', name_restaurant:"kita", price:"35", menuImage: require("../../assets/MenuPhoto.png") },
     { key: '5', name_dish: 'Spacy Fresh crab', name_restaurant:"kita", price:"35", menuImage: require("../../assets/MenuPhoto1.png")  },
-    // Thêm dữ liệu khác nếu cần
   ];
 
   const renderRow = (key, name_dish, name_restaurant,price, menuImage) => (
@@ -35,16 +34,16 @@ const Cart = () => {
     >
       <Text style={styles.itemText}>
       <View style={styles.card}>
-              <Image source={menuImage}></Image>
-              <View style={{marginHorizontal:25}}>
-                <Text style={{fontWeight:"bold", }}>{name_dish}</Text>
+              <Image source={menuImage} style={{width: 70, height: 70}}></Image>
+              <View style={{marginHorizontal:10}}>
+                <Text style={{fontWeight:"bold"}}>{name_dish}</Text>
                 <Text style={{color:"#000"}}>{name_restaurant}</Text>
-                <Text style={{fontWeight:"bold",color:"#6B50F6" }}> $ {price}</Text>
+                <Text style={{fontWeight:"bold",color:"#6B50F6", fontSize: 20 }}>$ {price}</Text>
               </View>
               <View style={styles.amount}>
-                <TouchableOpacity style={styles.plus} ><AntDesign name="minus" size={20} color="black"  /></TouchableOpacity>
+                <TouchableOpacity style={styles.plus}><AntDesign name="minus" size={20} color="black"/></TouchableOpacity>
                 <Text style={styles.number}>1</Text>
-                <TouchableOpacity style={styles.minus} ><AntDesign name="plus" size={20} color="white" /></TouchableOpacity>
+                <TouchableOpacity style={styles.minus}><AntDesign name="plus" size={20} color="white"/></TouchableOpacity>
               </View>
           </View>
       </Text>
@@ -80,7 +79,7 @@ const Cart = () => {
         renderHiddenItem={renderHiddenItem}
         keyExtractor={(item) => item.key}
         leftOpenValue={0}
-        rightOpenValue={-80}
+        rightOpenValue={-100}
         previewRowKey={'0'}
         previewOpenValue={-40}
         previewOpenDelay={3000}
