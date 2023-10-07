@@ -11,6 +11,8 @@ import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
 import RestaurantDetail from "./Screen/RestaurantDetail/RestaurantDetail";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MenuDetail from "./Screen/MenuDetail/MenuDetail";
+
 const screenOptions = {
   tabBarShowLabel: true,
   headerShown: true,
@@ -28,18 +30,17 @@ export default function App() {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
   function BottomTabs() {
-     return (
-       <Tab.Navigator
+    return (
+      <Tab.Navigator
         screenOptions={screenOptions}
         style={{ position: "absolute", backgroundColor: "black" }}
       >
         <Tab.Screen
-          style={{
-           
-          }}
+          style={{}}
           name="Home"
           component={Home}
-          options={{ headerShown:false,
+          options={{
+            headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View style={{}}>
@@ -65,7 +66,8 @@ export default function App() {
           }}
           name="Profile"
           component={Profile}
-          options={{ headerShown:false,
+          options={{
+            headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
@@ -89,7 +91,8 @@ export default function App() {
           }}
           name="Cart"
           component={Cart}
-          options={{headerShown:false,
+          options={{
+            headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
@@ -113,7 +116,8 @@ export default function App() {
           }}
           name="Message"
           component={Message}
-          options={{headerShown:false,
+          options={{
+            headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
@@ -130,32 +134,32 @@ export default function App() {
           }}
         ></Tab.Screen>
       </Tab.Navigator>
-         );
-        }
+    );
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen
+        <Stack.Screen
           name="Main"
           component={BottomTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Detail"
+          name="RestaurantDetail"
           component={RestaurantDetail}
-        //  options={{ headerShown: false }}
-          
+          //  options={{ headerShown: false }}
         />
-      <Stack.Screen
+        <Stack.Screen
+          name="MenuDetail"
+          component={MenuDetail}
+          //  options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="Filter"
           component={Filter}
           // options={{ headerShown: false }}
-         
-          
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-
