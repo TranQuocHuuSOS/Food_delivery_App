@@ -1,14 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+
 
 const Profile = () => {
+  
   return (
-    <View>
-      <Text>Profile</Text>
+    <View >
+      <Text >Geeksforgeeks</Text>
+      <Text >Swipe to delete</Text>
     </View>
-  )
-}
+  );
+};
 
-export default Profile
 
-const styles = StyleSheet.create({})
+export default Profile;
