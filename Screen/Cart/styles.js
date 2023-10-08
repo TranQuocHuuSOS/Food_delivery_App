@@ -102,19 +102,14 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     padding: 15,
     borderRadius: 10,
-    
+    marginHorizontal:20
   },
-  
- 
- 
- 
   amount:{
     flex:1,
     flexDirection:"row",
     alignItems:"center",
     textAlign:"center",
     justifyContent:"center",
-
   },
   plus:{
     width: 30,
@@ -123,7 +118,6 @@ const styles = StyleSheet.create({
     backgroundColor:"#EAE6F9",
     justifyContent:"center",
     alignItems:"center",
-    
   },
   minus:{
     width: 30,
