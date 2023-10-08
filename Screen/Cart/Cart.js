@@ -194,45 +194,7 @@ const Cart = () => {
             previewOpenDelay={3000}
           />
         </View>
-        {/* <View style={styles.container_total}>
-          <ImageBackground
-            source={image_total}
-            resizeMode="cover"
-            style={styles.imageTotal}
-          >
-            <View style={{ marginTop: 20, marginHorizontal: 20 }}>
-              <View style={styles.sub_total}>
-                <Text style={styles.text_total}>Sub_total</Text>
-                <Text style={styles.number_total}> ${data
-                    .filter((item) => !selectedItems.includes(item.key)) 
-                    .reduce(
-                      (acc, item) =>
-                        acc +
-                        (item.price - item.discount) * (quantity[item.key] || 1),
-                      0
-                    )
-                    .toFixed(2)}</Text>
-              </View>
-              <View style={styles.delivery}>
-                <Text style={styles.text_total}>Delivery Charge</Text>
-                <Text style={styles.number_total}>10 $</Text>
-              </View>
-              <View style={styles.discount}>
-                <Text style={styles.text_total}>Discount</Text>
-                <Text style={styles.number_total}>10$</Text>
-              </View>
-            </View>
-            <View style={styles.total}>
-              <Text style={styles.text_totals}>Total</Text>
-              <Text style={styles.number_totals}>${calculateTotalPrice()}</Text>
-            </View>
-            <TouchableOpacity>
-              <View style={styles.button}>
-                <Text style={styles.text_button}>Place My Order</Text>
-              </View>
-            </TouchableOpacity>
-          </ImageBackground>
-        </View> */}
+       
         <Card_price
           data={data}
           selectedItems={selectedItems}
