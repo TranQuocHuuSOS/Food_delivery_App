@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./Screen/Home/Home";
 import Profile from "./Screen/Profile/Profile";
@@ -42,24 +42,30 @@ export default function App() {
           style={{}}
           name="Home"
           component={Home}
-          options={{
+          options={({ route }) => ({
+            tabBarLabel: '',
             headerShown: false,
-            tabBarIcon: ({ focused }) => {
+            tabBarIcon: ({ focused, color, size }) => {
               return (
                 <View style={{}}>
                   <View
-                    style={{ alignItems: "center", justifyContent: "center" }}
+                    style={{ alignItems: "center", 
+                    justifyContent: "center",
+                    alignItems: "center", }}
                   >
                     <Foundation
                       name="home"
-                      size={24}
-                      color={focused ? "#6B50F6" : "#6B50F6"}
+                      size={30}
+                      color={focused ? "#6B50F6" : "#000"}
                     />
+                   <Text style={focused ? styles.tabBarTextFocused : styles.tabBarTextUnfocused}>
+                      Home
+                    </Text>
                   </View>
                 </View>
               );
             },
-          }}
+          })}
         ></Tab.Screen>
         <Tab.Screen
           style={{
@@ -69,22 +75,32 @@ export default function App() {
           }}
           name="Profile"
           component={Profile}
-          options={{
+          options={({ route }) => ({
+            tabBarLabel: '',
             headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
-                  style={{ alignItems: "center", justifyContent: "center" }}
+                  style={{ alignItems: "center", 
+                  justifyContent: "center",
+                  alignItems: "center", }}
                 >
                   <MaterialCommunityIcons
                     name="face-man-profile"
-                    size={24}
-                    color={focused ? "#6B50F6" : "#6B50F6"}
+                    size={30}
+                    color={focused ? "#6B50F6" : "#000"}
                   />
+                   <Text
+                      style={
+                        focused? styles.tabBarTextFocused : styles.tabBarTextUnfocused
+                      }
+                    >
+                      Profile
+                    </Text>
                 </View>
               );
             },
-          }}
+          })}
         ></Tab.Screen>
         <Tab.Screen
           style={{
@@ -94,22 +110,32 @@ export default function App() {
           }}
           name="Cart"
           component={Cart}
-          options={{
+          options={({ route }) => ({
+            tabBarLabel: '',
             headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
-                  style={{ alignItems: "center", justifyContent: "center" }}
+                  style={{ alignItems: "center", 
+                  justifyContent: "center",
+                  alignItems: "center", }}
                 >
                   <Entypo
                     name="shopping-cart"
-                    size={24}
-                    color={focused ? "#6B50F6" : "#6B50F6"}
+                    size={30}
+                    color={focused ? "#6B50F6" : "#000"}
                   />
+                   <Text
+                      style={
+                        focused? styles.tabBarTextFocused : styles.tabBarTextUnfocused
+                      }
+                    >
+                      Cart
+                    </Text>
                 </View>
               );
             },
-          }}
+          })}
         ></Tab.Screen>
         <Tab.Screen
           style={{
@@ -119,22 +145,32 @@ export default function App() {
           }}
           name="Message"
           component={Message}
-          options={{
+          options={({ route }) => ({
+            tabBarLabel: '',
             headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
-                  style={{ alignItems: "center", justifyContent: "center" }}
+                  style={{ alignItems: "center",
+                  justifyContent: "center",
+                  alignItems: "center", }}
                 >
                   <Entypo
                     name="message"
-                    size={24}
-                    color={focused ? "#6B50F6" : "#6B50F6"}
+                    size={30}
+                    color={focused ? "#6B50F6" : "#000"}
                   />
+                   <Text
+                      style={
+                        focused? styles.tabBarTextFocused : styles.tabBarTextUnfocused
+                      }
+                    >
+                      Message
+                    </Text>
                 </View>
               );
             },
-          }}
+          })}
         ></Tab.Screen>
       </Tab.Navigator>
     );
@@ -162,12 +198,12 @@ export default function App() {
           component={Filter}
           // options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Confirm Order"
           component={Payment}
           // options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Payment"
           component={EditPayment}
           // options={{ headerShown: false }}
@@ -181,3 +217,18 @@ export default function App() {
     </NavigationContainer>
   );
 }
+const styles= StyleSheet.create(
+  {
+    tabBarIconStyle: {
+     
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    tabBarTextFocused: {
+      color: "#6B50F6",
+    },
+    tabBarTextUnfocused: {
+      color: "#000", // Màu của văn bản khi không được chọn
+    },
+  }
+)

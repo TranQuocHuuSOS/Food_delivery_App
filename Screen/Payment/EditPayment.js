@@ -8,7 +8,7 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
-  Image,
+  Image
 } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -25,17 +25,16 @@ const EditPayment = () => {
         color: "#FEFEFF",
       }}
     >
-      <ScrollView>
-        <ImageBackground
-          source={image}
-          style={{
-            width: "100%",
-            height: "100%",
-            flex: 1,
-            color: "#6B50F6",
-          }}
-          resizeMode="cover"
-        >
+      <ImageBackground
+        source={image}
+        style={{
+          width: "100%",
+          height: "100%",
+          color: "#6B50F6",
+        }}
+        resizeMode="cover"
+      >
+        <ScrollView>
           <View style={{ marginHorizontal: 20 }}>
             <View
               style={{
@@ -66,7 +65,7 @@ const EditPayment = () => {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    height:80
+                    height: 80,
                   }}
                 >
                   <Image
@@ -83,7 +82,6 @@ const EditPayment = () => {
               </View>
               <View
                 style={{
-                 
                   width: "100%",
                   borderRadius: 20,
                   backgroundColor: "#EDEAEA",
@@ -113,7 +111,6 @@ const EditPayment = () => {
               </View>
               <View
                 style={{
-                 
                   width: "100%",
                   borderRadius: 20,
                   backgroundColor: "#EDEAEA",
@@ -143,8 +140,8 @@ const EditPayment = () => {
               </View>
             </View>
           </View>
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </View>
   );
 };

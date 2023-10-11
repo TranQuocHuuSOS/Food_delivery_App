@@ -9,6 +9,7 @@ import {
   Button,
   TouchableOpacity,
   Image,
+  
 } from "react-native";
 import styles from "./styles";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -16,7 +17,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Card_price from "../Card_total_price/Card_price";
-const image = require("../../assets/Pattern.png");
+const images = require("../../assets/Pattern.png");
 const LogoPay = require("../../assets/paypa/Logosss.png");
 const image_total = require("../../assets/Order_detail/Pattern.png");
 const Payment = () => {
@@ -24,21 +25,21 @@ const Payment = () => {
   return (
     <View
       style={{
-        flex: 1,
+       
         color: "#FEFEFF",
       }}
     >
-      <ScrollView>
-        <ImageBackground
-          source={image}
-          style={{
-            width: "100%",
-            height: "100%",
-            flex: 1,
-            color: "#6B50F6",
-          }}
-          resizeMode="cover"
-        >
+      <ImageBackground
+        source={images}
+        style={{
+          width: "100%",
+          height: "100%",
+
+          color: "#6B50F6",
+        }}
+        resizeMode="cover"
+      >
+        <ScrollView>
           <View style={{ marginHorizontal: 20 }}>
             <View
               style={{
@@ -73,7 +74,12 @@ const Payment = () => {
                   }}
                 >
                   <Text style={{ color: "#22242E" }}>Deliver To</Text>
-                  <Text style={{ color: "#6B50F6" }} onPress={() => navigation.navigate("Shipping")}>Edit</Text>
+                  <Text
+                    style={{ color: "#6B50F6" }}
+                    onPress={() => navigation.navigate("Shipping")}
+                  >
+                    Edit
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -127,7 +133,12 @@ const Payment = () => {
                   }}
                 >
                   <Text style={{ color: "#22242E" }}>Payment Method</Text>
-                  <Text style={{ color: "#6B50F6" }} onPress={() => navigation.navigate("Payment")}>Edit</Text>
+                  <Text
+                    style={{ color: "#6B50F6" }}
+                    onPress={() => navigation.navigate("Payment")}
+                  >
+                    Edit
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -186,8 +197,8 @@ const Payment = () => {
               </View>
             </View>
           </View>
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </View>
   );
 };

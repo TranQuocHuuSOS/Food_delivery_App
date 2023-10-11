@@ -26,17 +26,17 @@ const Shipping = () => {
         color: "#FEFEFF",
       }}
     >
-      <ScrollView>
-        <ImageBackground
-          source={image}
-          style={{
-            width: "100%",
-            height: "100%",
-            flex: 1,
-            color: "#6B50F6",
-          }}
-          resizeMode="cover"
-        >
+      <ImageBackground
+        source={image}
+        style={{
+          width: "100%",
+          height: "100%",
+          flex: 1,
+          color: "#6B50F6",
+        }}
+        resizeMode="cover"
+      >
+        <ScrollView>
           <View style={{ marginHorizontal: 20 }}>
             <View
               style={{
@@ -110,7 +110,7 @@ const Shipping = () => {
                   width: "100%",
                   borderRadius: 20,
                   backgroundColor: "white",
-                  marginTop:20
+                  marginTop: 20,
                 }}
               >
                 <View
@@ -155,20 +155,24 @@ const Shipping = () => {
                     4517 Washington Ave. Manchester, Kentucky 39495
                   </Text>
                 </View>
-                <View style={{
+                <View
+                  style={{
                     marginHorizontal: 20,
                     paddingBottom: 20,
-                   
-                  }}>
-                        <Text style={{marginLeft:70, color:"#6B50F6"}} onPress={()=>navigation.navigate("")}>
-                            Set Location
-                        </Text>
+                  }}
+                >
+                  <Text
+                    style={{ marginLeft: 70, color: "#6B50F6" }}
+                    onPress={() => navigation.navigate("")}
+                  >
+                    Set Location
+                  </Text>
                 </View>
               </View>
             </View>
           </View>
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </View>
   );
 };

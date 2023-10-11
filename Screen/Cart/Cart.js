@@ -168,7 +168,6 @@ const Cart = () => {
           source={image}
           resizeMode="cover"
           style={styles.imageBackground}
-
         >
       <ScrollView style={{bottom: 90, marginTop:80}}>
         
