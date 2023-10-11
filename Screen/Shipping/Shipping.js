@@ -9,32 +9,29 @@ import {
   Button,
   TouchableOpacity,
   Image,
-  
 } from "react-native";
-import styles from "./styles";
-import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import Card_price from "../Card_total_price/Card_price";
-const images = require("../../assets/Pattern.png");
+import { FontAwesome5 } from "@expo/vector-icons";
+const image = require("../../assets/Pattern.png");
 const LogoPay = require("../../assets/paypa/Logosss.png");
-const image_total = require("../../assets/Order_detail/Pattern.png");
-const Payment = () => {
+const pa = require("../../assets/layer1.png");
+const visa = require("../../assets/Group.png");
+const Shipping = () => {
   const navigation = useNavigation();
   return (
     <View
       style={{
-       
+        flex: 1,
         color: "#FEFEFF",
       }}
     >
       <ImageBackground
-        source={images}
+        source={image}
         style={{
           width: "100%",
           height: "100%",
-
+          flex: 1,
           color: "#6B50F6",
         }}
         resizeMode="cover"
@@ -53,13 +50,13 @@ const Payment = () => {
                   fontFamily: "sans-serif",
                 }}
               >
-                Payment Order
+                Shipping
               </Text>
             </View>
+
             <View style={{ paddingTop: 30 }}>
               <View
                 style={{
-                  height: 108,
                   width: "100%",
                   borderRadius: 20,
                   backgroundColor: "white",
@@ -67,23 +64,67 @@ const Payment = () => {
               >
                 <View
                   style={{
+                    marginHorizontal: 20,
+                    marginVertical: 20,
+                  }}
+                >
+                  <Text style={{ color: "#22242E" }}>Order Location</Text>
+                </View>
+                <View
+                  style={{
+                    marginHorizontal: 20,
+                    paddingBottom: 20,
                     flexDirection: "row",
                     justifyContent: "space-between",
+                  }}
+                >
+                  <Pressable
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 100,
+                      backgroundColor: "#604AD3",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FontAwesome5
+                      name="map-marker-alt"
+                      size={24}
+                      color="white"
+                    />
+                  </Pressable>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 15,
+                      maxWidth: "90%",
+                    }}
+                  >
+                    8502 Preston Rd. Inglewood, Maine 98380
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: "100%",
+                  borderRadius: 20,
+                  backgroundColor: "white",
+                  marginTop: 20,
+                }}
+              >
+                <View
+                  style={{
                     marginHorizontal: 20,
                     marginVertical: 20,
                   }}
                 >
                   <Text style={{ color: "#22242E" }}>Deliver To</Text>
-                  <Text
-                    style={{ color: "#6B50F6" }}
-                    onPress={() => navigation.navigate("Shipping")}
-                  >
-                    Edit
-                  </Text>
                 </View>
                 <View
                   style={{
                     marginHorizontal: 20,
+                    paddingBottom: 20,
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}
@@ -114,86 +155,19 @@ const Payment = () => {
                     4517 Washington Ave. Manchester, Kentucky 39495
                   </Text>
                 </View>
-              </View>
-              <View
-                style={{
-                  height: 108,
-                  width: "100%",
-                  borderRadius: 20,
-                  backgroundColor: "white",
-                  marginTop: 20,
-                }}
-              >
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
                     marginHorizontal: 20,
-                    marginVertical: 20,
+                    paddingBottom: 20,
                   }}
                 >
-                  <Text style={{ color: "#22242E" }}>Payment Method</Text>
                   <Text
-                    style={{ color: "#6B50F6" }}
-                    onPress={() => navigation.navigate("Payment")}
+                    style={{ marginLeft: 70, color: "#6B50F6" }}
+                    onPress={() => navigation.navigate("")}
                   >
-                    Edit
+                    Set Location
                   </Text>
                 </View>
-                <View
-                  style={{
-                    marginHorizontal: 20,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Image
-                    style={{
-                      borderRadius: 10,
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                    source={LogoPay}
-                    resizeMode="cover"
-                  ></Image>
-                  <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                    2121 6352 8465 ****
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.container_total}>
-                <ImageBackground
-                  source={image_total}
-                  resizeMode="cover"
-                  style={styles.imageTotal}
-                >
-                  <View style={{ marginTop: 20, marginHorizontal: 20 }}>
-                    <View style={styles.sub_total}>
-                      <Text style={styles.text_total}>Sub_total</Text>
-                      <Text style={styles.number_total}>123 $ </Text>
-                    </View>
-                    <View style={styles.delivery}>
-                      <Text style={styles.text_total}>Delivery Charge</Text>
-                      <Text style={styles.number_total}>10 $</Text>
-                    </View>
-                    <View style={styles.discount}>
-                      <Text style={styles.text_total}>Discount</Text>
-                      <Text style={styles.number_total}>10$</Text>
-                    </View>
-                  </View>
-                  <View style={styles.total}>
-                    <Text style={styles.text_totals}>Total</Text>
-                    <Text style={styles.number_totals}>123 $</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("Confirm Order")}
-                  >
-                    <View style={styles.button}>
-                      <Text style={styles.text_button}>Place My Order</Text>
-                    </View>
-                  </TouchableOpacity>
-                </ImageBackground>
               </View>
             </View>
           </View>
@@ -203,4 +177,4 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+export default Shipping;

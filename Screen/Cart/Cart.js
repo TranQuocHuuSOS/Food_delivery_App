@@ -18,7 +18,9 @@ const image = require("../../assets/Pattern.png");
 const image_total = require("../../assets/Order_detail/Pattern.png");
 import { SwipeListView } from "react-native-swipe-list-view";
 import Card_price from "../Card_total_price/Card_price";
+
 const Cart = () => {
+  
   const [quantity, setQuantity] = useState({});
   const [selectedItems, setSelectedItems] = useState([]);
   let totalPrice = 0;
@@ -162,12 +164,13 @@ const Cart = () => {
   );
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <ImageBackground
+      <ImageBackground
           source={image}
           resizeMode="cover"
           style={styles.imageBackground}
-        ></ImageBackground>
+        >
+      <ScrollView style={{bottom: 90, marginTop:80}}>
+        
         <View style={styles.content}>
           <Text style={styles.text}>Order details</Text>
         </View>
@@ -202,6 +205,7 @@ const Cart = () => {
           calculateTotalPrice={calculateTotalPrice}
         />
       </ScrollView>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

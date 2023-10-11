@@ -6,11 +6,13 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     width: "100%",
-    height: 170,
+    height: "100%",
+    flex:1,
+    color:"#6B50F6"
   },
   content: {
     marginHorizontal: 25,
-    bottom: 170,
+   
   },
   text: {
     paddingTop: 60,
@@ -20,12 +22,12 @@ const styles = StyleSheet.create({
   },
   card_food: {
     marginHorizontal: 25,
-    bottom: 150,
+   
   },
   container_total: {
     marginHorizontal: 25,
     paddingTop: "20%",
-    bottom: 220
+    
   },
   imageTotal: {
     backgroundColor: "#6B50F6",
@@ -98,7 +100,6 @@ const styles = StyleSheet.create({
     width:"100%",
     justifyContent:"space-between",
     backgroundColor:"",
-    marginTop: 20,
     flexDirection:"row",
     padding: 15,
     borderRadius: 10,
@@ -162,13 +163,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderBottomColor: '#E0E0E0',
     borderBottomWidth: 1,
-    padding: 15,
+    padding: 5,
     borderRadius: 25,
-    marginBottom: 10,
+    marginBottom: 5,
+    marginTop: 20
   },
   itemText: {
     color: '#333',
-    fontSize: 20,
     fontWeight: 'bold',
   },
   hiddenContainer: {
@@ -176,8 +177,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: '#6B50F6',
-    padding: 25,
+    padding: 15,
     borderRadius: 25,
+    marginTop:20,
   },
   hiddenButton: {
     justifyContent: 'center',
