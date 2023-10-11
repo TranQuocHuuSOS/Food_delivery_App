@@ -7,11 +7,14 @@ import Profile from "./Screen/Profile/Profile";
 import Cart from "./Screen/Cart/Cart";
 import Message from "./Screen/Message/Message";
 import Filter from "./Screen/Filter/Filter";
+import Payment from "./Screen/Payment/Payment";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
 import RestaurantDetail from "./Screen/RestaurantDetail/RestaurantDetail";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MenuDetail from "./Screen/MenuDetail/MenuDetail";
+import EditPayment from "./Screen/Payment/EditPayment";
+import Shipping from "./Screen/Shipping/Shipping";
 
 const screenOptions = {
   tabBarShowLabel: true,
@@ -157,6 +160,21 @@ export default function App() {
         <Stack.Screen
           name="Filter"
           component={Filter}
+          // options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Confirm Order"
+          component={Payment}
+          // options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Payment"
+          component={EditPayment}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Shipping"
+          component={Shipping}
           // options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -1,5 +1,6 @@
 import { ImageBackground,StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { useNavigation } from "@react-navigation/native";
 const image_total = require("../../assets/Order_detail/Pattern.png");
 const Card_price = ({
     data,
@@ -7,6 +8,7 @@ const Card_price = ({
     quantity,
     calculateTotalPrice,
   }) => {
+    const navigation = useNavigation();
   return (
     <View style={styles.container_total}>
           <ImageBackground
@@ -40,7 +42,7 @@ const Card_price = ({
               <Text style={styles.text_totals}>Total</Text>
               <Text style={styles.number_totals}>${calculateTotalPrice()}</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Confirm Order")}>
               <View style={styles.button}>
                 <Text style={styles.text_button}>Place My Order</Text>
               </View>
@@ -55,8 +57,8 @@ export default Card_price
 const styles = StyleSheet.create({
     container_total: {
         marginHorizontal: 25,
-        paddingTop: "20%",
-        bottom: 220
+        paddingTop:20,
+       
       },
       imageTotal: {
         backgroundColor: "#6B50F6",
