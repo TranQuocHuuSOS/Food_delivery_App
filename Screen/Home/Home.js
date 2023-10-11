@@ -65,11 +65,9 @@ const Home = () => {
       style={{
         flex: 1,
         marginBottom:70
-
-        
       }}
     >
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <ImageBackground
         source={require("../../assets/Pattern.png")}
         style={{
@@ -270,6 +268,7 @@ const Home = () => {
                     }}
                   >
                     {item?.time}
+                    
                   </Text>
                 </Pressable>
               ))}
