@@ -56,7 +56,7 @@ export default function App() {
                     <Foundation
                       name="home"
                       size={30}
-                      color={focused ? "#6B50F6" : "#000"}
+                      color={focused ? "#2A01FF" : "#6B50F6"}
                     />
                    <Text style={focused ? styles.tabBarTextFocused : styles.tabBarTextUnfocused}>
                       Home
@@ -88,7 +88,7 @@ export default function App() {
                   <MaterialCommunityIcons
                     name="face-man-profile"
                     size={30}
-                    color={focused ? "#6B50F6" : "#000"}
+                    color={focused ? "#2A01FF" : "#6B50F6"}
                   />
                    <Text
                       style={
@@ -123,7 +123,7 @@ export default function App() {
                   <Entypo
                     name="shopping-cart"
                     size={30}
-                    color={focused ? "#6B50F6" : "#000"}
+                    color={focused ? "#2A01FF" : "#6B50F6"}
                   />
                    <Text
                       style={
@@ -158,7 +158,7 @@ export default function App() {
                   <Entypo
                     name="message"
                     size={30}
-                    color={focused ? "#6B50F6" : "#000"}
+                    color={focused ? "#2A01FF" : "#6B50F6"}
                   />
                    <Text
                       style={
@@ -225,10 +225,10 @@ const styles= StyleSheet.create(
       alignItems: "center",
     },
     tabBarTextFocused: {
-      color: "#6B50F6",
+      color: "#2A01FF",
     },
     tabBarTextUnfocused: {
-      color: "#000", // Màu của văn bản khi không được chọn
+      color: "#6B50F6", // Màu của văn bản khi không được chọn
     },
   }
 )
