@@ -12,6 +12,7 @@ import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
 import Detail from "./Screen/Detail/Detail";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Chat from "./Screen/Chat/Chat";
 const screenOptions = {
   tabBarShowLabel: true,
   headerShown: true,
@@ -118,7 +119,7 @@ export default function App() {
             tabBarIcon: ({ focused }) => {
               return (
                 <View
-                  style={{ alignItems: "center", justifyContent: "center" }}
+                  style={{ alignItems: "center", justifyContent: "center"}}
                 >
                   <Entypo
                     name="message"
@@ -152,7 +153,11 @@ export default function App() {
           component={Filter}
           // options={{ headerShown: false }}
         />
-      
+         <Stack.Screen
+          name="Chat"
+          component={Chat}
+          // options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
