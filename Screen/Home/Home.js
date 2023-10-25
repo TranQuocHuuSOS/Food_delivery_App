@@ -49,29 +49,29 @@ const Home = () => {
       time: "12 Mins",
     },
   ];
-  // const listMenu = [
-  //   {
-  //     id: "0",
-  //     image: require("../.././assets/MenuImage/PhotoMenu1.png"),
-  //     menuName: "Herbal Panceke",
-  //     restaurantName: "Warung Herbal",
-  //     price: "$7",
-  //   },
-  //   {
-  //     id: "1",
-  //     image: require("../.././assets/MenuImage/PhotoMenu2.png"),
-  //     menuName: "Fruil Salad",
-  //     restaurantName: "Wijie Resto",
-  //     price: "$15",
-  //   },
-  //   {
-  //     id: "2",
-  //     image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-  //     menuName: "Green Noddle",
-  //     restaurantName: "Noodle Home",
-  //     price: "$5",
-  //   },
-  // ];
+  const listMenu = [
+    {
+      id: "0",
+      image: require("../.././assets/MenuImage/PhotoMenu1.png"),
+      menuName: "Herbal Panceke",
+      restaurantName: "Warung Herbal",
+      price: "$7",
+    },
+    {
+      id: "1",
+      image: require("../.././assets/MenuImage/PhotoMenu2.png"),
+      menuName: "Fruil Salad",
+      restaurantName: "Wijie Resto",
+      price: "$15",
+    },
+    {
+      id: "2",
+      image: require("../.././assets/MenuImage/PhotoMenu3.png"),
+      menuName: "Green Noddle",
+      restaurantName: "Noodle Home",
+      price: "$5",
+    },
+  ];
   return (
     <SafeAreaView
       style={{
@@ -309,9 +309,9 @@ const Home = () => {
                 marginHorizontal: 20,
               }}
             >
-              {data.length ? data.map((item)=>
+               {listMenu.map((item, index) => (
                 <Pressable
-                  key={item.id}
+                  key={index}
                   style={{
                     flexDirection: "row",
                     backgroundColor: "#ffffff",
@@ -325,7 +325,7 @@ const Home = () => {
                 >
                   <Image
                     style={{ width: 70, height: 70, resizeMode: "contain" }}
-                    source={item.img}
+                    source={item.image}
                   />
                   <View
                     style={{
@@ -349,7 +349,7 @@ const Home = () => {
                           fontWeight: "900",
                         }}
                       >
-                        {item.name_food}
+                        {item.menuName}
                       </Text>
                       <Text
                         style={{
@@ -360,7 +360,7 @@ const Home = () => {
                           color: "#BBBBBB",
                         }}
                       >
-                        {item.restaurant_id}
+                        {item.restaurantName}
                       </Text>
                     </View>
                     <Text
@@ -374,7 +374,7 @@ const Home = () => {
                     </Text>
                   </View>
                 </Pressable>
-              ):null}
+              ))}
             </View>
           </View>
       </ImageBackground>

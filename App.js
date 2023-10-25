@@ -244,7 +244,10 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="Track Orders" component={Track} options={{ headerShown: true }}/>
+          name="Track"
+          component={Track}
+          options={{ headerShown: true }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
