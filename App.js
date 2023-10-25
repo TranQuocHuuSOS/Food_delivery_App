@@ -21,6 +21,7 @@ import Shipping from "./Screen/Shipping/Shipping";
 
 import Map from "./Screen/Map/Map";
 import Track from "./Screen/Track_order/Track";
+import DetailProduct from "./Screen/DetailProduct/DetailProduct";
 
 const screenOptions = {
   tabBarShowLabel: true,
@@ -266,6 +267,11 @@ export default function App() {
           name="Track"
           component={Track}
           options={{ headerShown: true }}
+        />
+          <Stack.Screen
+          name="DetailProduct"
+          component={DetailProduct}
+          options={{ headerShown: false }}
         />
 
       </Stack.Navigator>
