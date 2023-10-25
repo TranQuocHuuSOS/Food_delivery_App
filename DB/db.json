@@ -37,7 +37,8 @@
         "country": "France",
         "image": "https://image.anninhthudo.vn/1200x630/Uploaded/2023/cqjwqkrwq/2013_10_09/French%20Grill%20Restaurant_2.JPG",
         "address": "Cordial Grand Hotel, 21th floor, 27-29 Loseby",
-        "distance": "10 km"
+        "distance": "10 km",
+        "type":"restaurant"
       },
       {
         "id": 2,

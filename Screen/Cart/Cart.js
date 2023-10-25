@@ -11,7 +11,7 @@ import {
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState } from "react";
+import React,{useState} from "react";
 import styles from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 const image = require("../../assets/Pattern.png");
@@ -114,6 +114,7 @@ const Cart = () => {
       >
         <Text style={styles.itemText}>
           <View style={styles.card}>
+            <View style={{flexDirection:"row"}}>
             <Image source={menuImage} style={{ width: 70, height: 70 }}></Image>
             <View style={{ marginHorizontal: 10 }}>
               <Text style={{ fontWeight: "bold" }}>{name_dish}</Text>
@@ -124,7 +125,8 @@ const Cart = () => {
                 $ {price}
               </Text>
             </View>
-            <View style={styles.amount}>
+            </View>
+            <Pressable style={styles.amount}>
               <TouchableOpacity
                 style={styles.plus}
                 onPress={() => decreaseQuantity(key)}
@@ -138,7 +140,7 @@ const Cart = () => {
               >
                 <AntDesign name="plus" size={20} color="white" />
               </TouchableOpacity>
-            </View>
+            </Pressable>
           </View>
         </Text>
       </TouchableOpacity>

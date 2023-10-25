@@ -70,6 +70,44 @@ const Shipping = () => {
                 >
                   <Text style={{ color: "#22242E" }}>Order Location</Text>
                 </View>
+
+                <TouchableOpacity onPress={() => navigation.navigate("Track")}>
+                  <View
+                    style={{
+                      marginHorizontal: 20,
+                      paddingBottom: 20,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Pressable
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 100,
+                        backgroundColor: "#604AD3",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <FontAwesome5
+                        name="map-marker-alt"
+                        size={24}
+                        color="white"
+                      />
+                    </Pressable>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 15,
+                        maxWidth: "90%",
+                      }}
+                    >
+                      8502 Preston Rd. Inglewood, Maine 98380
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
                 <View
                   style={{
                     marginHorizontal: 20,
@@ -104,6 +142,7 @@ const Shipping = () => {
                     8502 Preston Rd. Inglewood, Maine 98380
                   </Text>
                 </View>
+
               </View>
               <View
                 style={{
@@ -163,7 +202,9 @@ const Shipping = () => {
                 >
                   <Text
                     style={{ marginLeft: 70, color: "#6B50F6" }}
-                    onPress={() => navigation.navigate("")}
+
+                    onPress={() => navigation.navigate("Map")}
+
                   >
                     Set Location
                   </Text>

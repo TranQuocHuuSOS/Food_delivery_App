@@ -8,7 +8,7 @@ import {
   TextInput,
   Image,
 } from "react-native";
-import React from "react";
+import React ,{useEffect, useState} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -16,7 +16,19 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 const Home = () => {
   const navigation = useNavigation();
-
+  const [data, setData] = useState([]);
+  const getAPIData= async()=>{
+    const url=`http://localhost:3000/dishs`;
+    let result = await fetch(url);
+    if (!result.ok){
+      throw new Error (`HTTP Error! Status:${result.status}`);
+    }
+    result=await result.json();
+    setData(result);
+  };
+  useEffect(()=>{
+    getAPIData();
+  },[]);
   const listRestaurant = [
     {
       id: "0",
@@ -296,7 +308,7 @@ const Home = () => {
                 marginHorizontal: 20,
               }}
             >
-              {listMenu.map((item, index) => (
+               {listMenu.map((item, index) => (
                 <Pressable
                   key={index}
                   style={{
@@ -336,7 +348,7 @@ const Home = () => {
                           fontWeight: "900",
                         }}
                       >
-                        {item?.menuName}
+                        {item.menuName}
                       </Text>
                       <Text
                         style={{
@@ -347,7 +359,7 @@ const Home = () => {
                           color: "#BBBBBB",
                         }}
                       >
-                        {item?.restaurantName}
+                        {item.restaurantName}
                       </Text>
                     </View>
                     <Text
@@ -357,14 +369,13 @@ const Home = () => {
                         fontWeight: "900",
                       }}
                     >
-                      {item?.price}
+                      {item.price}
                     </Text>
                   </View>
                 </Pressable>
               ))}
             </View>
           </View>
-       
       </ImageBackground>
       </ScrollView>
     </SafeAreaView>
