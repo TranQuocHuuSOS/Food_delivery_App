@@ -12,6 +12,9 @@ import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
 import RestaurantDetail from "./Screen/RestaurantDetail/RestaurantDetail";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import Chat from "./Screen/Chat/Chat";
+
 import MenuDetail from "./Screen/MenuDetail/MenuDetail";
 import EditPayment from "./Screen/Payment/EditPayment";
 import Shipping from "./Screen/Shipping/Shipping";
@@ -178,11 +181,13 @@ export default function App() {
             tabBarIcon: ({ focused }) => {
               return (
                 <View
+
                   style={{
                     alignItems: "center",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
+
                 >
                   <Entypo
                     name="message"
@@ -229,6 +234,13 @@ export default function App() {
           component={Filter}
           // options={{ headerShown: false }}
         />
+
+         <Stack.Screen
+          name="Chat"
+          component={Chat}
+          // options={{ headerShown: false }}
+        />
+
         <Stack.Screen
           name="Confirm Order"
           component={Payment}
@@ -255,6 +267,7 @@ export default function App() {
           component={Track}
           options={{ headerShown: true }}
         />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
