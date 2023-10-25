@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 
@@ -15,12 +16,17 @@ function MessengerItem({ user, onPress }) {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          paddingTop: 10,
-          height: 80,
+          backgroundColor: '#ffff', 
+          borderRadius: 10, 
+          margin: 2,
+          marginBottom: 20,
+          marginLeft: 25,
+          marginRight: 25,
+          padding: 10,
+          height: 80, 
         }}
       >
         <View>
-        
           <Image
             style={{
               width: 65,
@@ -28,7 +34,6 @@ function MessengerItem({ user, onPress }) {
               resizeMode: 'cover',
               borderRadius: 10,
               marginRight: 10,
-              marginBottom: 50,
             }}
             source={{
               uri: url,
@@ -44,6 +49,7 @@ function MessengerItem({ user, onPress }) {
               padding: 1,
               paddingHorizontal: numberOfUnreadMessages > 9 ? 2 : 4,
               color: 'white',
+              top: 5,
             }}>
               {numberOfUnreadMessages}
             </Text>
@@ -63,7 +69,6 @@ function MessengerItem({ user, onPress }) {
           <Text style={{
             color: 'rgba(255, 0, 0, 0.5)',
             fontSize: 18,
-            marginBottom: 50
           }}>
             {messenger}
           </Text>

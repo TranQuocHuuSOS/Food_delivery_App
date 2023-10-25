@@ -66,25 +66,15 @@ function Message() {
         style={{}}
         data={users}
         renderItem={({ item }) => (
-            <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Chat', { user: item });
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: '#ffff',
-                marginBottom: 20, 
-                borderRadius: 10,
-                marginLeft: 25,
-                marginRight: 25,
-                padding:20,
-                height: 80,
-              }}
-            >
-              <MessengerItem user={item} key={item.url} />
-            </View>
-          </TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Chat', { user: item });
+          }}
+       >
+          <MessengerItem user={item} onPress={() => {
+            navigation.navigate('Chat', { user: item });
+          }} key={item.url} />
+       </TouchableOpacity>
         )}
         keyExtractor={(item) => item.url}
       />
