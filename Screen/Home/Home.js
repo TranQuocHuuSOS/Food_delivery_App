@@ -8,7 +8,7 @@ import {
   TextInput,
   Image,
 } from "react-native";
-import React from "react";
+import React ,{useEffect, useState} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -16,7 +16,19 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 const Home = () => {
   const navigation = useNavigation();
-
+  const [data, setData] = useState([]);
+  const getAPIData= async()=>{
+    const url=`http://localhost:3000/dishs`;
+    let result = await fetch(url);
+    if (!result.ok){
+      throw new Error (`HTTP Error! Status:${result.status}`);
+    }
+    result=await result.json();
+    setData(result);
+  };
+  useEffect(()=>{
+    getAPIData();
+  },[]);
   const listRestaurant = [
     {
       id: "0",
@@ -37,29 +49,29 @@ const Home = () => {
       time: "12 Mins",
     },
   ];
-  const listMenu = [
-    {
-      id: "0",
-      image: require("../.././assets/MenuImage/PhotoMenu1.png"),
-      menuName: "Herbal Panceke",
-      restaurantName: "Warung Herbal",
-      price: "$7",
-    },
-    {
-      id: "1",
-      image: require("../.././assets/MenuImage/PhotoMenu2.png"),
-      menuName: "Fruil Salad",
-      restaurantName: "Wijie Resto",
-      price: "$15",
-    },
-    {
-      id: "2",
-      image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-      menuName: "Green Noddle",
-      restaurantName: "Noodle Home",
-      price: "$5",
-    },
-  ];
+  // const listMenu = [
+  //   {
+  //     id: "0",
+  //     image: require("../.././assets/MenuImage/PhotoMenu1.png"),
+  //     menuName: "Herbal Panceke",
+  //     restaurantName: "Warung Herbal",
+  //     price: "$7",
+  //   },
+  //   {
+  //     id: "1",
+  //     image: require("../.././assets/MenuImage/PhotoMenu2.png"),
+  //     menuName: "Fruil Salad",
+  //     restaurantName: "Wijie Resto",
+  //     price: "$15",
+  //   },
+  //   {
+  //     id: "2",
+  //     image: require("../.././assets/MenuImage/PhotoMenu3.png"),
+  //     menuName: "Green Noddle",
+  //     restaurantName: "Noodle Home",
+  //     price: "$5",
+  //   },
+  // ];
   return (
     <SafeAreaView
       style={{
@@ -297,9 +309,9 @@ const Home = () => {
                 marginHorizontal: 20,
               }}
             >
-              {listMenu.map((item, index) => (
+              {data.length ? data.map((item)=>
                 <Pressable
-                  key={index}
+                  key={item.id}
                   style={{
                     flexDirection: "row",
                     backgroundColor: "#ffffff",
@@ -313,7 +325,7 @@ const Home = () => {
                 >
                   <Image
                     style={{ width: 70, height: 70, resizeMode: "contain" }}
-                    source={item.image}
+                    source={item.img}
                   />
                   <View
                     style={{
@@ -337,7 +349,7 @@ const Home = () => {
                           fontWeight: "900",
                         }}
                       >
-                        {item?.menuName}
+                        {item.name_food}
                       </Text>
                       <Text
                         style={{
@@ -348,7 +360,7 @@ const Home = () => {
                           color: "#BBBBBB",
                         }}
                       >
-                        {item?.restaurantName}
+                        {item.restaurant_id}
                       </Text>
                     </View>
                     <Text
@@ -358,14 +370,13 @@ const Home = () => {
                         fontWeight: "900",
                       }}
                     >
-                      {item?.price}
+                      {item.price}
                     </Text>
                   </View>
                 </Pressable>
-              ))}
+              ):null}
             </View>
           </View>
-       
       </ImageBackground>
       </ScrollView>
     </SafeAreaView>

@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer, } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./Screen/Home/Home";
 import Profile from "./Screen/Profile/Profile";
@@ -15,7 +15,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MenuDetail from "./Screen/MenuDetail/MenuDetail";
 import EditPayment from "./Screen/Payment/EditPayment";
 import Shipping from "./Screen/Shipping/Shipping";
-
+import Map from "./Screen/Map/Map";
+import Track from "./Screen/Track_order/Track";
 const screenOptions = {
   tabBarShowLabel: true,
   headerShown: true,
@@ -43,22 +44,31 @@ export default function App() {
           name="Home"
           component={Home}
           options={({ route }) => ({
-            tabBarLabel: '',
+            tabBarLabel: "",
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => {
               return (
                 <View style={{}}>
                   <View
-                    style={{ alignItems: "center", 
-                    justifyContent: "center",
-                    alignItems: "center", }}
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: 4,
+                    }}
                   >
                     <Foundation
                       name="home"
-                      size={30}
-                      color={focused ? "#2A01FF" : "#6B50F6"}
+                      size={24}
+                      color={focused ? "#2A01FF" : "#856DFF"}
                     />
-                   <Text style={focused ? styles.tabBarTextFocused : styles.tabBarTextUnfocused}>
+                    <Text
+                      style={
+                        focused
+                          ? styles.tabBarTextFocused
+                          : styles.tabBarTextUnfocused
+                      }
+                    >
                       Home
                     </Text>
                   </View>
@@ -72,31 +82,36 @@ export default function App() {
             textAlign: "center",
             alignItems: "center",
             justifyContent: "center",
+            padding: 4,
           }}
           name="Profile"
           component={Profile}
           options={({ route }) => ({
-            tabBarLabel: '',
+            tabBarLabel: "",
             headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
-                  style={{ alignItems: "center", 
-                  justifyContent: "center",
-                  alignItems: "center", }}
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
                   <MaterialCommunityIcons
                     name="face-man-profile"
-                    size={30}
-                    color={focused ? "#2A01FF" : "#6B50F6"}
+                    size={24}
+                    color={focused ? "#2A01FF" : "#856DFF"}
                   />
-                   <Text
-                      style={
-                        focused? styles.tabBarTextFocused : styles.tabBarTextUnfocused
-                      }
-                    >
-                      Profile
-                    </Text>
+                  <Text
+                    style={
+                      focused
+                        ? styles.tabBarTextFocused
+                        : styles.tabBarTextUnfocused
+                    }
+                  >
+                    Profile
+                  </Text>
                 </View>
               );
             },
@@ -107,31 +122,36 @@ export default function App() {
             textAlign: "center",
             alignItems: "center",
             justifyContent: "center",
+            padding: 4,
           }}
           name="Cart"
           component={Cart}
           options={({ route }) => ({
-            tabBarLabel: '',
+            tabBarLabel: "",
             headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
-                  style={{ alignItems: "center", 
-                  justifyContent: "center",
-                  alignItems: "center", }}
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
                   <Entypo
                     name="shopping-cart"
-                    size={30}
-                    color={focused ? "#2A01FF" : "#6B50F6"}
+                    size={24}
+                    color={focused ? "#2A01FF" : "#856DFF"}
                   />
-                   <Text
-                      style={
-                        focused? styles.tabBarTextFocused : styles.tabBarTextUnfocused
-                      }
-                    >
-                      Cart
-                    </Text>
+                  <Text
+                    style={
+                      focused
+                        ? styles.tabBarTextFocused
+                        : styles.tabBarTextUnfocused
+                    }
+                  >
+                    Cart
+                  </Text>
                 </View>
               );
             },
@@ -142,31 +162,36 @@ export default function App() {
             textAlign: "center",
             alignItems: "center",
             justifyContent: "center",
+            padding: 4,
           }}
           name="Message"
           component={Message}
           options={({ route }) => ({
-            tabBarLabel: '',
+            tabBarLabel: "",
             headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <View
-                  style={{ alignItems: "center",
-                  justifyContent: "center",
-                  alignItems: "center", }}
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
                   <Entypo
                     name="message"
-                    size={30}
-                    color={focused ? "#2A01FF" : "#6B50F6"}
+                    size={24}
+                    color={focused ? "#2A01FF" : "#856DFF"}
                   />
-                   <Text
-                      style={
-                        focused? styles.tabBarTextFocused : styles.tabBarTextUnfocused
-                      }
-                    >
-                      Message
-                    </Text>
+                  <Text
+                    style={
+                      focused
+                        ? styles.tabBarTextFocused
+                        : styles.tabBarTextUnfocused
+                    }
+                  >
+                    Message
+                  </Text>
                 </View>
               );
             },
@@ -213,22 +238,30 @@ export default function App() {
           component={Shipping}
           // options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="Map"
+          component={Map}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="Track Orders" component={Track} options={{ headerShown: true }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-const styles= StyleSheet.create(
-  {
-    tabBarIconStyle: {
-     
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    tabBarTextFocused: {
-      color: "#2A01FF",
-    },
-    tabBarTextUnfocused: {
-      color: "#6B50F6", // Màu của văn bản khi không được chọn
-    },
-  }
-)
+const styles = StyleSheet.create({
+  tabBarIconStyle: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  tabBarTextFocused: {
+    color: "#2A01FF",
+    fontSize: 13,
+    paddingTop: 4,
+  },
+  tabBarTextUnfocused: {
+    color: "#856DFF", // Màu của văn bản khi không được chọn
+    fontSize: 13,
+    paddingTop: 4,
+  },
+});
