@@ -17,66 +17,59 @@ import { useNavigation } from "@react-navigation/native";
 const Home = () => {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
+  const [restaurantData, setRestaurantData] = useState([]);
   const getAPIData= async()=>{
-    const url=`http://localhost:3000/dishs`;
+    const url=`https://646aaa197d3c1cae4ce2b26c.mockapi.io/dishs`;
     let result = await fetch(url);
     if (!result.ok){
       throw new Error (`HTTP Error! Status:${result.status}`);
     }
     result=await result.json();
     setData(result);
+    
   };
   useEffect(()=>{
-    getAPIData();
+    const fetchData = async () => {
+      try {
+        await getAPIData();
+        await getRestaurantData();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchData();
   },[]);
-  const listRestaurant = [
-    {
-      id: "0",
-      image: require("../.././assets/RestauranImage/Restaurant3.png"),
-      name: "Vegan Resto",
-      time: "12 Mins",
-    },
-    {
-      id: "1",
-      image: require("../.././assets/RestauranImage/Restaurant2.png"),
-      name: "Healthy Food",
-      time: "8 Mins",
-    },
-    {
-      id: "2",
-      image: require("../.././assets/RestauranImage/Restaurant3.png"),
-      name: "Good Food",
-      time: "12 Mins",
-    },
-  ];
-  const listMenu = [
-    {
-      id: "0",
-      image: require("../.././assets/MenuImage/PhotoMenu1.png"),
-      menuName: "Herbal Panceke",
-      restaurantName: "Warung Herbal",
-      price: "$7",
-    },
-    {
-      id: "1",
-      image: require("../.././assets/MenuImage/PhotoMenu2.png"),
-      menuName: "Fruil Salad",
-      restaurantName: "Wijie Resto",
-      price: "$15",
-    },
-    {
-      id: "2",
-      image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-      menuName: "Green Noddle",
-      restaurantName: "Noodle Home",
-      price: "$5",
-    },
-  ];
+  const getRestaurantData = async () => {
+    const restaurantUrl = 'https://646aaa197d3c1cae4ce2b26c.mockapi.io/restaurants';
+    try {
+      const response = await fetch(restaurantUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+      }
+      const restaurantData = await response.json();
+      setRestaurantData(restaurantData);
+    } catch (error) {
+      console.error('Error fetching restaurant data:', error);
+    }
+  };
+
+  const updatedData = data.map((item) => {
+    const restaurant = restaurantData.find((r) => r.id === item.restaurant_id);
+    if (restaurant) {
+      return {
+        ...item,
+        restaurant_id: restaurant.name,
+      };
+    }
+    return item;
+  });
+ 
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        marginBottom:70
+        marginBottom:70,
       }}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -233,16 +226,16 @@ const Home = () => {
                 Nearest Restaurant
               </Text>
 
-              <Pressable onPress={() => navigation.navigate("RestaurantDetail")}>
+              <Pressable onPress={() => navigation.navigate("RestaurantDetail",{data: restaurantData})}>
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
               </Pressable>
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {listRestaurant.map((item, index) => (
+              {restaurantData.slice(0, 3).map((items) => (
                 <Pressable
-                  key={index}
+                  key={items.id}
                   style={{
                     margin: 2,
                     justifyContent: "center",
@@ -255,8 +248,8 @@ const Home = () => {
                   }}
                 >
                   <Image
-                    style={{ width: 110, height: 80, resizeMode: "contain" }}
-                    source={item.image}
+                    style={{ width: 100, height: 100, resizeMode: "contain", borderRadius:10 }}
+                    source={{uri:items.image}}
                   />
                   <Text
                     style={{
@@ -267,7 +260,7 @@ const Home = () => {
                       fontWeight: "900",
                     }}
                   >
-                    {item?.name}
+                    {items.name}
                   </Text>
                   <Text
                     style={{
@@ -279,7 +272,7 @@ const Home = () => {
                       color: "#BBBBBB",
                     }}
                   >
-                    {item?.time}
+                    {items.time}Mins
                     
                   </Text>
                 </Pressable>
@@ -296,7 +289,7 @@ const Home = () => {
               <Text style={{ fontWeight: "700", fontSize: 17 }}>
                 Popular Menu
               </Text>
-              <Pressable onPress={() => navigation.navigate("MenuDetail")}>
+              <Pressable onPress={() => navigation.navigate("MenuDetail", { data: updatedData })}>
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
@@ -308,9 +301,9 @@ const Home = () => {
                 marginHorizontal: 20,
               }}
             >
-               {listMenu.map((item, index) => (
+               {updatedData.slice(1, 4).map((item)=>
                 <Pressable
-                  key={index}
+                  key={item.id}
                   style={{
                     flexDirection: "row",
                     backgroundColor: "#ffffff",
@@ -323,14 +316,14 @@ const Home = () => {
                   }}
                 >
                   <Image
-                    style={{ width: 70, height: 70, resizeMode: "contain" }}
-                    source={item.image}
+                    style={{ width: 60, height: 60, resizeMode: "contain", borderRadius:10 }}
+                    source={{uri:item.img}}
                   />
                   <View
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
-                      width: 200,
+                      width: 240,
                       alignItems: "center",
                     }}
                   >
@@ -348,7 +341,7 @@ const Home = () => {
                           fontWeight: "900",
                         }}
                       >
-                        {item.menuName}
+                        {item.name_food}
                       </Text>
                       <Text
                         style={{
@@ -359,7 +352,7 @@ const Home = () => {
                           color: "#BBBBBB",
                         }}
                       >
-                        {item.restaurantName}
+                        {item.restaurant_id}
                       </Text>
                     </View>
                     <Text
@@ -370,10 +363,11 @@ const Home = () => {
                       }}
                     >
                       {item.price}
+                      $
                     </Text>
                   </View>
                 </Pressable>
-              ))}
+              ) }
             </View>
           </View>
       </ImageBackground>

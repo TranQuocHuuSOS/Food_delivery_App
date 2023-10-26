@@ -7,6 +7,7 @@ import {
   Pressable,
   TextInput,
   Image,
+  FlatList,
 } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,53 +15,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 const MenuDetail = () => {
   const navigation = useNavigation();
-  const listMenu = [
-    {
-      id: "0",
-      image: require("../.././assets/MenuImage/PhotoMenu1.png"),
-      menuName: "Herbal Panceke",
-      restaurantName: "Warung Herbal",
-      price: "$7",
-    },
-    {
-      id: "1",
-      image: require("../.././assets/MenuImage/PhotoMenu2.png"),
-      menuName: "Fruil Salad",
-      restaurantName: "Wijie Resto",
-      price: "$15",
-    },
-    {
-      id: "2",
-      image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-      menuName: "Green Noddle",
-      restaurantName: "Noodle Home",
-      price: "$5",
-    },
-    {
-        id: "2",
-        image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-        menuName: "Green Noddle",
-        restaurantName: "Noodle Home",
-        price: "$5",
-      },
-      {
-        id: "2",
-        image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-        menuName: "Green Noddle",
-        restaurantName: "Noodle Home",
-        price: "$5",
-      },
-      {
-        id: "2",
-        image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-        menuName: "Green Noddle",
-        restaurantName: "Noodle Home",
-        price: "$5",
-      },
-  ];
+  const route = useRoute();
+  const receivedData = route.params?.data || [];
+  
   return (
     <View
       style={{
@@ -70,11 +30,12 @@ const MenuDetail = () => {
       <ScrollView>
         <ImageBackground
           source={require("../../assets/Pattern.png")}
-        //   style={{
-        //     width:'auto',
-        //     height: 'auto',
-        //   }}
-l        >
+          //   style={{
+          //     width:'auto',
+          //     height: 'auto',
+          //   }}
+          l
+        >
           <View>
             <View
               style={{
@@ -115,54 +76,54 @@ l        >
             </View>
           </View>
           <View
+            style={{
+              marginHorizontal: 20,
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+              paddingTop: 20,
+            }}
+          >
+            <Pressable
               style={{
-                marginHorizontal: 20,
-                justifyContent: "space-between",
                 flexDirection: "row",
                 alignItems: "center",
-                paddingTop: 20,
+                gap: 10,
+                backgroundColor: "#f1eeff",
+                borderRadius: 10,
+                paddingVertical: 10,
               }}
             >
-              <Pressable
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 10,
-                  backgroundColor: "#f1eeff",
-                  borderRadius: 10,
-                  paddingVertical: 10,
-                }}
-              >
-                <AntDesign
-                  style={{ paddingLeft: 10 }}
-                  name="search1"
-                  size={20}
-                  color="#6B50F6"
-                />
-                <TextInput
-                  placeholder="What do you want to order?"
-                  placeholderTextColor="#6B50F6"
-                  width={220}
-                />
-              </Pressable>
-              <Pressable
-                style={{
-                  paddingVertical: 13,
-                  backgroundColor: "#f1eeff",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 10,
-                }}
-                onPress={() => navigation.navigate("Filter")}
-              >
-                <MaterialIcons
-                  name="mic-none"
-                  size={22}
-                  color="black"
-                  marginHorizontal={12}
-                />
-              </Pressable>
-            </View>
+              <AntDesign
+                style={{ paddingLeft: 10 }}
+                name="search1"
+                size={20}
+                color="#6B50F6"
+              />
+              <TextInput
+                placeholder="What do you want to order?"
+                placeholderTextColor="#6B50F6"
+                width={220}
+              />
+            </Pressable>
+            <Pressable
+              style={{
+                paddingVertical: 13,
+                backgroundColor: "#f1eeff",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 10,
+              }}
+              onPress={() => navigation.navigate("Filter")}
+            >
+              <MaterialIcons
+                name="mic-none"
+                size={22}
+                color="black"
+                marginHorizontal={12}
+              />
+            </Pressable>
+          </View>
           <View
             style={{
               paddingVertical: 20,
@@ -175,15 +136,15 @@ l        >
               Popular Menu
             </Text>
           </View>
-          <View
+          <FlatList
+            data={receivedData}
+            keyExtractor={(item) => item.id.toString()}
             style={{
               flexDirection: "column",
               marginHorizontal: 20,
             }}
-          >
-            {listMenu.map((item, index) => (
+            renderItem={({ item }) => (
               <Pressable
-                key={index}
                 style={{
                   flexDirection: "row",
                   backgroundColor: "#ffffff",
@@ -197,13 +158,13 @@ l        >
               >
                 <Image
                   style={{ width: 70, height: 70, resizeMode: "contain" }}
-                  source={item.image}
+                  source={{ uri: item.img }}
                 />
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    width: 200,
+                    width: 240,
                     alignItems: "center",
                   }}
                 >
@@ -221,7 +182,7 @@ l        >
                         fontWeight: "900",
                       }}
                     >
-                      {item?.menuName}
+                      {item.name_food}
                     </Text>
                     <Text
                       style={{
@@ -232,7 +193,7 @@ l        >
                         color: "#BBBBBB",
                       }}
                     >
-                      {item?.restaurantName}
+                      {item.restaurant_id}
                     </Text>
                   </View>
                   <Text
@@ -242,12 +203,12 @@ l        >
                       fontWeight: "900",
                     }}
                   >
-                    {item?.price}
+                    {item.price}$
                   </Text>
                 </View>
               </Pressable>
-            ))}
-          </View>
+            )}
+          ></FlatList>
         </ImageBackground>
       </ScrollView>
     </View>
