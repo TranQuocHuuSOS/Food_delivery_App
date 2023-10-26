@@ -13,7 +13,7 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome, MaterialCommunityIcons, Fontisto } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get("window");
@@ -81,6 +81,16 @@ const DetailProduct = () => {
     ],
   };
 
+  const Testimonials = [
+    {
+      id: "0",
+      image: require("../../assets/DetailProduct/PhotoProfile.png"),
+      name: "Dianne Russell",
+      star: 5,
+      time: "12 April 2021",
+      decripton:"This Is great, So delicious! You Must Here, With Your family "
+    }];
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -95,66 +105,127 @@ const DetailProduct = () => {
         <View style={styles.draggableArea} {...panResponder.panHandlers}>
           <View style={styles.dragHandle} />
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            textAlign: "center",
-            justifyContent: "space-between",
-            marginHorizontal: 20,
-          }}
-        >
+        <View style={{ marginHorizontal: 20, }}>
           <View
             style={{
-              paddingVertical: 8,
-              width: 90,
-              backgroundColor: "#e6fff0",
-              borderRadius: 23,
-              textAlign: "center",
+              flexDirection: "row",
               alignItems: "center",
+              textAlign: "center",
+              justifyContent: "space-between",
+
             }}
           >
-            <Text
+            <View
               style={{
-                color: "#6B50F6",
-                fontWeight: "500",
+                paddingVertical: 8,
+                width: 90,
+                backgroundColor: "#e6fff0",
+                borderRadius: 23,
+                textAlign: "center",
+                alignItems: "center",
               }}
             >
-              Popular
-            </Text>
+              <Text
+                style={{
+                  color: "#6B50F6",
+                  fontWeight: "500",
+                }}
+              >
+                Popular
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <Pressable
+                style={{
+                  height: 34,
+                  width: 34,
+                  backgroundColor: "#BBBBBB",
+                  borderRadius: 20,
+                  justifyContent: "center",
+                  alignItems: 'center',
+
+                }}
+              >
+                <Ionicons name="location-sharp" size={25} color={"#6B50F6"} />
+              </Pressable>
+              <Pressable
+                style={{
+                  height: 34,
+                  width: 34,
+                  backgroundColor: "#BBBBBB",
+                  borderRadius: 20,
+                  justifyContent: "center",
+                  alignItems: 'center',
+                }}
+              >
+                <MaterialCommunityIcons name="heart" size={25} color={'#FF4B4B'} />
+              </Pressable>
+            </View>
+
           </View>
-          <View style={{ flexDirection: "row",gap:10}}>
-            <Pressable
-              style={{
-                height: 34,
-                width: 34,
-                backgroundColor: "#BBBBBB",
-                borderRadius: 20,
-                justifyContent: "center",
-                alignItems:'center',
-               
-              }}
-            >
-              <Ionicons name="location-sharp" size={25} color={"#6B50F6"} />
+          <Text style={{ fontSize: 26, fontWeight: "bold", paddingTop: 10 }}>Rainbow Sandwich {"\n"}Sugarless</Text>
+          <View style={{ flexDirection: 'row', paddingVertical: 10, gap: 20 }}>
+            <Pressable style={{ flexDirection: 'row', justifyContent: 'center', alignItems: "center", gap: 5 }}>
+              <FontAwesome name="star-half-empty" color={"#3FDA85"} size={30} />
+              <Text style={{ fontSize: 15, color: '#BBBBBB', fontWeight: "300", }}>4.5 Rating</Text>
             </Pressable>
-            <Pressable
-              style={{
-                height: 34,
-                width: 34,
-                backgroundColor: "#BBBBBB",
-                borderRadius: 20,
-                 justifyContent: "center",
-                alignItems:'center',
-              }}
-            >
-              <MaterialCommunityIcons  name="heart" size={25} color={'#FF4B4B'}  />
+            <Pressable style={{ flexDirection: 'row', justifyContent: 'center', alignItems: "center", gap: 5 }}>
+              <Fontisto name="shopping-bag" color={"#3FDA85"} size={22} />
+              <Text style={{ fontSize: 15, color: '#BBBBBB', fontWeight: "300", }}>2000+ Order</Text>
             </Pressable>
           </View>
-          
-        </View>
-        <Text style={{fontSize:26,fontWeight:"bold", marginHorizontal: 20,paddingTop:10}}>Rainbow Sandwich {"\n"}Sugarless</Text>
-        <View>
-            
+          <Text>
+            Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat ex Lorem laboris labore aliqua ad duis eu laborum.
+            {"\n"}
+            {"\n"}Strowberry
+            {"\n"}Cream
+            {"\n"}wheat
+            {"\n"}
+            {"\n"}
+            Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt.
+          </Text>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', paddingVertical: 10, marginLeft: 10 }}>Testimonials</Text>
+
+          <View
+            style={{
+              flexDirection: "column",
+            }}
+          >
+            {Testimonials.map((item, index) => (
+              <Pressable key={index}
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "#ffffff",
+                  marginVertical: 10,
+                  borderRadius: 14,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingVertical: 15,
+                  paddingHorizontal: 15,
+                }} >
+                <Image
+                  style={{ width: 70, height: 70, resizeMode: "contain" }}
+                  source={item.image}
+                />
+                <View style={{ flexDirection: 'column', }}>
+                  <View style={{ flexDirection: 'row', backgroundColor:"yellow"}}>
+                    <View style={{ flexDirection: 'column', }}>
+                      <Text>{item.name}</Text>
+                      <Text>{item.time}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', }} >
+                      <FontAwesome name="star-half-empty" color={"#3FDA85"} size={30} />
+                      <Text>{item.star}</Text>
+                    </View>
+                  </View>
+                  <View >
+                    <Text style={{ flexDirection: 'row', backgroundColor:"yellow"}}> {item.decripton}</Text>
+                  </View>
+                </View>
+
+              </Pressable>
+            ))}
+          </View>
         </View>
       </Animated.View>
     </SafeAreaView>
