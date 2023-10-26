@@ -7,54 +7,18 @@ import {
   Pressable,
   TextInput,
   Image,
+  FlatList
 } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation , useRoute} from "@react-navigation/native";
 const RestaurantDetail = () => {
   const navigation = useNavigation();
-
-  const listRestaurant = [
-    {
-      id: "0",
-      image: require("../.././assets/RestauranImage/Restaurant3.png"),
-      name: "Vegan Resto",
-      time: "12 Mins",
-    },
-    {
-      id: "1",
-      image: require("../.././assets/RestauranImage/Restaurant2.png"),
-      name: "Healthy Food",
-      time: "8 Mins",
-    },
-    {
-      id: "2",
-      image: require("../.././assets/RestauranImage/Restaurant3.png"),
-      name: "Good Food",
-      time: "12 Mins",
-    },
-    {
-      id: "3",
-      image: require("../.././assets/RestauranImage/Restaurant3.png"),
-      name: "Good Food",
-      time: "12 Mins",
-    },
-    {
-      id: "4",
-      image: require("../.././assets/RestauranImage/Restaurant3.png"),
-      name: "Good Food",
-      time: "12 Mins",
-    },
-    {
-      id: "5",
-      image: require("../.././assets/RestauranImage/Restaurant3.png"),
-      name: "Good Food",
-      time: "12 Mins",
-    },
-  ];
+  const route= useRoute();
+  const receivedData = route.params?.data || [];
   return (
     <View
       style={{
@@ -169,16 +133,16 @@ const RestaurantDetail = () => {
                 Popular Restaurant
               </Text>
             </View>
-            <View
+            <FlatList data={receivedData} keyExtractor={(item) => item.id.toString()}
               style={{
                 flexDirection: "row",
-                alignItems: "center",
+               
                 flexWrap: "wrap",
               }}
-            >
-              {listRestaurant.map((item, index) => (
+              renderItem={({ item }) => (
+                <View style={{alignItems:"center", flexWrap: "wrap", flexDirection: "row"}}>
                 <Pressable
-                  key={index}
+                key={item.id.toString()}
                   style={{
                     margin: 2,
                     justifyContent: "center",
@@ -193,8 +157,8 @@ const RestaurantDetail = () => {
                   }}
                 >
                   <Image
-                    style={{ width: 110, height: 80, resizeMode: "contain" }}
-                    source={item.image}
+                    style={{ width: 100, height: 100, resizeMode: "contain", borderRadius:10 }}
+                    source={{uri:item.image}}
                   />
                   <Text
                     style={{
@@ -205,7 +169,7 @@ const RestaurantDetail = () => {
                       fontWeight: "900",
                     }}
                   >
-                    {item?.name}
+                    {item.name}
                   </Text>
                   <Text
                     style={{
@@ -217,11 +181,13 @@ const RestaurantDetail = () => {
                       color: "#BBBBBB",
                     }}
                   >
-                    {item?.time}
+                    {item.time}Mins
                   </Text>
                 </Pressable>
-              ))}
-            </View>
+                </View>
+              )}
+              >
+            </FlatList>
           </View>
         </ImageBackground>
       </ScrollView>
