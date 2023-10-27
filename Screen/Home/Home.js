@@ -314,6 +314,7 @@ const Home = () => {
                     paddingVertical: 15,
                     paddingHorizontal: 15,
                   }}
+                  onPress={() => navigation.navigate("DetailProduct")}
                 >
                   <Image
                     style={{ width: 60, height: 60, resizeMode: "contain", borderRadius:10 }}
