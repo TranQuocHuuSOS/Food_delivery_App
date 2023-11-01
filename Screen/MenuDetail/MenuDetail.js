@@ -9,18 +9,32 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import React, { useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 const MenuDetail = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const receivedData = route.params?.data || [];
-  
+  const [searchText, setSearchText] = useState({ dishes: [] });
+
+  const handleSearchTextChange = (text) => {
+    setSearchText(text);
+    searchDishes(text); // Gọi hàm tìm kiếm món ăn
+  };
+
+  const searchDishes = (text) => {
+    const searchTextLowerCase = text.toLowerCase();
+    const filteredDishes = receivedData.filter((item) =>
+      item.dishName.toLowerCase().includes(searchTextLowerCase)
+    );
+    setSearchText({
+      dishes: filteredDishes,
+    });
+  };
   return (
     <View
       style={{
@@ -104,6 +118,8 @@ const MenuDetail = () => {
                 placeholder="What do you want to order?"
                 placeholderTextColor="#6B50F6"
                 width={220}
+                value={searchText}
+                onChangeText={handleSearchTextChange}
               />
             </Pressable>
             <Pressable
@@ -137,8 +153,8 @@ const MenuDetail = () => {
             </Text>
           </View>
           <FlatList
-            data={receivedData}
-            keyExtractor={(item) => item.id.toString()}
+            data={searchText.dishes} // Sử dụng danh sách kết quả tìm kiếm
+            keyExtractor={(item) => item.dishId.toString()}
             style={{
               flexDirection: "column",
               marginHorizontal: 20,
@@ -158,13 +174,13 @@ const MenuDetail = () => {
               >
                 <Image
                   style={{ width: 70, height: 70, resizeMode: "contain" }}
-                  source={{ uri: item.img }}
+                  source={{ uri: item.dishImg }}
                 />
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    width: 240,
+                    width: 200,
                     alignItems: "center",
                   }}
                 >
@@ -182,7 +198,7 @@ const MenuDetail = () => {
                         fontWeight: "900",
                       }}
                     >
-                      {item.name_food}
+                      {item.dishName}
                     </Text>
                     <Text
                       style={{
@@ -193,7 +209,7 @@ const MenuDetail = () => {
                         color: "#BBBBBB",
                       }}
                     >
-                      {item.restaurant_id}
+                      {item.restaurantName}
                     </Text>
                   </View>
                   <Text
@@ -203,7 +219,80 @@ const MenuDetail = () => {
                       fontWeight: "900",
                     }}
                   >
-                    {item.price}$
+                    {item.dishPrice}$
+                  </Text>
+                </View>
+              </Pressable>
+            )}
+          ></FlatList>
+          <FlatList
+            data={searchText.length > 0 ? searchText.dishes : receivedData}
+            keyExtractor={(item) => item.dishId}
+            style={{
+              flexDirection: "column",
+              marginHorizontal: 20,
+            }}
+            renderItem={({ item }) => (
+              <Pressable
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "#ffffff",
+                  marginVertical: 10,
+                  borderRadius: 14,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingVertical: 15,
+                  paddingHorizontal: 15,
+                }}
+              >
+                <Image
+                  style={{ width: 70, height: 70, resizeMode: "contain" }}
+                  source={{ uri: item.dishImg }}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: 200,
+                    alignItems: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 16,
+                        fontWeight: "500",
+                        fontWeight: "900",
+                      }}
+                    >
+                      {item.dishName}
+                    </Text>
+                    <Text
+                      style={{
+                        marginTop: 3,
+                        fontSize: 13,
+                        fontWeight: "500",
+                        lineHeight: 17,
+                        color: "#BBBBBB",
+                      }}
+                    >
+                      {item.restaurantName}
+                    </Text>
+                  </View>
+                  <Text
+                    style={{
+                      color: "#6B50F6",
+                      fontSize: 25,
+                      fontWeight: "900",
+                    }}
+                  >
+                    {item.dishPrice}$
                   </Text>
                 </View>
               </Pressable>

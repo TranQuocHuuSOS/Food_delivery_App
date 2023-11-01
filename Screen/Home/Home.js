@@ -8,40 +8,76 @@ import {
   TextInput,
   Image,
 } from "react-native";
-import React ,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 const Home = () => {
+  const [searchResults, setSearchResults] = useState({
+    dishes: []
+  });
+  const [searchText, setSearchText] = useState("");
+
   const navigation = useNavigation();
-  const [data, setData] = useState([]);
+  const [dataWithRestaurant, setData] = useState([]);
   const [restaurantData, setRestaurantData] = useState([]);
-  const getAPIData= async()=>{
-    const url=`https://646aaa197d3c1cae4ce2b26c.mockapi.io/dishs`;
-    let result = await fetch(url);
-    if (!result.ok){
-      throw new Error (`HTTP Error! Status:${result.status}`);
+  const getAPIData = async () => {
+    const dishUrl = `https://646aaa197d3c1cae4ce2b26c.mockapi.io/dishs`;
+    let result = await fetch(dishUrl);
+    if (!result.ok) {
+      throw new Error(`HTTP Error! Status:${result.status}`);
     }
-    result=await result.json();
-    setData(result);
-    
+    const dishes = await result.json();
+    // lấy tên nhà hàng liên quan
+
+    const restaurantUrl = `https://646aaa197d3c1cae4ce2b26c.mockapi.io/restaurants`;
+    result = await fetch(restaurantUrl);
+    if (!result.ok) {
+      throw new Error(`HTTP Error! Status:${result.status}`);
+    }
+    const restaurants = await result.json();
+
+    // xử lý giữa món ăn và nhà hàng
+
+    const dataWithRestaurant = dishes.map((dish) => {
+      const restaurant = restaurants.find(
+        (restaurant) => restaurant.id === dish.restaurant_id
+      );
+      const restaurantName = restaurant
+        ? restaurant.name
+        : "Unknown Restaurant";
+
+      return {
+        dishId: dish.id,
+        dishName: dish.name_food,
+        dishImg: dish.img,
+        dishTypeFood: dish.type_food,
+        dishPrice: dish.price,
+        dishDescription: dish.description,
+        dishIdRestaurant: dish.restaurant_id,
+        restaurantNames: restaurantName,
+      };
+    });
+
+    setData(dataWithRestaurant);
   };
-  useEffect(()=>{
+  useEffect(() => {
     const fetchData = async () => {
       try {
         await getAPIData();
         await getRestaurantData();
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
-  },[]);
+  }, []);
   const getRestaurantData = async () => {
-    const restaurantUrl = 'https://646aaa197d3c1cae4ce2b26c.mockapi.io/restaurants';
+    const restaurantUrl =
+      "https://646aaa197d3c1cae4ce2b26c.mockapi.io/restaurants";
     try {
       const response = await fetch(restaurantUrl);
       if (!response.ok) {
@@ -50,38 +86,40 @@ const Home = () => {
       const restaurantData = await response.json();
       setRestaurantData(restaurantData);
     } catch (error) {
-      console.error('Error fetching restaurant data:', error);
+      console.error("Error fetching restaurant data:", error);
     }
   };
 
-  const updatedData = data.map((item) => {
-    const restaurant = restaurantData.find((r) => r.id === item.restaurant_id);
-    if (restaurant) {
-      return {
-        ...item,
-        restaurant_id: restaurant.name,
-      };
+  const searchs = (text) => {
+    if (text && typeof text === "string") {
+      const searchTextLowerCase = text.toLowerCase();
+      const filteredDishes = dataWithRestaurant.filter((item) =>
+        item.dishName.toLowerCase().includes(searchTextLowerCase)
+      );
+      
+      setSearchResults({
+        dishes: filteredDishes,
+      
+      });
     }
-    return item;
-  });
- 
+  };
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        marginBottom:70,
+        marginBottom: 70,
       }}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-      <ImageBackground
-        source={require("../../assets/Pattern.png")}
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-        resizeMode="cover"
-      >
-        
+        <ImageBackground
+          source={require("../../assets/Pattern.png")}
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+          resizeMode="cover"
+        >
           <View style={{}}>
             <View
               style={{
@@ -149,6 +187,11 @@ const Home = () => {
                   placeholder="What do you want to order?"
                   placeholderTextColor="#6B50F6"
                   width={220}
+                  value={searchText}
+                  onChangeText={(text) => {
+                    setSearchText(text);
+                    searchs(text);
+                  }}
                 />
               </Pressable>
               <Pressable
@@ -226,16 +269,24 @@ const Home = () => {
                 Nearest Restaurant
               </Text>
 
-              <Pressable onPress={() => navigation.navigate("RestaurantDetail",{data: restaurantData})}>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("RestaurantDetail", {
+                    data: restaurantData,
+                  })
+                }
+              >
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
               </Pressable>
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+
+             
               {restaurantData.slice(0, 3).map((items) => (
                 <Pressable
-                  key={items.id}
+                  key={items.restaurant_id}
                   style={{
                     margin: 2,
                     justifyContent: "center",
@@ -248,8 +299,13 @@ const Home = () => {
                   }}
                 >
                   <Image
-                    style={{ width: 100, height: 100, resizeMode: "contain", borderRadius:10 }}
-                    source={{uri:items.image}}
+                    style={{
+                      width: 100,
+                      height: 100,
+                      resizeMode: "contain",
+                      borderRadius: 10,
+                    }}
+                    source={{ uri: items.image }}
                   />
                   <Text
                     style={{
@@ -273,7 +329,6 @@ const Home = () => {
                     }}
                   >
                     {items.time}Mins
-                    
                   </Text>
                 </Pressable>
               ))}
@@ -289,7 +344,13 @@ const Home = () => {
               <Text style={{ fontWeight: "700", fontSize: 17 }}>
                 Popular Menu
               </Text>
-              <Pressable onPress={() => navigation.navigate("MenuDetail", { data: updatedData })}>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("MenuDetail", {
+                    data: dataWithRestaurant,
+                  })
+                }
+              >
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
@@ -301,76 +362,162 @@ const Home = () => {
                 marginHorizontal: 20,
               }}
             >
-               {updatedData.slice(1, 4).map((item)=>
-                <Pressable
-                  key={item.id}
-                  style={{
-                    flexDirection: "row",
-                    backgroundColor: "#ffffff",
-                    marginVertical: 10,
-                    borderRadius: 14,
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingVertical: 15,
-                    paddingHorizontal: 15,
-                  }}
-                >
-                  <Image
-                    style={{ width: 60, height: 60, resizeMode: "contain", borderRadius:10 }}
-                    source={{uri:item.img}}
-                  />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      width: 240,
-                      alignItems: "center",
-                    }}
-                  >
-                    <View
+              {/* Search dishs */}
+              {searchResults.dishes.length > 0 && (
+                <View>
+                  {searchResults.dishes.slice(0, 3).map((item) => (
+                    <Pressable
+                      key={item.dishId}
                       style={{
-                        flexDirection: "column",
-                        justifyContent: "flex-start",
+                        flexDirection: "row",
+                        backgroundColor: "#ffffff",
+                        marginVertical: 10,
+                        borderRadius: 14,
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        paddingVertical: 15,
+                        paddingHorizontal: 15,
                       }}
                     >
-                      <Text
+                      <Image
                         style={{
-                          textAlign: "center",
-                          fontSize: 16,
-                          fontWeight: "500",
-                          fontWeight: "900",
+                          width: 60,
+                          height: 60,
+                          resizeMode: "contain",
+                          borderRadius: 10,
+                        }}
+                        source={{ uri: item.dishImg }}
+                      />
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          width: 200,
+                          alignItems: "center",
                         }}
                       >
-                        {item.name_food}
-                      </Text>
-                      <Text
-                        style={{
-                          marginTop: 3,
-                          fontSize: 13,
-                          fontWeight: "500",
-                          lineHeight: 17,
-                          color: "#BBBBBB",
-                        }}
-                      >
-                        {item.restaurant_id}
-                      </Text>
-                    </View>
-                    <Text
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            justifyContent: "flex-start",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              fontSize: 16,
+                              fontWeight: "500",
+                              fontWeight: "900",
+                            }}
+                          >
+                            {item.dishName}
+                          </Text>
+                          <Text
+                            style={{
+                              marginTop: 3,
+                              fontSize: 13,
+                              fontWeight: "500",
+                              lineHeight: 17,
+                              color: "#BBBBBB",
+                            }}
+                          >
+                            {item.restaurantNames}
+                          </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: "#6B50F6",
+                            fontSize: 25,
+                            fontWeight: "900",
+                          }}
+                        >
+                          {item.dishPrice}$
+                        </Text>
+                      </View>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
+
+          
+              {!searchResults.dishes.length > 0 && (
+                <View>
+                  {dataWithRestaurant.slice(0, 3).map((item) => (
+                    <Pressable
+                      key={item.dishId}
                       style={{
-                        color: "#6B50F6",
-                        fontSize: 25,
-                        fontWeight: "900",
+                        flexDirection: "row",
+                        backgroundColor: "#ffffff",
+                        marginVertical: 10,
+                        borderRadius: 14,
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        paddingVertical: 15,
+                        paddingHorizontal: 15,
                       }}
                     >
-                      {item.price}
-                      $
-                    </Text>
-                  </View>
-                </Pressable>
-              ) }
+                      <Image
+                        style={{
+                          width: 60,
+                          height: 60,
+                          resizeMode: "contain",
+                          borderRadius: 10,
+                        }}
+                        source={{ uri: item.dishImg }}
+                      />
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          width: 200,
+                          alignItems: "center",
+                        }}
+                      >
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            justifyContent: "flex-start",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              fontSize: 16,
+                              fontWeight: "500",
+                              fontWeight: "900",
+                            }}
+                          >
+                            {item.dishName}
+                          </Text>
+                          <Text
+                            style={{
+                              marginTop: 3,
+                              fontSize: 13,
+                              fontWeight: "500",
+                              lineHeight: 17,
+                              color: "#BBBBBB",
+                            }}
+                          >
+                            {item.restaurantNames}
+                          </Text>
+                        </View>
+                        <Text
+                          style={{
+                            color: "#6B50F6",
+                            fontSize: 25,
+                            fontWeight: "900",
+                          }}
+                        >
+                          {item.dishPrice}$
+                        </Text>
+                      </View>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
             </View>
           </View>
-      </ImageBackground>
+        </ImageBackground>
       </ScrollView>
     </SafeAreaView>
   );
