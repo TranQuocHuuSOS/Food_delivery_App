@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React ,{useEffect, useState} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons ,FontAwesome} from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -161,14 +161,15 @@ const Home = () => {
                 }}
                 onPress={() => navigation.navigate("Filter")}
               >
-                <MaterialIcons
-                  name="mic-none"
+                <FontAwesome
+                  name="filter"
                   size={22}
-                  color="black"
+                  color="#6B50F6"
                   marginHorizontal={12}
                 />
               </Pressable>
             </View>
+            
             <View style={{ paddingTop: 20 }}>
               <ImageBackground
                 source={require("../../assets/Image.png")}
