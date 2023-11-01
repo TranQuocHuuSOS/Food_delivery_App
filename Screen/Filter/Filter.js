@@ -1,213 +1,125 @@
-
 import React, { useState } from "react";
-import { StyleSheet, View, Text, SafeAreaView, ImageBackground, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { locations, colors, types, foods } from "./Constant";
+import {
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  ImageBackground,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Pressable,
+} from "react-native";
+import { Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
+import styles from "./FilterStyles";
+const Filter = () => {
 
-const Header = ({ headerText, headerIcon }) => {
+  
   return (
-    <View style={{ flexDirection: "row" }}>
-      <Text style={{ flex: 1, fontSize: 24, fontWeight: "700" }}>{headerText}</Text>
-      <FontAwesome name={headerIcon} size={24} color="#6B50F6" />
-    </View>
-  );
-};
-
-const SearchFilter = ({ icon, placeholder }) => {
-  return (
-    <View
-      style={{
-        backgroundColor: "#E9E6F8",
-        flexDirection: "row",
-        paddingVertical: 10,
-        borderRadius: 20,
-        paddingHorizontal: 16,
-        marginVertical: 16,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 7,
-      }}
-    >
-      <FontAwesome name={icon} size={20} color="#6B50F6" />
-      <TextInput
-        style={{ paddingLeft: 8, fontSize: 16, color: "#9A89F2" }}
-        placeholder={placeholder}
-        placeholderTextColor="#9A89F2"
-      />
-    </View>
-  );
-};
-
-const Type = () => {
-  return (
-    <View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {types.map((type, index) => {
-          return (
-            <View
-              key={index}
+    <SafeAreaView style={styles.container}>
+      <ImageBackground
+        source={require("../../assets/Pattern.png")}
+        style={styles.imageBackground}
+        resizeMode="cover"
+      >
+        <View>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>
+              Find Your
+              {"\n"}
+              Favorite Food
+            </Text>
+            <Pressable style={styles.notificationButton}>
+              <Ionicons
+                name="notifications-outline"
+                size={20}
+                color="#6B50F6"
+              />
+            </Pressable>
+          </View>
+          <View
+            style={{
+              marginHorizontal: 20,
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+              paddingTop: 20,
+            }}
+          >
+            <Pressable
               style={{
-                backgroundColor: index === 0 ? colors.COLOR_PRIMARY : colors.COLOR_LIGHT,
-                marginRight: 36,
-                borderRadius: 8,
-                paddingHorizontal: 16,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10,
+                backgroundColor: "#f1eeff",
+                borderRadius: 10,
                 paddingVertical: 10,
-                shadowColor: "#6B50F6",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.1,
-                shadowRadius: 7,
-                marginVertical: 16,
               }}
             >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#6B50F6",
-                }}
-              >
-                {type.type}
-              </Text>
+              <AntDesign
+                style={{ paddingLeft: 10 }}
+                name="search1"
+                size={20}
+                color="#6B50F6"
+              />
+              <TextInput
+                placeholder="What do you want to order?"
+                placeholderTextColor="#6B50F6"
+                width={280}
+              />
+            </Pressable>
+          </View>
+          <View style={styles.typeLocationFoodContainer}>
+            <View style={{ marginTop: 16 }}>
+              <Text style={styles.sectionTitle}>Type</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.categoryItem}>
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Restaurant</Text>
+                </View>
+                <View style={styles.categoryItem}>
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Food</Text>
+                </View>
+              </ScrollView>
             </View>
-          );
-        })}
-      </ScrollView>
-    </View>
-  );
-};
-
-const Location = () => {
-  return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      {locations.map((location, index) => {
-        return (
-          <View key={index} style={styles.locationItem}>
-            <View
-              style={{
-                backgroundColor: index === 0 ? colors.COLOR_PRIMARY : colors.COLOR_LIGHT,
-                borderRadius: 8,
-                paddingHorizontal: 16,
-                paddingVertical: 10,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.1,
-                shadowRadius: 7,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#6B50F6",
-                }}
-              >
-                {location.location}
-              </Text>
+            <View style={{ marginTop: 10 }}>
+              <Text style={styles.sectionTitle}>Location</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.categoryItem}>
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>1 Km</Text>
+   
+                </View>
+                <View style={styles.categoryItem}>
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>10 Km</Text>    
+                </View>
+                <View style={styles.categoryItem}>
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>1 Km</Text>
+                </View>
+              </ScrollView>
+            </View>
+            <View style={{ marginTop: 10 }}>
+              <Text style={styles.sectionTitle}>Food</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.categoryItem}>
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>
+                    Restaurant
+                  </Text>
+                </View>
+                <View style={styles.categoryItem}>
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Food</Text>
+                </View>
+              </ScrollView>
+            </View>
+            <View style={{ paddingTop: 30 }}>
+              <TouchableOpacity style={styles.searchButton}>
+                <Text style={styles.searchButtonText}>Search</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        );
-      })}
-    </ScrollView>
+        </View>
+      </ImageBackground>
+    </SafeAreaView>
   );
 };
 
-const Food = () => {
-  return (
-    <View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {foods.map((food, index) => {
-          return (
-            <View
-              key={index}
-              style={{
-                backgroundColor: index === 0 ? colors.COLOR_PRIMARY : colors.COLOR_LIGHT,
-                marginRight: 36,
-                borderRadius: 8,
-                paddingHorizontal: 16,
-                paddingVertical: 10,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.1,
-                shadowRadius: 7,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#6B50F6",
-                }}
-              >
-                {food.food}
-              </Text>
-            </View>
-          );
-        })}
-      </ScrollView>
-    </View>
-  );
-};
-
-const Filter = () => {
-  const [searchText, setSearchText] = useState("");
-
-  const handleSubmit = () => {
-    console.log("Submit search for:", searchText);
-  };
-
-  return (
-    <ImageBackground
-      source={require('../.././assets/searchimage/home.png')}
-      style={styles.backgroundImage}
-    >
-      <SafeAreaView style={{ flex: 1, marginHorizontal: 16, fontSize: 20 }}>
-        <Header headerText={"Find Your\nFavorite Food "} headerIcon={"bell-o"} />
-        <SearchFilter icon="search" placeholder={"What do you want to order?" } />
-        <View style={{ marginTop: 22 }}>
-          <Text style={{ fontSize: 22, fontWeight: "bold" }}>Type</Text>
-          <Type />
-        </View>
-        <View style={{ marginTop: 22 }}>
-          <Text style={{ fontSize: 22, fontWeight: "bold" }}>Location</Text>
-          <Location />
-        </View>
-        <View style={{ marginTop: 22 }}>
-          <Text style={{ fontSize: 22, fontWeight: "bold" }}>Food</Text>
-          <Food />
-        </View>
-        <View style={styles.submitContainer}>
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Search</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    </ImageBackground>
-  );
-};
-
-const styles = StyleSheet.create({
-  backgroundImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  submitContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 80,
-  },
-  submitButton: {
-    backgroundColor: "#6B50F6",
-    borderRadius: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 130,
-  },
-  submitButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  locationItem: {
-    marginRight: 36,
-  },
-});
 
 export default Filter;

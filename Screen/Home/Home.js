@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons ,FontAwesome} from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -21,6 +21,7 @@ const Home = () => {
   const [searchText, setSearchText] = useState("");
 
   const navigation = useNavigation();
+ search_text
   const [dataWithRestaurant, setData] = useState([]);
   const [restaurantData, setRestaurantData] = useState([]);
   const getAPIData = async () => {
@@ -104,11 +105,14 @@ const Home = () => {
     }
   };
 
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        marginBottom: 70,
+
+        marginBottom:70,
+
       }}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -204,14 +208,15 @@ const Home = () => {
                 }}
                 onPress={() => navigation.navigate("Filter")}
               >
-                <MaterialIcons
-                  name="mic-none"
+                <FontAwesome
+                  name="filter"
                   size={22}
-                  color="black"
+                  color="#6B50F6"
                   marginHorizontal={12}
                 />
               </Pressable>
             </View>
+            
             <View style={{ paddingTop: 20 }}>
               <ImageBackground
                 source={require("../../assets/Image.png")}
@@ -269,6 +274,7 @@ const Home = () => {
                 Nearest Restaurant
               </Text>
 
+
               <Pressable
                 onPress={() =>
                   navigation.navigate("RestaurantDetail", {
@@ -276,6 +282,7 @@ const Home = () => {
                   })
                 }
               >
+
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
@@ -283,10 +290,12 @@ const Home = () => {
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
 
+
              
               {restaurantData.slice(0, 3).map((items) => (
                 <Pressable
                   key={items.restaurant_id}
+
                   style={{
                     margin: 2,
                     justifyContent: "center",
@@ -299,6 +308,7 @@ const Home = () => {
                   }}
                 >
                   <Image
+
                     style={{
                       width: 100,
                       height: 100,
@@ -306,6 +316,7 @@ const Home = () => {
                       borderRadius: 10,
                     }}
                     source={{ uri: items.image }}
+
                   />
                   <Text
                     style={{
@@ -344,6 +355,7 @@ const Home = () => {
               <Text style={{ fontWeight: "700", fontSize: 17 }}>
                 Popular Menu
               </Text>
+
               <Pressable
                 onPress={() =>
                   navigation.navigate("MenuDetail", {
@@ -351,6 +363,7 @@ const Home = () => {
                   })
                 }
               >
+
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
@@ -362,12 +375,14 @@ const Home = () => {
                 marginHorizontal: 20,
               }}
             >
+
               {/* Search dishs */}
               {searchResults.dishes.length > 0 && (
                 <View>
                   {searchResults.dishes.slice(0, 3).map((item) => (
                     <Pressable
                       key={item.dishId}
+
                       style={{
                         flexDirection: "row",
                         backgroundColor: "#ffffff",
@@ -386,9 +401,11 @@ const Home = () => {
                           resizeMode: "contain",
                           borderRadius: 10,
                         }}
+
                         source={{ uri: item.dishImg }}
                       />
                       <View
+
                         style={{
                           flexDirection: "row",
                           justifyContent: "space-between",
@@ -396,6 +413,7 @@ const Home = () => {
                           alignItems: "center",
                         }}
                       >
+
                         <View
                           style={{
                             flexDirection: "column",
@@ -445,6 +463,7 @@ const Home = () => {
                   {dataWithRestaurant.slice(0, 3).map((item) => (
                     <Pressable
                       key={item.dishId}
+
                       style={{
                         flexDirection: "row",
                         backgroundColor: "#ffffff",
@@ -456,6 +475,7 @@ const Home = () => {
                         paddingHorizontal: 15,
                       }}
                     >
+
                       <Image
                         style={{
                           width: 60,
@@ -515,6 +535,7 @@ const Home = () => {
                   ))}
                 </View>
               )}
+
             </View>
           </View>
         </ImageBackground>

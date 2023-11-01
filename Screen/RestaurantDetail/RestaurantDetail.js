@@ -135,11 +135,13 @@ const RestaurantDetail = () => {
             </View>
             <FlatList data={receivedData} keyExtractor={(item) => item.id.toString()}
               style={{
+
               flex:1
               }}
               numColumns={2}
               renderItem={({ item }) => (
                 <View style={{flex:1}}>
+
                 <Pressable
                 key={item.id.toString()}
                   style={{

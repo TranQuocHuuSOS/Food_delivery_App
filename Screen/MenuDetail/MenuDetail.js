@@ -13,12 +13,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+
 import React, { useState } from "react";
+
 import { useNavigation, useRoute } from "@react-navigation/native";
 const MenuDetail = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const receivedData = route.params?.data || [];
+
   const [searchText, setSearchText] = useState({ dishes: [] });
 
   const handleSearchTextChange = (text) => {
@@ -35,6 +38,7 @@ const MenuDetail = () => {
       dishes: filteredDishes,
     });
   };
+
   return (
     <View
       style={{
@@ -118,8 +122,10 @@ const MenuDetail = () => {
                 placeholder="What do you want to order?"
                 placeholderTextColor="#6B50F6"
                 width={220}
+
                 value={searchText}
                 onChangeText={handleSearchTextChange}
+
               />
             </Pressable>
             <Pressable
@@ -153,8 +159,10 @@ const MenuDetail = () => {
             </Text>
           </View>
           <FlatList
+
             data={searchText.dishes} // Sử dụng danh sách kết quả tìm kiếm
             keyExtractor={(item) => item.dishId.toString()}
+
             style={{
               flexDirection: "column",
               marginHorizontal: 20,
@@ -174,13 +182,15 @@ const MenuDetail = () => {
               >
                 <Image
                   style={{ width: 70, height: 70, resizeMode: "contain" }}
+
                   source={{ uri: item.dishImg }}
+
                 />
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    width: 200,
+                    width: 240,
                     alignItems: "center",
                   }}
                 >
@@ -198,7 +208,9 @@ const MenuDetail = () => {
                         fontWeight: "900",
                       }}
                     >
+
                       {item.dishName}
+
                     </Text>
                     <Text
                       style={{
@@ -209,7 +221,9 @@ const MenuDetail = () => {
                         color: "#BBBBBB",
                       }}
                     >
+
                       {item.restaurantName}
+
                     </Text>
                   </View>
                   <Text
@@ -219,12 +233,15 @@ const MenuDetail = () => {
                       fontWeight: "900",
                     }}
                   >
+
                     {item.dishPrice}$
+
                   </Text>
                 </View>
               </Pressable>
             )}
           ></FlatList>
+
           <FlatList
             data={searchText.length > 0 ? searchText.dishes : receivedData}
             keyExtractor={(item) => item.dishId}
@@ -298,6 +315,7 @@ const MenuDetail = () => {
               </Pressable>
             )}
           ></FlatList>
+
         </ImageBackground>
       </ScrollView>
     </View>
