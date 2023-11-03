@@ -54,8 +54,10 @@ function Message() {
           style={{
             color: 'black',
             fontSize: 30,
-            padding: 20,
+            padding: 70,
             fontWeight: 'bold',
+            marginLeft: -40,
+            paddingBottom: 30,
 
           }}
         >
