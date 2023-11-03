@@ -21,7 +21,7 @@ const Home = () => {
   const [searchText, setSearchText] = useState("");
 
   const navigation = useNavigation();
- search_text
+ 
   const [dataWithRestaurant, setData] = useState([]);
   const [restaurantData, setRestaurantData] = useState([]);
   const getAPIData = async () => {
@@ -422,10 +422,10 @@ const Home = () => {
                         >
                           <Text
                             style={{
-                              textAlign: "center",
+                          
                               fontSize: 16,
                               fontWeight: "500",
-                              fontWeight: "900",
+                             
                             }}
                           >
                             {item.dishName}
@@ -501,10 +501,10 @@ const Home = () => {
                         >
                           <Text
                             style={{
-                              textAlign: "center",
+                             
                               fontSize: 16,
                               fontWeight: "500",
-                              fontWeight: "900",
+                             
                             }}
                           >
                             {item.dishName}
