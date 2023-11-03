@@ -292,7 +292,7 @@ const Home = () => {
 
               <Pressable
                 onPress={() =>
-                  navigation.navigate("RestaurantDetail", {
+                  navigation.navigate("DetailRestaurant", {
                     data: restaurantData,
                   })
                 }
@@ -433,7 +433,7 @@ const Home = () => {
                           >
                             <Text
                               style={{
-                                textAlign: "center",
+                              
                                 fontSize: 16,
                                 fontWeight: "500",
                                 fontWeight: "900",
@@ -513,7 +513,7 @@ const Home = () => {
                           >
                             <Text
                               style={{
-                                textAlign: "center",
+                              
                                 fontSize: 16,
                                 fontWeight: "500",
                                 fontWeight: "900",
