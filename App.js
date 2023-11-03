@@ -223,7 +223,7 @@ export default function App() {
         <Stack.Screen
           name="RestaurantDetail"
           component={RestaurantDetail}
-          //  options={{ headerShown: false }}
+           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="MenuDetail"

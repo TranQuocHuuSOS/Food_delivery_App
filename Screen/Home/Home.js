@@ -7,21 +7,22 @@ import {
   Pressable,
   TextInput,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons ,FontAwesome} from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 const Home = () => {
   const [searchResults, setSearchResults] = useState({
-    dishes: []
+    dishes: [],
   });
   const [searchText, setSearchText] = useState("");
 
   const navigation = useNavigation();
- search_text
+
   const [dataWithRestaurant, setData] = useState([]);
   const [restaurantData, setRestaurantData] = useState([]);
   const getAPIData = async () => {
@@ -97,22 +98,37 @@ const Home = () => {
       const filteredDishes = dataWithRestaurant.filter((item) =>
         item.dishName.toLowerCase().includes(searchTextLowerCase)
       );
-      
+
       setSearchResults({
         dishes: filteredDishes,
-      
       });
     }
   };
 
+  const navigateToDishDetail = (dishId) => {
+    const selectedDish = dataWithRestaurant.find(
+      (dish) => dish.dishId === dishId
+    );
+    if (selectedDish) {
+      navigation.navigate("DetailProduct", { dish: selectedDish });
+    }
+  };
+
+  const navigateToRestaurantDetail = (id) => {
+    const selectedRestaurant = restaurantData.find(
+      (restaurant) => restaurant.id === id
+    );
+    if (selectedRestaurant) {
+      navigation.navigate("RestaurantDetail", { restaurant:selectedRestaurant });
+    }
+  };
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
 
-        marginBottom:70,
-
+        marginBottom: 70,
       }}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -216,7 +232,7 @@ const Home = () => {
                 />
               </Pressable>
             </View>
-            
+
             <View style={{ paddingTop: 20 }}>
               <ImageBackground
                 source={require("../../assets/Image.png")}
@@ -274,7 +290,6 @@ const Home = () => {
                 Nearest Restaurant
               </Text>
 
-
               <Pressable
                 onPress={() =>
                   navigation.navigate("RestaurantDetail", {
@@ -282,66 +297,64 @@ const Home = () => {
                   })
                 }
               >
-
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
               </Pressable>
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-
-
-             
               {restaurantData.slice(0, 3).map((items) => (
-                <Pressable
-                  key={items.restaurant_id}
-
-                  style={{
-                    margin: 2,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#ffffff",
-                    marginLeft: 20,
-                    height: 180,
-                    width: 150,
-                    borderRadius: 20,
-                  }}
+                <TouchableOpacity
+                  key={items.id}
+                  onPress={() => navigateToRestaurantDetail(items.id)}
                 >
-                  <Image
-
+                  <View
+                    key={items.id}
                     style={{
-                      width: 100,
-                      height: 100,
-                      resizeMode: "contain",
-                      borderRadius: 10,
-                    }}
-                    source={{ uri: items.image }}
-
-                  />
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: 15,
-                      fontWeight: "500",
-                      marginTop: 10,
-                      fontWeight: "900",
+                      margin: 2,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#ffffff",
+                      marginLeft: 20,
+                      height: 180,
+                      width: 150,
+                      borderRadius: 20,
                     }}
                   >
-                    {items.name}
-                  </Text>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: 13,
-                      fontWeight: "500",
-                      marginTop: 7,
-                      lineHeight: 17,
-                      color: "#BBBBBB",
-                    }}
-                  >
-                    {items.time}Mins
-                  </Text>
-                </Pressable>
+                    <Image
+                      style={{
+                        width: 100,
+                        height: 100,
+                        resizeMode: "contain",
+                        borderRadius: 10,
+                      }}
+                      source={{ uri: items.image }}
+                    />
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 15,
+                        fontWeight: "500",
+                        marginTop: 10,
+                        fontWeight: "900",
+                      }}
+                    >
+                      {items.name}
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 13,
+                        fontWeight: "500",
+                        marginTop: 7,
+                        lineHeight: 17,
+                        color: "#BBBBBB",
+                      }}
+                    >
+                      {items.time}Mins
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               ))}
             </ScrollView>
             <View
@@ -363,7 +376,6 @@ const Home = () => {
                   })
                 }
               >
-
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
@@ -375,167 +387,167 @@ const Home = () => {
                 marginHorizontal: 20,
               }}
             >
-
               {/* Search dishs */}
               {searchResults.dishes.length > 0 && (
                 <View>
-                  {searchResults.dishes.slice(0, 3).map((item) => (
-                    <Pressable
+                  {searchResults.dishes.map((item) => (
+                    <TouchableOpacity
                       key={item.dishId}
-
-                      style={{
-                        flexDirection: "row",
-                        backgroundColor: "#ffffff",
-                        marginVertical: 10,
-                        borderRadius: 14,
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        paddingVertical: 15,
-                        paddingHorizontal: 15,
-                      }}
+                      onPress={() => navigateToDishDetail(item.dishId)}
                     >
-                      <Image
-                        style={{
-                          width: 60,
-                          height: 60,
-                          resizeMode: "contain",
-                          borderRadius: 10,
-                        }}
-
-                        source={{ uri: item.dishImg }}
-                      />
                       <View
-
+                        key={item.dishId}
                         style={{
                           flexDirection: "row",
+                          backgroundColor: "#ffffff",
+                          marginVertical: 10,
+                          borderRadius: 14,
                           justifyContent: "space-between",
-                          width: 200,
                           alignItems: "center",
+                          paddingVertical: 15,
+                          paddingHorizontal: 15,
                         }}
                       >
-
+                        <Image
+                          style={{
+                            width: 60,
+                            height: 60,
+                            resizeMode: "contain",
+                            borderRadius: 10,
+                          }}
+                          source={{ uri: item.dishImg }}
+                        />
                         <View
                           style={{
-                            flexDirection: "column",
-                            justifyContent: "flex-start",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            width: 200,
+                            alignItems: "center",
                           }}
                         >
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              justifyContent: "flex-start",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                textAlign: "center",
+                                fontSize: 16,
+                                fontWeight: "500",
+                                fontWeight: "900",
+                              }}
+                            >
+                              {item.dishName}
+                            </Text>
+                            <Text
+                              style={{
+                                marginTop: 3,
+                                fontSize: 13,
+                                fontWeight: "500",
+                                lineHeight: 17,
+                                color: "#BBBBBB",
+                              }}
+                            >
+                              {item.restaurantNames}
+                            </Text>
+                          </View>
                           <Text
                             style={{
-                              textAlign: "center",
-                              fontSize: 16,
-                              fontWeight: "500",
+                              color: "#6B50F6",
+                              fontSize: 25,
                               fontWeight: "900",
                             }}
                           >
-                            {item.dishName}
-                          </Text>
-                          <Text
-                            style={{
-                              marginTop: 3,
-                              fontSize: 13,
-                              fontWeight: "500",
-                              lineHeight: 17,
-                              color: "#BBBBBB",
-                            }}
-                          >
-                            {item.restaurantNames}
+                            {item.dishPrice}$
                           </Text>
                         </View>
-                        <Text
-                          style={{
-                            color: "#6B50F6",
-                            fontSize: 25,
-                            fontWeight: "900",
-                          }}
-                        >
-                          {item.dishPrice}$
-                        </Text>
                       </View>
-                    </Pressable>
+                    </TouchableOpacity>
                   ))}
                 </View>
               )}
 
-          
               {!searchResults.dishes.length > 0 && (
                 <View>
                   {dataWithRestaurant.slice(0, 3).map((item) => (
-                    <Pressable
+                    <TouchableOpacity
                       key={item.dishId}
-
-                      style={{
-                        flexDirection: "row",
-                        backgroundColor: "#ffffff",
-                        marginVertical: 10,
-                        borderRadius: 14,
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        paddingVertical: 15,
-                        paddingHorizontal: 15,
-                      }}
+                      onPress={() => navigateToDishDetail(item.dishId)}
                     >
-
-                      <Image
-                        style={{
-                          width: 60,
-                          height: 60,
-                          resizeMode: "contain",
-                          borderRadius: 10,
-                        }}
-                        source={{ uri: item.dishImg }}
-                      />
                       <View
                         style={{
                           flexDirection: "row",
+                          backgroundColor: "#ffffff",
+                          marginVertical: 10,
+                          borderRadius: 14,
                           justifyContent: "space-between",
-                          width: 200,
                           alignItems: "center",
+                          paddingVertical: 15,
+                          paddingHorizontal: 15,
                         }}
                       >
+                        <Image
+                          style={{
+                            width: 60,
+                            height: 60,
+                            resizeMode: "contain",
+                            borderRadius: 10,
+                          }}
+                          source={{ uri: item.dishImg }}
+                        />
                         <View
                           style={{
-                            flexDirection: "column",
-                            justifyContent: "flex-start",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            width: 200,
+                            alignItems: "center",
                           }}
                         >
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              justifyContent: "flex-start",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                textAlign: "center",
+                                fontSize: 16,
+                                fontWeight: "500",
+                                fontWeight: "900",
+                              }}
+                            >
+                              {item.dishName}
+                            </Text>
+                            <Text
+                              style={{
+                                marginTop: 3,
+                                fontSize: 13,
+                                fontWeight: "500",
+                                lineHeight: 17,
+                                color: "#BBBBBB",
+                              }}
+                            >
+                              {item.restaurantNames}
+                            </Text>
+                          </View>
                           <Text
                             style={{
-                              textAlign: "center",
-                              fontSize: 16,
-                              fontWeight: "500",
+                              color: "#6B50F6",
+                              fontSize: 25,
                               fontWeight: "900",
                             }}
                           >
-                            {item.dishName}
-                          </Text>
-                          <Text
-                            style={{
-                              marginTop: 3,
-                              fontSize: 13,
-                              fontWeight: "500",
-                              lineHeight: 17,
-                              color: "#BBBBBB",
-                            }}
-                          >
-                            {item.restaurantNames}
+                            {item.dishPrice}$
                           </Text>
                         </View>
-                        <Text
-                          style={{
-                            color: "#6B50F6",
-                            fontSize: 25,
-                            fontWeight: "900",
-                          }}
-                        >
-                          {item.dishPrice}$
-                        </Text>
                       </View>
-                    </Pressable>
+                    </TouchableOpacity>
                   ))}
                 </View>
               )}
-
             </View>
           </View>
         </ImageBackground>

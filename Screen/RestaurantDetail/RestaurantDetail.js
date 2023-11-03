@@ -1,199 +1,400 @@
+import React, { useRef } from "react";
 import {
-  ImageBackground,
-  ScrollView,
+  Animated,
+  PanResponder,
+  Platform,
   StyleSheet,
-  Text,
+  Dimensions,
   View,
+  Text,
+  ImageBackground,
+  SafeAreaView,
   Pressable,
-  TextInput,
   Image,
-  FlatList
+  ScrollView,
+  Button,
+  TouchableOpacity,
 } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  Fontisto,
+} from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation , useRoute} from "@react-navigation/native";
-const RestaurantDetail = () => {
-  const navigation = useNavigation();
-  const route= useRoute();
-  const receivedData = route.params?.data || [];
+
+const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get("window");
+const BOTTOM_SHEET_MAX_HEIGHT = WINDOW_HEIGHT * 0.96;
+const BOTTOM_SHEET_MIN_HEIGHT = WINDOW_HEIGHT * 0.5;
+const MAX_UPWARD_TRANSLATE_Y =
+  BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT; // negative number;
+const MAX_DOWNWARD_TRANSLATE_Y = 0;
+const DRAG_THRESHOLD = 50;
+
+const DetailProduct = () => {
+ 
+  const route = useRoute();
+  const restaurant = route.params.restaurant;
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const lastGestureDy = useRef(0);
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        animatedValue.setOffset(lastGestureDy.current);
+      },
+      onPanResponderMove: (e, gesture) => {
+        animatedValue.setValue(gesture.dy);
+      },
+      onPanResponderRelease: (e, gesture) => {
+        animatedValue.flattenOffset();
+        lastGestureDy.current += gesture.dy;
+
+        if (gesture.dy > 0) {
+          // dragging down
+          if (gesture.dy <= DRAG_THRESHOLD) {
+            springAnimation("up");
+          } else {
+            springAnimation("down");
+          }
+        } else {
+          // dragging up
+          if (gesture.dy >= -DRAG_THRESHOLD) {
+            springAnimation("down");
+          } else {
+            springAnimation("up");
+          }
+        }
+      },
+    })
+  ).current;
+
+  const springAnimation = (direction) => {
+    console.log("direction", direction);
+    lastGestureDy.current =
+      direction === "down" ? MAX_DOWNWARD_TRANSLATE_Y : MAX_UPWARD_TRANSLATE_Y;
+    Animated.spring(animatedValue, {
+      toValue: lastGestureDy.current,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const bottomSheetAnimation = {
+    transform: [
+      {
+        translateY: animatedValue.interpolate({
+          inputRange: [MAX_UPWARD_TRANSLATE_Y, MAX_DOWNWARD_TRANSLATE_Y],
+          outputRange: [MAX_UPWARD_TRANSLATE_Y, MAX_DOWNWARD_TRANSLATE_Y],
+          extrapolate: "clamp",
+        }),
+      },
+    ],
+  };
+
+  const Testimonials = [
+    {
+      
+      image: require("../../assets/DetailProduct/PhotoProfile.png"),
+      name: "Dianne Russell",
+      star: 5,
+      time: "12 April 2021",
+      decripton:
+        "This Is great, So delicious! You Must Here, With Your family ",
+    },
+    {
+      id: "0",
+      image: require("../../assets/DetailProduct/PhotoProfile.png"),
+      name: "Dianne Russell",
+      star: 5,
+      time: "12 April 2021",
+      decripton:
+        "This Is great, So delicious! You Must Here, With Your family ",
+    },
+    {
+      id: "0",
+      image: require("../../assets/DetailProduct/PhotoProfile.png"),
+      name: "Dianne Russell",
+      star: 5,
+      time: "12 April 2021",
+      decripton:
+        "This Is great, So delicious! You Must Here, With Your family ",
+    },
+  ];
+
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <ScrollView>
-        <ImageBackground
-          source={require("../../assets/Pattern.png")}
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
-          resizeMode="cover"
-        >
-          <View >
+    <SafeAreaView style={styles.container}>
+      <ImageBackground
+        source={{uri:restaurant.image}}
+        style={{
+          width: "100%",
+          height: "80%",
+        }}
+        resizeMode="cover"
+      ></ImageBackground>
+      <Animated.View style={[styles.bottomSheet, bottomSheetAnimation]}>
+        <View style={styles.draggableArea} {...panResponder.panHandlers}>
+          <View style={styles.dragHandle} />
+        </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{ marginHorizontal: 20 }}>
             <View
               style={{
                 flexDirection: "row",
-                marginHorizontal: 20,
-                justifyContent: "space-between",
-                paddingTop: 60,
                 alignItems: "center",
+                textAlign: "center",
+                justifyContent: "space-between",
               }}
             >
-              <Text
+              <View
                 style={{
-                  fontWeight: "bold",
-                  fontSize: 30,
-                  fontFamily: "sans-serif",
-                }}
-              >
-                Find Your
-                {"\n"}
-                Favorite Food
-              </Text>
-              <Pressable
-                style={{
-                  width: 50,
-                  height: 50,
-                  backgroundColor: "#ffffff",
+                  paddingVertical: 8,
+                  width: 90,
+                  backgroundColor: "#e6fff0",
+                  borderRadius: 23,
+                  textAlign: "center",
                   alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 14,
                 }}
               >
-                <Ionicons
-                  name="notifications-outline"
-                  size={20}
-                  color={"#6B50F6"}
-                />
-              </Pressable>
+                <Text
+                  style={{
+                    color: "#6B50F6",
+                    fontWeight: "500",
+                  }}
+                >
+                  Popular
+                </Text>
+              </View>
+              <View style={{ flexDirection: "row", gap: 10 }}>
+                <Pressable
+                  style={{
+                    height: 34,
+                    width: 34,
+                    backgroundColor: "#c6bdf1",
+                    borderRadius: 20,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Ionicons name="location-sharp" size={25} color={"#6B50F6"} />
+                </Pressable>
+                <Pressable
+                  style={{
+                    height: 34,
+                    width: 34,
+                    backgroundColor: "#f3c6c6",
+                    borderRadius: 20,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="heart"
+                    size={25}
+                    color={"#FF4B4B"}
+                  />
+                </Pressable>
+              </View>
             </View>
+            <Text style={{ fontSize: 26, fontWeight: "bold", paddingTop: 10 }}>
+              {restaurant.name}
+            </Text>
             <View
-              style={{
-                marginHorizontal: 20,
-                justifyContent: "space-between",
-                flexDirection: "row",
-                alignItems: "center",
-                paddingTop: 20,
-              }}
+              style={{ flexDirection: "row", paddingVertical: 10, gap: 20 }}
             >
               <Pressable
                 style={{
                   flexDirection: "row",
+                  justifyContent: "center",
                   alignItems: "center",
-                  gap: 10,
-                  backgroundColor: "#f1eeff",
-                  borderRadius: 10,
-                  paddingVertical: 10,
+                  gap: 5,
                 }}
               >
-                <AntDesign
-                  style={{ paddingLeft: 10 }}
-                  name="search1"
-                  size={20}
-                  color="#6B50F6"
+                <FontAwesome
+                  name="star-half-empty"
+                  color={"#3FDA85"}
+                  size={30}
                 />
-                <TextInput
-                  placeholder="What do you want to order?"
-                  placeholderTextColor="#6B50F6"
-                  width={220}
-                />
+                <Text
+                  style={{ fontSize: 15, color: "#BBBBBB", fontWeight: "300" }}
+                >
+                  4.5 Rating
+                </Text>
               </Pressable>
               <Pressable
                 style={{
-                  paddingVertical: 13,
-                  backgroundColor: "#f1eeff",
-                  alignItems: "center",
+                  flexDirection: "row",
                   justifyContent: "center",
-                  borderRadius: 10,
+                  alignItems: "center",
+                  gap: 5,
                 }}
-                onPress={() => navigation.navigate("Filter")}
               >
-                <MaterialIcons
-                  name="mic-none"
-                  size={22}
-                  color="black"
-                  marginHorizontal={12}
-                />
+                 <Ionicons name="location-sharp" size={25} color={"#6B50F6"} />
+                <Text
+                  style={{ fontSize: 15, color: "#BBBBBB", fontWeight: "300" }}
+                >
+                  {restaurant.distance} Km
+                </Text>
               </Pressable>
             </View>
-            <View
+            <Text>
+              {restaurant.description}
+            </Text>
+            <Text
               style={{
-                paddingVertical: 20,
-                justifyContent: "space-between",
-                flexDirection: "row",
-                marginHorizontal: 20,
+                fontSize: 16,
+                fontWeight: "bold",
+                paddingVertical: 10,
+                marginLeft: 10,
               }}
             >
-              <Text style={{ fontWeight: "700", fontSize: 17 }}>
-                Popular Restaurant
-              </Text>
-            </View>
-            <FlatList data={receivedData} keyExtractor={(item) => item.id.toString()}
+              Testimonials
+            </Text>
+
+            <View
               style={{
-
-              flex:1
+                flexDirection: "column",
+                paddingBottom:70
               }}
-              numColumns={2}
-              renderItem={({ item }) => (
-                <View style={{flex:1}}>
-
+            >
+              {Testimonials.map((item, index) => (
                 <Pressable
-                key={item.id.toString()}
+                  key={index}
                   style={{
-                    margin: 2,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    flexDirection: "row",
                     backgroundColor: "#ffffff",
-                    marginLeft: 20,
-                    height: 180,
-                    width: 150,
-                    borderRadius: 20,
-                    textAlign: "center",
-                    marginTop: 20,
+                    marginVertical: 10,
+                    borderRadius: 14,
+                    justifyContent: "space-between",
+                    paddingVertical: 15,
+                    paddingHorizontal: 15,
+                    gap: 10,
                   }}
                 >
                   <Image
-                    style={{ width: 100, height: 100, resizeMode: "contain", borderRadius:10 }}
-                    source={{uri:item.image}}
+                    style={{ width: 70, height: 70, resizeMode: "contain" }}
+                    source={item.image}
                   />
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: 15,
-                      fontWeight: "500",
-                      marginTop: 10,
-                      fontWeight: "900",
-                    }}
+                  <View
+                    style={{ flexDirection: "column", position: "relative" }}
                   >
-                    {item.name}
-                  </Text>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: 13,
-                      fontWeight: "500",
-                      marginTop: 7,
-                      lineHeight: 17,
-                      color: "#BBBBBB",
-                    }}
-                  >
-                    {item.time}Mins
-                  </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: 220,
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <View style={{ flexDirection: "column" }}>
+                        <Text style={{ fontWeight: "500", fontSize: 20 }}>
+                          {item.name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            fontWeight: "500",
+                            lineHeight: 17,
+                            color: "#BBBBBB",
+                          }}
+                        >
+                          {item.time}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          width: 60,
+                          height: 35,
+                          justifyContent: "center",
+                          borderRadius: 25,
+                          gap: 6,
+                          backgroundColor: "#d1cdeb",
+                          position: "absolute",
+                          right: 10,
+                          top: 7,
+                        }}
+                      >
+                        <FontAwesome name="star" color={"#6B50F6"} size={20} />
+                        <Text
+                          style={{
+                            color: "#6B50F6",
+                            fontWeight: "bold",
+                            fontSize: 17,
+                          }}
+                        >
+                          {item.star}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{ width: 220, paddingTop: 20 }}>
+                      <Text style={{}}>{item.decripton}</Text>
+                    </View>
+                  </View>
                 </Pressable>
-                </View>
-              )}
-              >
-            </FlatList>
+              ))}
+            </View>
           </View>
-        </ImageBackground>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </Animated.View>
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#6B50F6",
+          height: 60,
+          width: "auto",
+          alignItems: "center",
+          justifyContent: "center",
+          marginHorizontal: 20,
+          borderRadius: 10,
+          top:80
+        }}
+      >
+        <Text style={{color:"#ffff",fontWeight:'bold',fontSize:17}}>Add To Cart</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
-export default RestaurantDetail;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  bottomSheet: {
+    position: "absolute",
+    width: "100%",
+    height: BOTTOM_SHEET_MAX_HEIGHT,
+
+    bottom: BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT,
+    ...Platform.select({
+      android: { elevation: 3 },
+      ios: {
+        shadowColor: "#a8bed2",
+        shadowOpacity: 1,
+        shadowRadius: 6,
+        shadowOffset: {
+          width: 2,
+          height: 2,
+        },
+      },
+    }),
+    backgroundColor: "#EEEEEE",
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+  },
+  draggableArea: {
+    width: 132,
+    height: 32,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dragHandle: {
+    width: 100,
+    height: 6,
+    backgroundColor: "#d3d3d3",
+    borderRadius: 10,
+  },
+});
+
+export default DetailProduct;
