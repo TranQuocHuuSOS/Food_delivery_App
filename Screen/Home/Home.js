@@ -427,8 +427,15 @@ const Home = () => {
                         >
                           <View
                             style={{
+
                               flexDirection: "column",
                               justifyContent: "flex-start",
+
+                          
+                              fontSize: 16,
+                              fontWeight: "500",
+                             
+
                             }}
                           >
                             <Text
@@ -507,8 +514,15 @@ const Home = () => {
                         >
                           <View
                             style={{
+
                               flexDirection: "column",
                               justifyContent: "flex-start",
+
+                             
+                              fontSize: 16,
+                              fontWeight: "500",
+                             
+
                             }}
                           >
                             <Text
