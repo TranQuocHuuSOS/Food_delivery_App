@@ -11,6 +11,7 @@ import Payment from "./Screen/Payment/Payment";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
 import RestaurantDetail from "./Screen/RestaurantDetail/RestaurantDetail";
+import DetailRestaurant from "./Screen/DetailRestaurant/DetailRestaurant";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Chat from "./Screen/Chat/Chat";
@@ -223,6 +224,11 @@ export default function App() {
         <Stack.Screen
           name="RestaurantDetail"
           component={RestaurantDetail}
+           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailRestaurant"
+          component={DetailRestaurant}
           //  options={{ headerShown: false }}
         />
         <Stack.Screen

@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -38,7 +39,14 @@ const MenuDetail = () => {
       dishes: filteredDishes,
     });
   };
-
+  const navigateToDishDetail=(dishId)=>{
+    const selectedDish = receivedData.find(
+      (dish) => dish.dishId === dishId
+    );
+    if (selectedDish) {
+      navigation.navigate("DetailProduct", { dish: selectedDish });
+    }
+  }
   return (
     <View
       style={{
@@ -122,10 +130,8 @@ const MenuDetail = () => {
                 placeholder="What do you want to order?"
                 placeholderTextColor="#6B50F6"
                 width={220}
-
                 value={searchText}
                 onChangeText={handleSearchTextChange}
-
               />
             </Pressable>
             <Pressable
@@ -159,16 +165,17 @@ const MenuDetail = () => {
             </Text>
           </View>
           <FlatList
-
             data={searchText.dishes} // Sử dụng danh sách kết quả tìm kiếm
             keyExtractor={(item) => item.dishId.toString()}
-
             style={{
               flexDirection: "column",
               marginHorizontal: 20,
             }}
             renderItem={({ item }) => (
-              <Pressable
+              <TouchableOpacity   key={item.dishId} onPress={()=>navigateToDishDetail(item.dishId)}>
+
+              
+              <View
                 style={{
                   flexDirection: "row",
                   backgroundColor: "#ffffff",
@@ -182,9 +189,7 @@ const MenuDetail = () => {
               >
                 <Image
                   style={{ width: 70, height: 70, resizeMode: "contain" }}
-
                   source={{ uri: item.dishImg }}
-
                 />
                 <View
                   style={{
@@ -208,9 +213,7 @@ const MenuDetail = () => {
                         fontWeight: "900",
                       }}
                     >
-
                       {item.dishName}
-
                     </Text>
                     <Text
                       style={{
@@ -221,9 +224,7 @@ const MenuDetail = () => {
                         color: "#BBBBBB",
                       }}
                     >
-
                       {item.restaurantName}
-
                     </Text>
                   </View>
                   <Text
@@ -233,12 +234,11 @@ const MenuDetail = () => {
                       fontWeight: "900",
                     }}
                   >
-
                     {item.dishPrice}$
-
                   </Text>
                 </View>
-              </Pressable>
+              </View>
+              </TouchableOpacity>
             )}
           ></FlatList>
 
@@ -250,72 +250,76 @@ const MenuDetail = () => {
               marginHorizontal: 20,
             }}
             renderItem={({ item }) => (
-              <Pressable
-                style={{
-                  flexDirection: "row",
-                  backgroundColor: "#ffffff",
-                  marginVertical: 10,
-                  borderRadius: 14,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingVertical: 15,
-                  paddingHorizontal: 15,
-                }}
+              <TouchableOpacity
+                key={item.dishId}
+                onPress={() => navigateToDishDetail(item.dishId)}
               >
-                <Image
-                  style={{ width: 70, height: 70, resizeMode: "contain" }}
-                  source={{ uri: item.dishImg }}
-                />
                 <View
                   style={{
                     flexDirection: "row",
+                    backgroundColor: "#ffffff",
+                    marginVertical: 10,
+                    borderRadius: 14,
                     justifyContent: "space-between",
-                    width: 200,
                     alignItems: "center",
+                    paddingVertical: 15,
+                    paddingHorizontal: 15,
                   }}
                 >
+                  <Image
+                    style={{ width: 70, height: 70, resizeMode: "contain" }}
+                    source={{ uri: item.dishImg }}
+                  />
                   <View
                     style={{
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      width: 200,
+                      alignItems: "center",
                     }}
                   >
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          fontSize: 16,
+                          fontWeight: "500",
+                          fontWeight: "900",
+                        }}
+                      >
+                        {item.dishName}
+                      </Text>
+                      <Text
+                        style={{
+                          marginTop: 3,
+                          fontSize: 13,
+                          fontWeight: "500",
+                          lineHeight: 17,
+                          color: "#BBBBBB",
+                        }}
+                      >
+                        {item.restaurantName}
+                      </Text>
+                    </View>
                     <Text
                       style={{
-                        textAlign: "center",
-                        fontSize: 16,
-                        fontWeight: "500",
+                        color: "#6B50F6",
+                        fontSize: 25,
                         fontWeight: "900",
                       }}
                     >
-                      {item.dishName}
-                    </Text>
-                    <Text
-                      style={{
-                        marginTop: 3,
-                        fontSize: 13,
-                        fontWeight: "500",
-                        lineHeight: 17,
-                        color: "#BBBBBB",
-                      }}
-                    >
-                      {item.restaurantName}
+                      {item.dishPrice}$
                     </Text>
                   </View>
-                  <Text
-                    style={{
-                      color: "#6B50F6",
-                      fontSize: 25,
-                      fontWeight: "900",
-                    }}
-                  >
-                    {item.dishPrice}$
-                  </Text>
                 </View>
-              </Pressable>
+              </TouchableOpacity>
             )}
           ></FlatList>
-
         </ImageBackground>
       </ScrollView>
     </View>

@@ -15,6 +15,7 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   FontAwesome,
   MaterialCommunityIcons,
@@ -31,6 +32,9 @@ const MAX_DOWNWARD_TRANSLATE_Y = 0;
 const DRAG_THRESHOLD = 50;
 
 const DetailProduct = () => {
+ 
+  const route = useRoute();
+  const dish = route.params.dish;
   const animatedValue = useRef(new Animated.Value(0)).current;
   const lastGestureDy = useRef(0);
   const panResponder = useRef(
@@ -89,7 +93,7 @@ const DetailProduct = () => {
 
   const Testimonials = [
     {
-      id: "0",
+      
       image: require("../../assets/DetailProduct/PhotoProfile.png"),
       name: "Dianne Russell",
       star: 5,
@@ -120,7 +124,7 @@ const DetailProduct = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={require("../../assets/DetailProduct/PhotoMenu.png")}
+        source={{uri:dish.dishImg}}
         style={{
           width: "100%",
           height: "80%",
@@ -192,7 +196,7 @@ const DetailProduct = () => {
               </View>
             </View>
             <Text style={{ fontSize: 26, fontWeight: "bold", paddingTop: 10 }}>
-              Rainbow Sandwich {"\n"}Sugarless
+              {dish.dishName}
             </Text>
             <View
               style={{ flexDirection: "row", paddingVertical: 10, gap: 20 }}
@@ -233,18 +237,7 @@ const DetailProduct = () => {
               </Pressable>
             </View>
             <Text>
-              Nulla occaecat velit laborum exercitation ullamco. Elit labore eu
-              aute elit nostrud culpa velit excepteur deserunt sunt. Velit non
-              est cillum consequat cupidatat ex Lorem laboris labore aliqua ad
-              duis eu laborum.
-              {"\n"}
-              {"\n"}Strowberry
-              {"\n"}Cream
-              {"\n"}wheat
-              {"\n"}
-              {"\n"}
-              Nulla occaecat velit laborum exercitation ullamco. Elit labore eu
-              aute elit nostrud culpa velit excepteur deserunt sunt.
+              {dish.dishDescription}
             </Text>
             <Text
               style={{
