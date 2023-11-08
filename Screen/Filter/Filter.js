@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -12,9 +12,67 @@ import {
 } from "react-native";
 import { Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
 import styles from "./FilterStyles";
-const Filter = () => {
 
+const Filter = () => {
+  const [dishes, setDishes] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   
+
+  useEffect(() => {
+    // Hàm lấy dữ liệu từ API món ăn
+    const fetchDishes = async () => {
+      try {
+        const response = await fetch(
+          "https://646aaa197d3c1cae4ce2b26c.mockapi.io/dishs"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setDishes(data);
+        } else {
+          console.error(
+            "Lỗi khi lấy dữ liệu từ API món ăn:",
+            response.status,
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu từ API món ăn:", error);
+      }
+    };
+
+    // Hàm lấy dữ liệu từ API nhà hàng
+    const fetchRestaurants = async () => {
+      try {
+        const response = await fetch(
+          "https://646aaa197d3c1cae4ce2b26c.mockapi.io/restaurants"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setRestaurants(data);
+        } else {
+          console.error(
+            "Lỗi khi lấy dữ liệu từ API nhà hàng:",
+            response.status,
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu từ API nhà hàng:", error);
+      }
+    };
+
+    fetchDishes();
+    fetchRestaurants();
+  }, []);
+
+  const searchByCategory = () => {
+    if (selectedCategory === "Restaurant") {
+        
+    } else if (selectedCategory === "Food") {
+      
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -74,10 +132,27 @@ const Filter = () => {
               <Text style={styles.sectionTitle}>Type</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Restaurant</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategory === "Restaurant" ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => setSelectedCategory("Restaurant")}
+                  >
+                    Restaurant
+                  </Text>
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Food</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: selectedCategory === "Food" ? "white" : "#6B50F6",
+                    }}
+                    onPress={() => setSelectedCategory("Food")}
+                  >
+                    Food
+                  </Text>
                 </View>
               </ScrollView>
             </View>
@@ -86,10 +161,9 @@ const Filter = () => {
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.categoryItem}>
                   <Text style={{ fontSize: 15, color: "#6B50F6" }}>1 Km</Text>
-   
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>10 Km</Text>    
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>10 Km</Text>
                 </View>
                 <View style={styles.categoryItem}>
                   <Text style={{ fontSize: 15, color: "#6B50F6" }}>1 Km</Text>
@@ -100,17 +174,18 @@ const Filter = () => {
               <Text style={styles.sectionTitle}>Food</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>
-                    Restaurant
-                  </Text>
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Pizza</Text>
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Food</Text>
+                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Soup</Text>
                 </View>
               </ScrollView>
             </View>
             <View style={{ paddingTop: 30 }}>
-              <TouchableOpacity style={styles.searchButton}>
+              <TouchableOpacity
+                style={styles.searchButton}
+                onPress={searchByCategory}
+              >
                 <Text style={styles.searchButtonText}>Search</Text>
               </TouchableOpacity>
             </View>
@@ -120,6 +195,5 @@ const Filter = () => {
     </SafeAreaView>
   );
 };
-
 
 export default Filter;
