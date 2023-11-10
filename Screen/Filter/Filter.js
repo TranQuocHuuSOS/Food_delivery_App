@@ -16,9 +16,11 @@ import styles from "./FilterStyles";
 const Filter = () => {
   const [dishes, setDishes] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  
-
+  const [selectedCategories, setSelectedCategories] = useState({
+    type: "",
+    location: "",
+    food: "",
+  });
   useEffect(() => {
     // Hàm lấy dữ liệu từ API món ăn
     const fetchDishes = async () => {
@@ -66,11 +68,67 @@ const Filter = () => {
     fetchRestaurants();
   }, []);
 
-  const searchByCategory = () => {
-    if (selectedCategory === "Restaurant") {
-        
-    } else if (selectedCategory === "Food") {
-      
+  const toggleCategory = (category, group) => {
+    // Nếu đang chọn loại Restaurant và đã chọn rồi, thì hủy bỏ chọn
+    if (group === "type" && category === "Restaurant" && selectedCategories.type === "Restaurant") {
+      setSelectedCategories((prevCategories) => ({
+        ...prevCategories,
+        type: "",
+        location: "",
+        food: "",
+      }));
+    }
+    // Nếu đang chọn loại Food và đã chọn rồi, thì hủy bỏ chọn
+    else if (group === "type" && category === "Food" && selectedCategories.type === "Food") {
+      setSelectedCategories((prevCategories) => ({
+        ...prevCategories,
+        type: "",
+        location: "",
+        food: "",
+      }));
+    }
+    // Nếu đang chọn loại Restaurant và chưa chọn, thì chọn loại Restaurant và đặt location và food về rỗng
+    else if (group === "type" && category === "Restaurant") {
+      setSelectedCategories((prevCategories) => ({
+        ...prevCategories,
+        type: "Restaurant",
+        location: "",
+        food: "",
+      }));
+    }
+    // Nếu đang chọn loại Food và chưa chọn, thì chọn loại Food và đặt location về rỗng
+    else if (group === "type" && category === "Food") {
+      setSelectedCategories((prevCategories) => ({
+        ...prevCategories,
+        type: "Food",
+        location: "",
+        food: "",
+      }));
+    }
+    // Nếu đang chọn location và loại là Food, không thay đổi gì
+    else if (group === "location" && selectedCategories.type === "Food") {
+      return;
+    }
+    // Nếu đang chọn Location hoặc Food, giữ nguyên trạng thái hoặc hủy bỏ chọn nếu đã chọn rồi
+    else {
+      setSelectedCategories((prevCategories) => ({
+        ...prevCategories,
+        [group]: prevCategories[group] === category ? "" : category,
+      }));
+    }
+  };
+  
+ 
+  const searchByCategories = () => {
+    const { type, location, food } = selectedCategories;
+    
+    if (type || location || food) {
+      // Thực hiện tìm kiếm
+      console.log("Selected Categories:", selectedCategories);
+    } else {
+      console.log(
+        "Vui lòng chọn loại và ít nhất một trong các mục Location hoặc Food."
+      );
     }
   };
   return (
@@ -135,10 +193,13 @@ const Filter = () => {
                   <Text
                     style={{
                       fontSize: 15,
+
                       color:
-                        selectedCategory === "Restaurant" ? "red" : "#6B50F6",
+                        selectedCategories.type === "Restaurant"
+                          ? "red"
+                          : "#6B50F6",
                     }}
-                    onPress={() => setSelectedCategory("Restaurant")}
+                    onPress={() => toggleCategory("Restaurant", "type")}
                   >
                     Restaurant
                   </Text>
@@ -147,9 +208,10 @@ const Filter = () => {
                   <Text
                     style={{
                       fontSize: 15,
-                      color: selectedCategory === "Food" ? "white" : "#6B50F6",
+                      color:
+                        selectedCategories.type === "Food" ? "red" : "#6B50F6",
                     }}
-                    onPress={() => setSelectedCategory("Food")}
+                    onPress={() => toggleCategory("Food", "type")}
                   >
                     Food
                   </Text>
@@ -160,13 +222,46 @@ const Filter = () => {
               <Text style={styles.sectionTitle}>Location</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>1 Km</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.location === 1
+                          ? "red"
+                          : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory(1, "location")}
+                  >
+                    1 Km
+                  </Text>
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>10 Km</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.location === 10
+                          ? "red"
+                          : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory(10, "location")}
+                  >
+                    10 Km
+                  </Text>
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>1 Km</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.location === 20
+                          ? "red"
+                          : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory(20, "location")}
+                  >
+                    20Km
+                  </Text>
                 </View>
               </ScrollView>
             </View>
@@ -174,17 +269,35 @@ const Filter = () => {
               <Text style={styles.sectionTitle}>Food</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Pizza</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.food === "Pizza" ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Pizza", "food")}
+                  >
+                    Pizza
+                  </Text>
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Soup</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.food === "Soup" ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Soup", "food")}
+                  >
+                    Soup
+                  </Text>
                 </View>
               </ScrollView>
             </View>
             <View style={{ paddingTop: 30 }}>
               <TouchableOpacity
                 style={styles.searchButton}
-                onPress={searchByCategory}
+                onPress={searchByCategories}
               >
                 <Text style={styles.searchButtonText}>Search</Text>
               </TouchableOpacity>
