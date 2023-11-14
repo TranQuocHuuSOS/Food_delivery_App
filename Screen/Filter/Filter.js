@@ -91,11 +91,14 @@ const Filter = () => {
       }
     });
   };
+  console.log('====================================');
+  console.log("selectedCategories:",selectedCategories);
+  console.log('====================================');
   const searchByCategories = () => {
     const { type, location, food } = selectedCategories;
 
     // If only Food is selected, set the type to Food
-    const effectiveType = food && !location ? "Food" : type || "Restaurant";
+    const effectiveType = type && food ? type : food && !location ? "Food" : type || "Restaurant";
 
     let filteredData;
 
@@ -115,12 +118,18 @@ const Filter = () => {
         (dish) => !food || dish.type_food.toLowerCase() === food.toLowerCase()
       );
     }
-
-    // Navigate to DisplayFilter screen and pass the filtered data
-    navigation.navigate("DisplayFilter", {
-      Type: effectiveType,
-      Data: filteredData,
-    });
+    if (type || location || food) {
+      navigation.navigate("DisplayFilter", {
+        Type: effectiveType,
+        Data: filteredData,
+      });
+    }
+    console.log('====================================');
+    console.log("filteredData:",filteredData);
+    console.log('====================================');
+    console.log('====================================');
+    console.log("filteredData:",effectiveType);
+    console.log('====================================');
   };
 
   return (
