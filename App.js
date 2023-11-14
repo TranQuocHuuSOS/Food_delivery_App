@@ -7,7 +7,6 @@ import Profile from "./Screen/Profile/Profile";
 import Cart from "./Screen/Cart/Cart";
 import Message from "./Screen/Message/Message";
 import Filter from "./Screen/Filter/Filter";
-import Login from "./Screen/Login/Login";
 import Payment from "./Screen/Payment/Payment";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
@@ -22,7 +21,6 @@ import Shipping from "./Screen/Shipping/Shipping";
 
 import Map from "./Screen/Map/Map";
 import Track from "./Screen/Track_order/Track";
-import SignUp from "./Screen/SignIn/SignUp";
 
 
 
@@ -240,12 +238,6 @@ export default function App() {
           component={Filter}
           // options={{ headerShown: false }}
         />
-         <Stack.Screen
-          name="SignUp"
-          component={SignUp}
-          // options={{ headerShown: false }}
-        />
-
          <Stack.Screen
           name="Chat"
           component={Chat}

@@ -1,68 +1,104 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  ImageBackground,
   View,
   TextInput,
   Text,
   TouchableOpacity,
+  Alert,
+  Image,
 } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function SignUp() {
-  const handleSignUp = () => {
-    // Thêm xử lý khi người dùng nhấp vào nút "Sign Up"
-    // Ví dụ: thực hiện hành động đăng ký tài khoản
-  };
-
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
 
+  const handleSignUp = () => {
+    if (!name || !email || !password) {
+      Alert.alert('Error', 'Please fill in all fields.');
+    } else if (!isChecked1) {
+      Alert.alert('Error', 'Please accept the terms.');
+    } else {
+      Alert.alert('Success', 'Account created successfully.');
+    }
+  };
+
   return (
-    <ImageBackground
-      source={require("../../assets/home/signup1.png")}
-      style={styles.background}
-    >
-      <Text style={styles.signup}>Sign Up For Free  </Text>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <Image
+        source={require("../../assets/home/accout.png")}
+        style={styles.image}
+      />
+      <Text style={styles.signup}>Sign Up For Free</Text>
+      <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
-          <FontAwesome name="user" size={24} color="#4285F4" style={styles.icon} />
+          <FontAwesome
+            name="user"
+            size={24}
+            color="#4285F4"
+            style={styles.icon}
+          />
           <TextInput
             style={styles.input}
             placeholder="Name"
             placeholderTextColor="#8E9098"
+            onChangeText={(text) => setName(text)}
           />
         </View>
         <View style={styles.inputContainer}>
-          <FontAwesome name="envelope" size={24} color="#4285F4" style={styles.icon} />
+          <FontAwesome
+            name="envelope"
+            size={24}
+            color="#4285F4"
+            style={styles.icon}
+          />
           <TextInput
             style={styles.input}
             placeholder="Email"
             placeholderTextColor="#8E9098"
+            onChangeText={(text) => setEmail(text)}
           />
         </View>
         <View style={styles.inputContainer}>
-          <FontAwesome name="lock" size={24} color="#4285F4" style={styles.icon} />
+          <FontAwesome
+            name="lock"
+            size={24}
+            color="#4285F4"
+            style={styles.icon}
+          />
           <TextInput
             style={styles.input}
             placeholder="Password"
             placeholderTextColor="#8E9098"
             secureTextEntry
+            onChangeText={(text) => setPassword(text)}
           />
         </View>
         <View style={styles.checkBoxContainer}>
           <View style={styles.checkBoxRow}>
-            <TouchableOpacity onPress={() => setIsChecked1(!isChecked1)}>
+            <TouchableOpacity
+              onPress={() => setIsChecked1(!isChecked1)}
+            >
               <View style={[styles.checkBox, isChecked1 && styles.checked]}>
-                {isChecked1 && <Text style={styles.checkText}>&#10003;</Text>}
+                {isChecked1 && (
+                  <Text style={styles.checkText}>&#10003;</Text>
+                )}
               </View>
             </TouchableOpacity>
             <Text style={styles.checkBoxLabel}>Keep Me Signed In</Text>
           </View>
           <View style={styles.checkBoxRow}>
-            <TouchableOpacity onPress={() => setIsChecked2(!isChecked2)}>
+            <TouchableOpacity
+              onPress={() => setIsChecked2(!isChecked2)}
+            >
               <View style={[styles.checkBox, isChecked2 && styles.checked]}>
-                {isChecked2 && <Text style={styles.checkText}>&#10003;</Text>}
+                {isChecked2 && (
+                  <Text style={styles.checkText}>&#10003;</Text>
+                )}
               </View>
             </TouchableOpacity>
             <Text style={styles.checkBoxLabel}>
@@ -70,7 +106,10 @@ export default function SignUp() {
             </Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.signupButton} onPress={handleSignUp}>
+        <TouchableOpacity
+          style={styles.signupButton}
+          onPress={handleSignUp}
+        >
           <Text style={styles.signupButtonText}>Create Account</Text>
         </TouchableOpacity>
         <View style={styles.signInTextContainer}>
@@ -78,58 +117,64 @@ export default function SignUp() {
           <Text style={styles.signInLink}>Sign In</Text>
         </View>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-  },
   container: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+  },
+  image: {
+    width: 104, 
+    height: 169, 
   },
   signup: {
-    marginTop: 240,
-    textAlign: "center",
     fontSize: 20,
+    marginTop: 30,
+  },
+  formContainer: {
+    width: "80%",
+    padding: 20,
+    marginRight: 50,
+    borderRadius: 15,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: "80%",
     borderColor: "#ffff",
     borderWidth: 1,
-    marginBottom: 30,
+    marginBottom: 15,
     paddingLeft: 10,
     borderRadius: 15,
-    marginTop: -20,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    width: 300,
+    
+    
   },
   icon: {
     marginRight: 10,
-    width: 24, 
+    width: 24,
     height: 24,
-    color: '#94C2F8'
-    
+    color: '#94C2F8',
   },
   input: {
     flex: 1,
     height: 50,
     padding: 0,
-    color: 'black'
+    color: 'black',
   },
   checkBoxContainer: {
-    marginTop: -20,
-    marginRight: 57,
+    marginVertical: 20, 
+    marginTop: 4,
+    
   },
   checkBoxRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 10,
-    marginTop: 2,
+    marginBottom: 9,
   },
   checkBox: {
     width: 24,
@@ -138,8 +183,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 12,
     marginRight: 10,
-    justifyContent: "center",
-    alignItems: "center",
+   
   },
   checked: {
     backgroundColor: "#4285F4",
@@ -155,12 +199,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#4285F4",
     borderRadius: 15,
     padding: 15,
-    marginTop: 10,
+    marginTop: -10,
+    marginLeft: 75,
+    width: 150,
   },
   signupButtonText: {
     color: "#fff",
     textAlign: "center",
-    width: 150,
+    
   },
   signInTextContainer: {
     flexDirection: "row",

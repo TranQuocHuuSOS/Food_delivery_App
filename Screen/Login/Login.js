@@ -1,7 +1,11 @@
-import React from 'react';
-import { StyleSheet, StatusBar, ImageBackground, View, TextInput, Image, Text, TouchableOpacity, Linking } from 'react-native';
+import React, { useState } from 'react';
+import { ImageBackground } from 'react-native';
+import { StyleSheet, StatusBar, View, TextInput, Image, Text, TouchableOpacity, Alert, Linking } from 'react-native';
 
 export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const handleFacebookLogin = () => {
     Linking.openURL('https://www.facebook.com/login');
   };
@@ -14,25 +18,34 @@ export default function Login() {
   };
 
   const handleLogin = () => {
+    if (email === 'loanno@gmail.com' && password === 'pass123') {
+      Alert.alert('Login Successful', 'You are now logged in.');
+    } else {
+      Alert.alert('Login Failed', 'Please check your email and password.');
+    }
   };
 
   return (
-    <ImageBackground
-      source={require('../../assets/home/signup1.png')}
-      style={styles.background}
-    >
+    <ImageBackground style= {styles.background}>
+    <View style={styles.container}>
+      <Image
+        source={require("../../assets/home/accout.png")}
+        style={styles.image}
+      />
       <Text style={styles.login}>Login To Your Account</Text>
       <View style={styles.container}>
         <TextInput
           style={styles.input}
           placeholder="Email"
           placeholderTextColor="#8E9098"
+          onChangeText={(text) => setEmail(text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           placeholderTextColor="#8E9098"
           secureTextEntry
+          onChangeText={(text) => setPassword(text)}
         />
         <Text style={styles.continue}>Or Continue With</Text>
         <View style={styles.buttonContainer}>
@@ -52,6 +65,7 @@ export default function Login() {
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
       </View>
+    </View>
     </ImageBackground>
   );
 }
@@ -63,27 +77,30 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50,
+  },
+  image: {
+    width: 104, 
+    height: 169, 
   },
   login: {
-    marginTop: 240,
+    marginTop: 40,
     textAlign: 'center',
     justifyContent: 'center',
     fontSize: 20,
   },
   input: {
-    width: '80%',
+    width: 300,
     height: 50,
     borderColor: '#ffff',
     borderWidth: 1,
-    marginBottom: 35,
+    marginBottom: 5,
     paddingLeft: 10,
     borderRadius: 15,
-    marginTop: -20,
-    backgroundColor: 'white'
+    marginTop: 20,
+    backgroundColor: 'white',
   },
   continue: {
-    marginTop: -20,
+    marginTop: 20,
   },
   buttonContainer: {
     marginTop: 20,
