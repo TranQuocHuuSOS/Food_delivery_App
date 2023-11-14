@@ -29,7 +29,7 @@ export default function Login() {
     <ImageBackground style= {styles.background}>
     <View style={styles.container}>
       <Image
-        source={require("../../assets/home/accout.png")}
+        source={require("../../assets/loginimg/accout.png")}
         style={styles.image}
       />
       <Text style={styles.login}>Login To Your Account</Text>
@@ -50,11 +50,11 @@ export default function Login() {
         <Text style={styles.continue}>Or Continue With</Text>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.buttonFacebook} onPress={handleFacebookLogin}>
-            <Image source={require('../../assets/home/facebook.png')} style={styles.icon} />
+            <Image source={require('../../assets/loginimg/facebook.png')} style={styles.icon} />
             <Text style={styles.buttonText}>Facebook</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonGoogle} onPress={handleGoogleLogin}>
-            <Image source={require('../../assets/home/google.png')} style={styles.icon} />
+            <Image source={require('../../assets/loginimg/google.png')} style={styles.icon} />
             <Text style={styles.buttonText}>Google</Text>
           </TouchableOpacity>
         </View>

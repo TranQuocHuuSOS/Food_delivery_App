@@ -30,7 +30,7 @@ export default function SignUp() {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/home/accout.png")}
+        source={require("../../assets/loginimg/accout.png")}
         style={styles.image}
       />
       <Text style={styles.signup}>Sign Up For Free</Text>
