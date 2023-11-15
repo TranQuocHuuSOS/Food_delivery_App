@@ -34,7 +34,7 @@ const DRAG_THRESHOLD = 50;
 const DetailProduct = () => {
  
   const route = useRoute();
-  const restaurant = route.params.restaurant;
+  const dish = route.params.dish;
   const animatedValue = useRef(new Animated.Value(0)).current;
   const lastGestureDy = useRef(0);
   const panResponder = useRef(
@@ -124,7 +124,7 @@ const DetailProduct = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={{uri:restaurant.image}}
+        source={{uri:dish.dishImg}}
         style={{
           width: "100%",
           height: "80%",
@@ -196,7 +196,7 @@ const DetailProduct = () => {
               </View>
             </View>
             <Text style={{ fontSize: 26, fontWeight: "bold", paddingTop: 10 }}>
-              {restaurant.name}
+              {dish.dishName}
             </Text>
             <View
               style={{ flexDirection: "row", paddingVertical: 10, gap: 20 }}
@@ -228,16 +228,16 @@ const DetailProduct = () => {
                   gap: 5,
                 }}
               >
-                 <Ionicons name="location-sharp" size={25} color={"#6B50F6"} />
+                <Fontisto name="shopping-bag" color={"#3FDA85"} size={22} />
                 <Text
                   style={{ fontSize: 15, color: "#BBBBBB", fontWeight: "300" }}
                 >
-                  {restaurant.distance} Km
+                  2000+ Order
                 </Text>
               </Pressable>
             </View>
             <Text>
-              {restaurant.description}
+              {dish.dishDescription}
             </Text>
             <Text
               style={{

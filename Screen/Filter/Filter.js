@@ -1,213 +1,306 @@
-
-import React, { useState } from "react";
-import { StyleSheet, View, Text, SafeAreaView, ImageBackground, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { locations, colors, types, foods } from "./Constant";
-
-const Header = ({ headerText, headerIcon }) => {
-  return (
-    <View style={{ flexDirection: "row" }}>
-      <Text style={{ flex: 1, fontSize: 24, fontWeight: "700" }}>{headerText}</Text>
-      <FontAwesome name={headerIcon} size={24} color="#6B50F6" />
-    </View>
-  );
-};
-
-const SearchFilter = ({ icon, placeholder }) => {
-  return (
-    <View
-      style={{
-        backgroundColor: "#E9E6F8",
-        flexDirection: "row",
-        paddingVertical: 10,
-        borderRadius: 20,
-        paddingHorizontal: 16,
-        marginVertical: 16,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 7,
-      }}
-    >
-      <FontAwesome name={icon} size={20} color="#6B50F6" />
-      <TextInput
-        style={{ paddingLeft: 8, fontSize: 16, color: "#9A89F2" }}
-        placeholder={placeholder}
-        placeholderTextColor="#9A89F2"
-      />
-    </View>
-  );
-};
-
-const Type = () => {
-  return (
-    <View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {types.map((type, index) => {
-          return (
-            <View
-              key={index}
-              style={{
-                backgroundColor: index === 0 ? colors.COLOR_PRIMARY : colors.COLOR_LIGHT,
-                marginRight: 36,
-                borderRadius: 8,
-                paddingHorizontal: 16,
-                paddingVertical: 10,
-                shadowColor: "#6B50F6",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.1,
-                shadowRadius: 7,
-                marginVertical: 16,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#6B50F6",
-                }}
-              >
-                {type.type}
-              </Text>
-            </View>
-          );
-        })}
-      </ScrollView>
-    </View>
-  );
-};
-
-const Location = () => {
-  return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      {locations.map((location, index) => {
-        return (
-          <View key={index} style={styles.locationItem}>
-            <View
-              style={{
-                backgroundColor: index === 0 ? colors.COLOR_PRIMARY : colors.COLOR_LIGHT,
-                borderRadius: 8,
-                paddingHorizontal: 16,
-                paddingVertical: 10,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.1,
-                shadowRadius: 7,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#6B50F6",
-                }}
-              >
-                {location.location}
-              </Text>
-            </View>
-          </View>
-        );
-      })}
-    </ScrollView>
-  );
-};
-
-const Food = () => {
-  return (
-    <View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {foods.map((food, index) => {
-          return (
-            <View
-              key={index}
-              style={{
-                backgroundColor: index === 0 ? colors.COLOR_PRIMARY : colors.COLOR_LIGHT,
-                marginRight: 36,
-                borderRadius: 8,
-                paddingHorizontal: 16,
-                paddingVertical: 10,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.1,
-                shadowRadius: 7,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#6B50F6",
-                }}
-              >
-                {food.food}
-              </Text>
-            </View>
-          );
-        })}
-      </ScrollView>
-    </View>
-  );
-};
-
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  ImageBackground,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Pressable,
+} from "react-native";
+import { Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
+import styles from "./FilterStyles";
+import { useNavigation } from "@react-navigation/native";
 const Filter = () => {
-  const [searchText, setSearchText] = useState("");
+  const navigation = useNavigation();
+  const [dishes, setDishes] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState({
+    type: "",
+    location: "",
+    food: "",
+  });
+  useEffect(() => {
+    // Hàm lấy dữ liệu từ API món ăn
+    const fetchDishes = async () => {
+      try {
+        const response = await fetch(
+          "https://646aaa197d3c1cae4ce2b26c.mockapi.io/dishs"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setDishes(data);
+        } else {
+          console.error(
+            "Lỗi khi lấy dữ liệu từ API món ăn:",
+            response.status,
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu từ API món ăn:", error);
+      }
+    };
 
-  const handleSubmit = () => {
-    console.log("Submit search for:", searchText);
+    // Hàm lấy dữ liệu từ API nhà hàng
+    const fetchRestaurants = async () => {
+      try {
+        const response = await fetch(
+          "https://646aaa197d3c1cae4ce2b26c.mockapi.io/restaurants"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setRestaurants(data);
+        } else {
+          console.error(
+            "Lỗi khi lấy dữ liệu từ API nhà hàng:",
+            response.status,
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu từ API nhà hàng:", error);
+      }
+    };
+
+    fetchDishes();
+    fetchRestaurants();
+  }, []);
+
+  const toggleCategory = (category, group) => {
+    setSelectedCategories((prevCategories) => {
+      if (
+        (group === "type" && category === "Restaurant") ||
+        (group === "type" && category === "Food")
+      ) {
+        return {
+          ...prevCategories,
+          type: prevCategories.type === category ? "" : category,
+          location: "",
+          food: "",
+        };
+      } else if (group === "location" && prevCategories.type === "Food") {
+        return prevCategories;
+      } else {
+        return {
+          ...prevCategories,
+          [group]: prevCategories[group] === category ? "" : category,
+        };
+      }
+    });
+  };
+  console.log('====================================');
+  console.log("selectedCategories:",selectedCategories);
+  console.log('====================================');
+  const searchByCategories = () => {
+    const { type, location, food } = selectedCategories;
+
+    // If only Food is selected, set the type to Food
+    const effectiveType = type && food ? type : food && !location ? "Food" : type || "Restaurant";
+
+    let filteredData;
+
+    if (effectiveType === "Restaurant" || location) {
+      filteredData = [...restaurants].filter(
+        (restaurant) =>
+          (!location || restaurant.distance === parseInt(location)) &&
+          (!food ||
+            dishes.some(
+              (dish) =>
+                dish.type_food.toLowerCase() === food.toLowerCase() &&
+                dish.restaurant_id === parseInt(restaurant.id)
+            ))
+      );
+    } else if (effectiveType === "Food") {
+      filteredData = [...dishes].filter(
+        (dish) => !food || dish.type_food.toLowerCase() === food.toLowerCase()
+      );
+    }
+    if (type || location || food) {
+      navigation.navigate("DisplayFilter", {
+        Type: effectiveType,
+        Data: filteredData,
+      });
+    }
+    console.log('====================================');
+    console.log("filteredData:",filteredData);
+    console.log('====================================');
+    console.log('====================================');
+    console.log("filteredData:",effectiveType);
+    console.log('====================================');
   };
 
   return (
-    <ImageBackground
-      source={require('../.././assets/searchimage/home.png')}
-      style={styles.backgroundImage}
-    >
-      <SafeAreaView style={{ flex: 1, marginHorizontal: 16, fontSize: 20 }}>
-        <Header headerText={"Find Your\nFavorite Food "} headerIcon={"bell-o"} />
-        <SearchFilter icon="search" placeholder={"What do you want to order?" } />
-        <View style={{ marginTop: 22 }}>
-          <Text style={{ fontSize: 22, fontWeight: "bold" }}>Type</Text>
-          <Type />
+    <SafeAreaView style={styles.container}>
+      <ImageBackground
+        source={require("../../assets/Pattern.png")}
+        style={styles.imageBackground}
+        resizeMode="cover"
+      >
+        <View>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>
+              Find Your
+              {"\n"}
+              Favorite Food
+            </Text>
+            <Pressable style={styles.notificationButton}>
+              <Ionicons
+                name="notifications-outline"
+                size={20}
+                color="#6B50F6"
+              />
+            </Pressable>
+          </View>
+          <View
+            style={{
+              marginHorizontal: 20,
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+              paddingTop: 20,
+            }}
+          >
+            <Pressable
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10,
+                backgroundColor: "#f1eeff",
+                borderRadius: 10,
+                paddingVertical: 10,
+              }}
+            >
+              <AntDesign
+                style={{ paddingLeft: 10 }}
+                name="search1"
+                size={20}
+                color="#6B50F6"
+              />
+              <TextInput
+                placeholder="What do you want to order?"
+                placeholderTextColor="#6B50F6"
+                width={280}
+              />
+            </Pressable>
+          </View>
+          <View style={styles.typeLocationFoodContainer}>
+            <View style={{ marginTop: 16 }}>
+              <Text style={styles.sectionTitle}>Type</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.categoryItem}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+
+                      color:
+                        selectedCategories.type === "Restaurant"
+                          ? "red"
+                          : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Restaurant", "type")}
+                  >
+                    Restaurant
+                  </Text>
+                </View>
+                <View style={styles.categoryItem}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.type === "Food" ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Food", "type")}
+                  >
+                    Food
+                  </Text>
+                </View>
+              </ScrollView>
+            </View>
+            <View style={{ marginTop: 10 }}>
+              <Text style={styles.sectionTitle}>Location</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.categoryItem}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.location === 1 ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory(1, "location")}
+                  >
+                    1 Km
+                  </Text>
+                </View>
+                <View style={styles.categoryItem}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.location === 10 ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory(10, "location")}
+                  >
+                    10 Km
+                  </Text>
+                </View>
+                <View style={styles.categoryItem}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.location === 20 ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory(20, "location")}
+                  >
+                    20Km
+                  </Text>
+                </View>
+              </ScrollView>
+            </View>
+            <View style={{ marginTop: 10 }}>
+              <Text style={styles.sectionTitle}>Food</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.categoryItem}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.food === "Pizza" ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Pizza", "food")}
+                  >
+                    Pizza
+                  </Text>
+                </View>
+                <View style={styles.categoryItem}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.food === "Soup" ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Soup", "food")}
+                  >
+                    Soup
+                  </Text>
+                </View>
+              </ScrollView>
+            </View>
+            <View style={{ paddingTop: 30 }}>
+              <TouchableOpacity
+                style={styles.searchButton}
+                onPress={searchByCategories}
+              >
+                <Text style={styles.searchButtonText}>Search</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-        <View style={{ marginTop: 22 }}>
-          <Text style={{ fontSize: 22, fontWeight: "bold" }}>Location</Text>
-          <Location />
-        </View>
-        <View style={{ marginTop: 22 }}>
-          <Text style={{ fontSize: 22, fontWeight: "bold" }}>Food</Text>
-          <Food />
-        </View>
-        <View style={styles.submitContainer}>
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Search</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    </ImageBackground>
+      </ImageBackground>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  backgroundImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  submitContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 80,
-  },
-  submitButton: {
-    backgroundColor: "#6B50F6",
-    borderRadius: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 130,
-  },
-  submitButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  locationItem: {
-    marginRight: 36,
-  },
-});
-
 export default Filter;

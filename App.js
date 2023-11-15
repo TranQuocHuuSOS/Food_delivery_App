@@ -11,16 +11,17 @@ import Payment from "./Screen/Payment/Payment";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
 import RestaurantDetail from "./Screen/RestaurantDetail/RestaurantDetail";
+import DetailRestaurant from "./Screen/DetailRestaurant/DetailRestaurant";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import Chat from "./Screen/Chat/Chat";
-
 import MenuDetail from "./Screen/MenuDetail/MenuDetail";
 import EditPayment from "./Screen/Payment/EditPayment";
 import Shipping from "./Screen/Shipping/Shipping";
 
 import Map from "./Screen/Map/Map";
 import Track from "./Screen/Track_order/Track";
+import DetailProduct from "./Screen/DetailProduct/DetailProduct";
+import DisplayFilter from "./Screen/Filter/DisplayFilter";
 
 
 
@@ -184,13 +185,11 @@ export default function App() {
             tabBarIcon: ({ focused }) => {
               return (
                 <View
-
                   style={{
                     alignItems: "center",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
-
                 >
                   <Entypo
                     name="message"
@@ -226,6 +225,11 @@ export default function App() {
         <Stack.Screen
           name="RestaurantDetail"
           component={RestaurantDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailRestaurant"
+          component={DetailRestaurant}
           //  options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -238,7 +242,9 @@ export default function App() {
           component={Filter}
           // options={{ headerShown: false }}
         />
-         <Stack.Screen
+
+
+        <Stack.Screen
           name="Chat"
           component={Chat}
           // options={{ headerShown: false }}
@@ -270,7 +276,16 @@ export default function App() {
           component={Track}
           options={{ headerShown: true }}
         />
-
+        <Stack.Screen
+          name="DetailProduct"
+          component={DetailProduct}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DisplayFilter"
+          component={DisplayFilter}
+          options={{ headerShown: true }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

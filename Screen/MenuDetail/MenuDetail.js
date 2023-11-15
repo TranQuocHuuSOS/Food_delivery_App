@@ -7,60 +7,46 @@ import {
   Pressable,
   TextInput,
   Image,
+  FlatList,
+  TouchableOpacity,
 } from "react-native";
-import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+
+import { useNavigation, useRoute } from "@react-navigation/native";
 const MenuDetail = () => {
   const navigation = useNavigation();
-  const listMenu = [
-    {
-      id: "0",
-      image: require("../.././assets/MenuImage/PhotoMenu1.png"),
-      menuName: "Herbal Panceke",
-      restaurantName: "Warung Herbal",
-      price: "$7",
-    },
-    {
-      id: "1",
-      image: require("../.././assets/MenuImage/PhotoMenu2.png"),
-      menuName: "Fruil Salad",
-      restaurantName: "Wijie Resto",
-      price: "$15",
-    },
-    {
-      id: "2",
-      image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-      menuName: "Green Noddle",
-      restaurantName: "Noodle Home",
-      price: "$5",
-    },
-    {
-        id: "2",
-        image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-        menuName: "Green Noddle",
-        restaurantName: "Noodle Home",
-        price: "$5",
-      },
-      {
-        id: "2",
-        image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-        menuName: "Green Noddle",
-        restaurantName: "Noodle Home",
-        price: "$5",
-      },
-      {
-        id: "2",
-        image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-        menuName: "Green Noddle",
-        restaurantName: "Noodle Home",
-        price: "$5",
-      },
-  ];
+  const route = useRoute();
+  const receivedData = route.params?.data || [];
+
+  const [searchText, setSearchText] = useState({ dishes: [] });
+
+  const handleSearchTextChange = (text) => {
+    setSearchText(text);
+    searchDishes(text); // Gọi hàm tìm kiếm món ăn
+  };
+
+  const searchDishes = (text) => {
+    const searchTextLowerCase = text.toLowerCase();
+    const filteredDishes = receivedData.filter((item) =>
+      item.dishName.toLowerCase().includes(searchTextLowerCase)
+    );
+    setSearchText({
+      dishes: filteredDishes,
+    });
+  };
+  const navigateToDishDetail=(dishId)=>{
+    const selectedDish = receivedData.find(
+      (dish) => dish.dishId === dishId
+    );
+    if (selectedDish) {
+      navigation.navigate("DetailProduct", { dish: selectedDish });
+    }
+  }
   return (
     <View
       style={{
@@ -70,11 +56,12 @@ const MenuDetail = () => {
       <ScrollView>
         <ImageBackground
           source={require("../../assets/Pattern.png")}
-        //   style={{
-        //     width:'auto',
-        //     height: 'auto',
-        //   }}
-l        >
+          //   style={{
+          //     width:'auto',
+          //     height: 'auto',
+          //   }}
+          l
+        >
           <View>
             <View
               style={{
@@ -115,54 +102,56 @@ l        >
             </View>
           </View>
           <View
+            style={{
+              marginHorizontal: 20,
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+              paddingTop: 20,
+            }}
+          >
+            <Pressable
               style={{
-                marginHorizontal: 20,
-                justifyContent: "space-between",
                 flexDirection: "row",
                 alignItems: "center",
-                paddingTop: 20,
+                gap: 10,
+                backgroundColor: "#f1eeff",
+                borderRadius: 10,
+                paddingVertical: 10,
               }}
             >
-              <Pressable
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 10,
-                  backgroundColor: "#f1eeff",
-                  borderRadius: 10,
-                  paddingVertical: 10,
-                }}
-              >
-                <AntDesign
-                  style={{ paddingLeft: 10 }}
-                  name="search1"
-                  size={20}
-                  color="#6B50F6"
-                />
-                <TextInput
-                  placeholder="What do you want to order?"
-                  placeholderTextColor="#6B50F6"
-                  width={220}
-                />
-              </Pressable>
-              <Pressable
-                style={{
-                  paddingVertical: 13,
-                  backgroundColor: "#f1eeff",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 10,
-                }}
-                onPress={() => navigation.navigate("Filter")}
-              >
-                <MaterialIcons
-                  name="mic-none"
-                  size={22}
-                  color="black"
-                  marginHorizontal={12}
-                />
-              </Pressable>
-            </View>
+              <AntDesign
+                style={{ paddingLeft: 10 }}
+                name="search1"
+                size={20}
+                color="#6B50F6"
+              />
+              <TextInput
+                placeholder="What do you want to order?"
+                placeholderTextColor="#6B50F6"
+                width={220}
+                value={searchText}
+                onChangeText={handleSearchTextChange}
+              />
+            </Pressable>
+            <Pressable
+              style={{
+                paddingVertical: 13,
+                backgroundColor: "#f1eeff",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 10,
+              }}
+              onPress={() => navigation.navigate("Filter")}
+            >
+              <MaterialIcons
+                name="mic-none"
+                size={22}
+                color="black"
+                marginHorizontal={12}
+              />
+            </Pressable>
+          </View>
           <View
             style={{
               paddingVertical: 20,
@@ -175,15 +164,18 @@ l        >
               Popular Menu
             </Text>
           </View>
-          <View
+          <FlatList
+            data={searchText.dishes} // Sử dụng danh sách kết quả tìm kiếm
+            keyExtractor={(item) => item.dishId.toString()}
             style={{
               flexDirection: "column",
               marginHorizontal: 20,
             }}
-          >
-            {listMenu.map((item, index) => (
-              <Pressable
-                key={index}
+            renderItem={({ item }) => (
+              <TouchableOpacity   key={item.dishId} onPress={()=>navigateToDishDetail(item.dishId)}>
+
+              
+              <View
                 style={{
                   flexDirection: "row",
                   backgroundColor: "#ffffff",
@@ -197,13 +189,13 @@ l        >
               >
                 <Image
                   style={{ width: 70, height: 70, resizeMode: "contain" }}
-                  source={item.image}
+                  source={{ uri: item.dishImg}}
                 />
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    width: 200,
+                    width: 240,
                     alignItems: "center",
                   }}
                 >
@@ -221,7 +213,7 @@ l        >
                         fontWeight: "900",
                       }}
                     >
-                      {item?.menuName}
+                      {item.dishName}
                     </Text>
                     <Text
                       style={{
@@ -232,7 +224,7 @@ l        >
                         color: "#BBBBBB",
                       }}
                     >
-                      {item?.restaurantName}
+                      {item.restaurantName}
                     </Text>
                   </View>
                   <Text
@@ -242,12 +234,92 @@ l        >
                       fontWeight: "900",
                     }}
                   >
-                    {item?.price}
+                    {item.dishPrice}$
                   </Text>
                 </View>
-              </Pressable>
-            ))}
-          </View>
+              </View>
+              </TouchableOpacity>
+            )}
+          ></FlatList>
+
+          <FlatList
+            data={searchText.length > 0 ? searchText.dishes : receivedData}
+            keyExtractor={(item) => item.dishId}
+            style={{
+              flexDirection: "column",
+              marginHorizontal: 20,
+            }}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                key={item.dishId}
+                onPress={() => navigateToDishDetail(item.dishId)}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    backgroundColor: "#ffffff",
+                    marginVertical: 10,
+                    borderRadius: 14,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingVertical: 15,
+                    paddingHorizontal: 15,
+                  }}
+                >
+                  <Image
+                    style={{ width: 70, height: 70, resizeMode: "contain" }}
+                    source={{ uri: item.dishImg }}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      width: 200,
+                      alignItems: "center",
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          fontSize: 16,
+                          fontWeight: "500",
+                          fontWeight: "900",
+                        }}
+                      >
+                        {item.dishName}
+                      </Text>
+                      <Text
+                        style={{
+                          marginTop: 3,
+                          fontSize: 13,
+                          fontWeight: "500",
+                          lineHeight: 17,
+                          color: "#BBBBBB",
+                        }}
+                      >
+                        {item.restaurantName}
+                      </Text>
+                    </View>
+                    <Text
+                      style={{
+                        color: "#6B50F6",
+                        fontSize: 25,
+                        fontWeight: "900",
+                      }}
+                    >
+                      {item.dishPrice}$
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )}
+          ></FlatList>
         </ImageBackground>
       </ScrollView>
     </View>

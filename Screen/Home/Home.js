@@ -7,88 +7,139 @@ import {
   Pressable,
   TextInput,
   Image,
+  TouchableOpacity,
 } from "react-native";
-import React ,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 const Home = () => {
+  const [searchResults, setSearchResults] = useState({
+    dishes: [],
+  });
+  const [searchText, setSearchText] = useState("");
+
   const navigation = useNavigation();
-  const [data, setData] = useState([]);
-  const getAPIData= async()=>{
-    const url=`http://localhost:3000/dishs`;
-    let result = await fetch(url);
-    if (!result.ok){
-      throw new Error (`HTTP Error! Status:${result.status}`);
+
+  const [dataWithRestaurant, setData] = useState([]);
+  const [restaurantData, setRestaurantData] = useState([]);
+  const getAPIData = async () => {
+    const dishUrl = `https://646aaa197d3c1cae4ce2b26c.mockapi.io/dishs`;
+    let result = await fetch(dishUrl);
+    if (!result.ok) {
+      throw new Error(`HTTP Error! Status:${result.status}`);
     }
-    result=await result.json();
-    setData(result);
+    const dishes = await result.json();
+    // lấy tên nhà hàng liên quan
+
+    const restaurantUrl = `https://646aaa197d3c1cae4ce2b26c.mockapi.io/restaurants`;
+    result = await fetch(restaurantUrl);
+    if (!result.ok) {
+      throw new Error(`HTTP Error! Status:${result.status}`);
+    }
+    const restaurants = await result.json();
+
+    // xử lý giữa món ăn và nhà hàng
+
+    const dataWithRestaurant = dishes.map((dish) => {
+      const restaurant = restaurants.find(
+        (restaurant) => restaurant.id === dish.restaurant_id
+      );
+      const restaurantName = restaurant
+        ? restaurant.name
+        : "Unknown Restaurant";
+
+      return {
+        dishId: dish.id,
+        dishName: dish.name_food,
+        dishImg: dish.img,
+        dishTypeFood: dish.type_food,
+        dishPrice: dish.price,
+        dishDescription: dish.description,
+        dishIdRestaurant: dish.restaurant_id,
+        restaurantNames: restaurantName,
+      };
+    });
+
+    setData(dataWithRestaurant);
   };
-  useEffect(()=>{
-    getAPIData();
-  },[]);
-  const listRestaurant = [
-    {
-      id: "0",
-      image: require("../.././assets/RestauranImage/Restaurant3.png"),
-      name: "Vegan Resto",
-      time: "12 Mins",
-    },
-    {
-      id: "1",
-      image: require("../.././assets/RestauranImage/Restaurant2.png"),
-      name: "Healthy Food",
-      time: "8 Mins",
-    },
-    {
-      id: "2",
-      image: require("../.././assets/RestauranImage/Restaurant3.png"),
-      name: "Good Food",
-      time: "12 Mins",
-    },
-  ];
-  const listMenu = [
-    {
-      id: "0",
-      image: require("../.././assets/MenuImage/PhotoMenu1.png"),
-      menuName: "Herbal Panceke",
-      restaurantName: "Warung Herbal",
-      price: "$7",
-    },
-    {
-      id: "1",
-      image: require("../.././assets/MenuImage/PhotoMenu2.png"),
-      menuName: "Fruil Salad",
-      restaurantName: "Wijie Resto",
-      price: "$15",
-    },
-    {
-      id: "2",
-      image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-      menuName: "Green Noddle",
-      restaurantName: "Noodle Home",
-      price: "$5",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await getAPIData();
+        await getRestaurantData();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const getRestaurantData = async () => {
+    const restaurantUrl =
+      "https://646aaa197d3c1cae4ce2b26c.mockapi.io/restaurants";
+    try {
+      const response = await fetch(restaurantUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+      }
+      const restaurantData = await response.json();
+      setRestaurantData(restaurantData);
+    } catch (error) {
+      console.error("Error fetching restaurant data:", error);
+    }
+  };
+
+  const searchs = (text) => {
+    if (text && typeof text === "string") {
+      const searchTextLowerCase = text.toLowerCase();
+      const filteredDishes = dataWithRestaurant.filter((item) =>
+        item.dishName.toLowerCase().includes(searchTextLowerCase)
+      );
+
+      setSearchResults({
+        dishes: filteredDishes,
+      });
+    }
+  };
+
+  const navigateToDishDetail = (dishId) => {
+    const selectedDish = dataWithRestaurant.find(
+      (dish) => dish.dishId === dishId
+    );
+    if (selectedDish) {
+      navigation.navigate("DetailProduct", { dish: selectedDish });
+    }
+  };
+
+  const navigateToRestaurantDetail = (id) => {
+    const selectedRestaurant = restaurantData.find(
+      (restaurant) => restaurant.id === id
+    );
+    if (selectedRestaurant) {
+      navigation.navigate("RestaurantDetail", { restaurant:selectedRestaurant });
+    }
+  };
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        marginBottom:70
+
+        marginBottom: 70,
       }}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-      <ImageBackground
-        source={require("../../assets/Pattern.png")}
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-        resizeMode="cover"
-      >
-        
+        <ImageBackground
+          source={require("../../assets/Pattern.png")}
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+          resizeMode="cover"
+        >
           <View style={{}}>
             <View
               style={{
@@ -157,6 +208,11 @@ const Home = () => {
                   placeholder="What do you want to order?"
                   placeholderTextColor="#6B50F6"
                   width={220}
+                  value={searchText}
+                  onChangeText={(text) => {
+                    setSearchText(text);
+                    searchs(text);
+                  }}
                 />
               </Pressable>
               <Pressable
@@ -169,14 +225,15 @@ const Home = () => {
                 }}
                 onPress={() => navigation.navigate("Filter")}
               >
-                <MaterialIcons
-                  name="mic-none"
+                <FontAwesome
+                  name="filter"
                   size={22}
-                  color="black"
+                  color="#6B50F6"
                   marginHorizontal={12}
                 />
               </Pressable>
             </View>
+
             <View style={{ paddingTop: 20 }}>
               <ImageBackground
                 source={require("../../assets/Image.png")}
@@ -234,56 +291,71 @@ const Home = () => {
                 Nearest Restaurant
               </Text>
 
-              <Pressable onPress={() => navigation.navigate("RestaurantDetail")}>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("DetailRestaurant", {
+                    data: restaurantData,
+                  })
+                }
+              >
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
               </Pressable>
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {listRestaurant.map((item, index) => (
-                <Pressable
-                  key={index}
-                  style={{
-                    margin: 2,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#ffffff",
-                    marginLeft: 20,
-                    height: 180,
-                    width: 150,
-                    borderRadius: 20,
-                  }}
+              {restaurantData.slice(0, 3).map((items) => (
+                <TouchableOpacity
+                  key={items.id}
+                  onPress={() => navigateToRestaurantDetail(items.id)}
                 >
-                  <Image
-                    style={{ width: 110, height: 80, resizeMode: "contain" }}
-                    source={item.image}
-                  />
-                  <Text
+                  <View
+                    key={items.id}
                     style={{
-                      textAlign: "center",
-                      fontSize: 15,
-                      fontWeight: "500",
-                      marginTop: 10,
-                      fontWeight: "900",
+                      margin: 2,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#ffffff",
+                      marginLeft: 20,
+                      height: 180,
+                      width: 150,
+                      borderRadius: 20,
                     }}
                   >
-                    {item?.name}
-                  </Text>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: 13,
-                      fontWeight: "500",
-                      marginTop: 7,
-                      lineHeight: 17,
-                      color: "#BBBBBB",
-                    }}
-                  >
-                    {item?.time}
-                    
-                  </Text>
-                </Pressable>
+                    <Image
+                      style={{
+                        width: 100,
+                        height: 100,
+                        resizeMode: "contain",
+                        borderRadius: 10,
+                      }}
+                      source={{ uri: items.image }}
+                    />
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 15,
+                        fontWeight: "500",
+                        marginTop: 10,
+                        fontWeight: "900",
+                      }}
+                    >
+                      {items.name}
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 13,
+                        fontWeight: "500",
+                        marginTop: 7,
+                        lineHeight: 17,
+                        color: "#BBBBBB",
+                      }}
+                    >
+                      {items.time}Mins
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               ))}
             </ScrollView>
             <View
@@ -297,7 +369,14 @@ const Home = () => {
               <Text style={{ fontWeight: "700", fontSize: 17 }}>
                 Popular Menu
               </Text>
-              <Pressable onPress={() => navigation.navigate("MenuDetail")}>
+
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("MenuDetail", {
+                    data: dataWithRestaurant,
+                  })
+                }
+              >
                 <Text style={{ fontSize: 12, color: "#6B50F6" }}>
                   View More
                 </Text>
@@ -309,75 +388,184 @@ const Home = () => {
                 marginHorizontal: 20,
               }}
             >
-               {listMenu.map((item, index) => (
-                <Pressable
-                  key={index}
-                  style={{
-                    flexDirection: "row",
-                    backgroundColor: "#ffffff",
-                    marginVertical: 10,
-                    borderRadius: 14,
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingVertical: 15,
-                    paddingHorizontal: 15,
-                  }}
-                >
-                  <Image
-                    style={{ width: 70, height: 70, resizeMode: "contain" }}
-                    source={item.image}
-                  />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      width: 200,
-                      alignItems: "center",
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: "column",
-                        justifyContent: "flex-start",
-                      }}
+              {/* Search dishs */}
+              {searchResults.dishes.length > 0 && (
+                <View>
+                  {searchResults.dishes.map((item) => (
+                    <TouchableOpacity
+                      key={item.dishId}
+                      onPress={() => navigateToDishDetail(item.dishId)}
                     >
-                      <Text
+                      <View
+                        key={item.dishId}
                         style={{
-                          textAlign: "center",
-                          fontSize: 16,
-                          fontWeight: "500",
-                          fontWeight: "900",
+                          flexDirection: "row",
+                          backgroundColor: "#ffffff",
+                          marginVertical: 10,
+                          borderRadius: 14,
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          paddingVertical: 15,
+                          paddingHorizontal: 15,
                         }}
                       >
-                        {item.menuName}
-                      </Text>
-                      <Text
+                        <Image
+                          style={{
+                            width: 60,
+                            height: 60,
+                            resizeMode: "contain",
+                            borderRadius: 10,
+                          }}
+                          source={{ uri: item.dishImg }}
+                        />
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            width: 200,
+                            alignItems: "center",
+                          }}
+                        >
+                          <View
+                            style={{
+
+                              flexDirection: "column",
+                              justifyContent: "flex-start",
+
+                          
+                              fontSize: 16,
+                              fontWeight: "500",
+                             
+
+                            }}
+                          >
+                            <Text
+                              style={{
+                              
+                                fontSize: 16,
+                                fontWeight: "500",
+                                fontWeight: "900",
+                              }}
+                            >
+                              {item.dishName}
+                            </Text>
+                            <Text
+                              style={{
+                                marginTop: 3,
+                                fontSize: 13,
+                                fontWeight: "500",
+                                lineHeight: 17,
+                                color: "#BBBBBB",
+                              }}
+                            >
+                              {item.restaurantNames}
+                            </Text>
+                          </View>
+                          <Text
+                            style={{
+                              color: "#6B50F6",
+                              fontSize: 25,
+                              fontWeight: "900",
+                            }}
+                          >
+                            {item.dishPrice}$
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+
+              {!searchResults.dishes.length > 0 && (
+                <View>
+                  {dataWithRestaurant.slice(0, 3).map((item) => (
+                    <TouchableOpacity
+                      key={item.dishId}
+                      onPress={() => navigateToDishDetail(item.dishId)}
+                    >
+                      <View
                         style={{
-                          marginTop: 3,
-                          fontSize: 13,
-                          fontWeight: "500",
-                          lineHeight: 17,
-                          color: "#BBBBBB",
+                          flexDirection: "row",
+                          backgroundColor: "#ffffff",
+                          marginVertical: 10,
+                          borderRadius: 14,
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          paddingVertical: 15,
+                          paddingHorizontal: 15,
                         }}
                       >
-                        {item.restaurantName}
-                      </Text>
-                    </View>
-                    <Text
-                      style={{
-                        color: "#6B50F6",
-                        fontSize: 25,
-                        fontWeight: "900",
-                      }}
-                    >
-                      {item.price}
-                    </Text>
-                  </View>
-                </Pressable>
-              ))}
+                        <Image
+                          style={{
+                            width: 60,
+                            height: 60,
+                            resizeMode: "contain",
+                            borderRadius: 10,
+                          }}
+                          source={{ uri: item.dishImg }}
+                        />
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            width: 200,
+                            alignItems: "center",
+                          }}
+                        >
+                          <View
+                            style={{
+
+                              flexDirection: "column",
+                              justifyContent: "flex-start",
+
+                             
+                              fontSize: 16,
+                              fontWeight: "500",
+                             
+
+                            }}
+                          >
+                            <Text
+                              style={{
+                              
+                                fontSize: 16,
+                                fontWeight: "500",
+                                fontWeight: "900",
+                              }}
+                            >
+                              {item.dishName}
+                            </Text>
+                            <Text
+                              style={{
+                                marginTop: 3,
+                                fontSize: 13,
+                                fontWeight: "500",
+                                lineHeight: 17,
+                                color: "#BBBBBB",
+                              }}
+                            >
+                              {item.restaurantNames}
+                            </Text>
+                          </View>
+                          <Text
+                            style={{
+                              color: "#6B50F6",
+                              fontSize: 25,
+                              fontWeight: "900",
+                            }}
+                          >
+                            {item.dishPrice}$
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
             </View>
           </View>
-      </ImageBackground>
+        </ImageBackground>
       </ScrollView>
     </SafeAreaView>
   );
