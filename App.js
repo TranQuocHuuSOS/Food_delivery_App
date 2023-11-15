@@ -23,6 +23,9 @@ import Track from "./Screen/Track_order/Track";
 import DetailProduct from "./Screen/DetailProduct/DetailProduct";
 import DisplayFilter from "./Screen/Filter/DisplayFilter";
 
+
+
+
 const screenOptions = {
   tabBarShowLabel: true,
   headerShown: true,
@@ -207,6 +210,7 @@ export default function App() {
             },
           })}
         ></Tab.Screen>
+
       </Tab.Navigator>
     );
   }
@@ -239,12 +243,13 @@ export default function App() {
           // options={{ headerShown: false }}
         />
 
+
         <Stack.Screen
           name="Chat"
           component={Chat}
           // options={{ headerShown: false }}
         />
-
+        
         <Stack.Screen
           name="Confirm Order"
           component={Payment}
