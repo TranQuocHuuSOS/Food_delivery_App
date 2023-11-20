@@ -279,6 +279,11 @@ export default function App() {
           component={DetailProduct}
           options={{ headerShown: false }}
         />
+          <Stack.Screen
+          name="Cart"
+          component={Cart}
+          options={{ headerShown: false }}
+        />
 
       </Stack.Navigator>
     </NavigationContainer>

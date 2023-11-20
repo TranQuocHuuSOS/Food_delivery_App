@@ -5,107 +5,148 @@ import {
   Text,
   View,
   Pressable,
-  TextInput,
-  Button,
-  TouchableOpacity,
   Image,
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles";
 import { AntDesign } from "@expo/vector-icons";
-const image = require("../../assets/Pattern.png");
-const image_total = require("../../assets/Order_detail/Pattern.png");
 import { SwipeListView } from "react-native-swipe-list-view";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Card_price from "../Card_total_price/Card_price";
+import axios from "axios";
+const image = require("../../assets/Pattern.png");
 
 const Cart = () => {
-  
+  const [data, setData] = useState([]);
   const [quantity, setQuantity] = useState({});
   const [selectedItems, setSelectedItems] = useState([]);
-  let totalPrice = 0;
-  const data = [
-    {
-      key: "1",
-      name_dish: "Spacy Fresh crab",
-      name_restaurant: "kita",
-      price: 35,
-      menuImage: require("../../assets/MenuPhoto.png"),
-      discount: 10,
-    },
-    {
-      key: "2",
-      name_dish: "Spacy Fresh crab",
-      name_restaurant: "kita",
-      price: 35,
-      menuImage: require("../../assets/MenuPhoto1.png"),
-      discount: 10,
-    },
-    {
-      key: "3",
-      name_dish: "Spacy Fresh crab",
-      name_restaurant: "kita",
-      price: 35,
-      menuImage: require("../../assets/MenuPhoto2.png"),
-      discount: 10,
-    },
-    {
-      key: "4",
-      name_dish: "Spacy Fresh crab",
-      name_restaurant: "kita",
-      price: 35,
-      menuImage: require("../../assets/MenuPhoto.png"),
-      discount: 10,
-    },
-    {
-      key: "5",
-      name_dish: "Spacy Fresh crab",
-      name_restaurant: "kita",
-      price: 35,
-      menuImage: require("../../assets/MenuPhoto1.png"),
-      discount: 10,
-    },
-  ];
 
-  const increaseQuantity = (key) => {
-    setQuantity((prevQuantity) => ({
-      ...prevQuantity,
-      [key]: (prevQuantity[key] || 0) + 1,
-    }));
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://645f33db9d35038e2d1ec62a.mockapi.io/Bill"
+        );
+        const cartItems = response.data.find((item) => item.user_id === 38);
+
+        if (cartItems && cartItems.items) {
+          // If there are items in the cart, update the state
+          setData(cartItems.items);
+          const quantities = {};
+          cartItems.items.forEach((item) => {
+            quantities[item.key] = item.quantity || 1;
+          });
+
+          setQuantity(quantities);
+        }
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const increaseQuantity = async (key) => {
+    try {
+      console.log("Before API call - Quantity:", quantity);
+  
+      const updatedItem = await axios.put(
+        `https://645f33db9d35038e2d1ec62a.mockapi.io/Bill/items/${key}`,
+        {
+          quantity: (quantity[key] || 0) + 1,
+        }
+      );
+  
+      console.log("After API call - Updated Item:", updatedItem.data);
+  
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.key === key ? updatedItem.data : item
+        )
+      );
+  
+      setQuantity((prevQuantity) => ({
+        ...prevQuantity,
+        [key]: (prevQuantity[key] || 0) + 1,
+      }));
+  
+      console.log("After State Update - Quantity:", quantity);
+    } catch (error) { 
+      console.error("Error updating quantity:", error);
+      Alert.alert("Error", "Failed to update quantity");
+    }
+  };
+  
+  const decreaseQuantity = async (key) => {
+    try {
+      console.log("Before API call - Quantity:", quantity);
+  
+      const updatedItem = await axios.put(
+        `https://645f33db9d35038e2d1ec62a.mockapi.io/Bill/items/${key}`,
+        {
+          quantity: Math.max((quantity[key] || 0) - 1, 1),
+        }
+      );
+  
+      console.log("After API call - Updated Item:", updatedItem.data);
+  
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.key === key ? updatedItem.data : item
+        )
+      );
+  
+      setQuantity((prevQuantity) => ({
+        ...prevQuantity,
+        [key]: Math.max((prevQuantity[key] || 0) - 1, 1),
+      }));
+  
+      console.log("After State Update - Quantity:", quantity);
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+      Alert.alert("Error", "Failed to update quantity");
+    }
   };
 
-  const decreaseQuantity = (key) => {
-    setQuantity((prevQuantity) => ({
-      ...prevQuantity,
-      [key]: Math.max((prevQuantity[key] || 0) - 1, 1),
-    }));
-  };
 
-  const calculateTotalPrice = () => {
-    let totalPrice = 0;
+  // const calculateTotalPrice = () => {
+  //   let subtotal = 0;
+  
+  //   // Calculate subtotal of all items in the cart, considering variable discounts
+  //   data.forEach((item) => {
+  //     const itemPrice = (item.dishPrice - item.disCount) * (quantity[item.key] || 1);
+  //     subtotal += itemPrice;
+  //   });
+  
+  //   // Add a fixed delivery charge of $10
+  //   const deliveryCharge = 10;
+  
+  //   // Calculate total price including discounts for each item
+  //   const totalPrice = subtotal + deliveryCharge;
+  
+  //   return totalPrice.toFixed(2);
+  // };
+  
+  
 
-    data.forEach((item) => {
-      const itemPrice =
-        (item.price - item.discount) * (quantity[item.key] || 1);
-      totalPrice += itemPrice;
-    });
-
-    totalPrice += 10;
-
-    return totalPrice.toFixed(2);
-  };
   const renderRow = (
-    key,
-    name_dish,
-    name_restaurant,
-    price,
-    menuImage,
-    discount
+    key,  
+    dishName,
+    restaurantNames,
+    dishPrice,
+    dishImg,
+    disCount,
+    quantity
   ) => {
     const isSelected = selectedItems.includes(key);
     if (isSelected) {
       return null;
     }
+
     return (
       <TouchableOpacity
         onPress={() => console.log(`Item ${key} touched`)}
@@ -114,17 +155,24 @@ const Cart = () => {
       >
         <Text style={styles.itemText}>
           <View style={styles.card}>
-            <View style={{flexDirection:"row"}}>
-            <Image source={menuImage} style={{ width: 70, height: 70 }}></Image>
-            <View style={{ marginHorizontal: 10 }}>
-              <Text style={{ fontWeight: "bold" }}>{name_dish}</Text>
-              <Text style={{ color: "#000" }}>{name_restaurant}</Text>
-              <Text
-                style={{ fontWeight: "bold", color: "#6B50F6", fontSize: 20 }}
-              >
-                $ {price}
-              </Text>
-            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Image
+                source={dishImg}
+                style={{ width: 70, height: 70 }}
+              ></Image>
+              <View style={{ marginHorizontal: 10 }}>
+                <Text style={{ fontWeight: "bold" }}>{dishName}</Text>
+                <Text style={{ color: "#000" }}>{restaurantNames}</Text>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    color: "#6B50F6",
+                    fontSize: 20,
+                  }}
+                >
+                  $ {dishPrice}
+                </Text>
+              </View>
             </View>
             <Pressable style={styles.amount}>
               <TouchableOpacity
@@ -133,7 +181,7 @@ const Cart = () => {
               >
                 <AntDesign name="minus" size={20} color="black" />
               </TouchableOpacity>
-              <Text style={styles.number}>{quantity[key] || 1}</Text>
+              <Text style={styles.number}>{quantity||1}</Text>
               <TouchableOpacity
                 style={styles.minus}
                 onPress={() => increaseQuantity(key)}
@@ -146,6 +194,7 @@ const Cart = () => {
       </TouchableOpacity>
     );
   };
+
   const handleDeleteItem = (key) => {
     console.log("Delete item with key:", key);
     setSelectedItems((prevSelectedItems) =>
@@ -154,6 +203,7 @@ const Cart = () => {
         : [...prevSelectedItems, key]
     );
   };
+
   const renderHiddenItem = (data) => (
     <View style={styles.hiddenContainer}>
       <TouchableOpacity
@@ -164,49 +214,49 @@ const Cart = () => {
       </TouchableOpacity>
     </View>
   );
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-          source={image}
-          resizeMode="cover"
-          style={styles.imageBackground}
-        >
-      <ScrollView style={{bottom: 90, marginTop:80}}>
-        
-        <View style={styles.content}>
-          <Text style={styles.text}>Order details</Text>
-        </View>
-        <View style={styles.card_food}>
-          <SwipeListView
-            useFlatList={true}
-            data={data}
-            renderItem={({ item }) =>
-              renderRow(
-                item.key,
-                item.name_dish,
-                item.name_restaurant,
-                item.price,
-                item.menuImage,
-                item.discount
-              )
-            }
-            renderHiddenItem={renderHiddenItem}
-            keyExtractor={(item) => item.key}
-            leftOpenValue={0}
-            rightOpenValue={-100}
-            previewRowKey={"0"}
-            previewOpenValue={-40}
-            previewOpenDelay={3000}
+        source={image}
+        resizeMode="cover"
+        style={styles.imageBackground}
+      >
+        <ScrollView style={{ bottom: 90, marginTop: 80 }}>
+          <View style={styles.content}>
+            <Text style={styles.text}>Order details</Text>
+          </View>
+          <View style={styles.card_food}>
+            <SwipeListView
+              useFlatList={true}
+              data={data}
+              renderItem={({ item }) =>
+                renderRow(
+                  item.key,
+                  item.dishName,
+                  item.restaurantNames,
+                  item.dishPrice,
+                  item.dishImg,
+                  item.disCount,
+                  item.quantity
+                )
+              }
+              renderHiddenItem={renderHiddenItem}
+              keyExtractor={(item) => item.key}
+              leftOpenValue={0}
+              rightOpenValue={-100}
+              previewRowKey={"0"}
+              previewOpenValue={-40}
+              previewOpenDelay={3000}
+            />
+          </View>
+          <Card_price
+            // data={data}
+            // selectedItems={selectedItems}
+            // quantity={quantity}
+            // calculateTotalPrice={calculateTotalPrice}
           />
-        </View>
-       
-        <Card_price
-          data={data}
-          selectedItems={selectedItems}
-          quantity={quantity}
-          calculateTotalPrice={calculateTotalPrice}
-        />
-      </ScrollView>
+        </ScrollView>
       </ImageBackground>
     </SafeAreaView>
   );
