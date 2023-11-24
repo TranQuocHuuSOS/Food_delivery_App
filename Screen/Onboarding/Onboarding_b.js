@@ -1,0 +1,100 @@
+// Onboarding_b.js
+import React from 'react';
+import { ImageBackground, Image, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+
+export default function Onboarding_b() {
+  return (
+    <ImageBackground 
+      source={require("../../assets/Onboarding/BdOnboarding.png")}
+      style={styles.background}
+    >
+      <View style={styles.container}>
+        <View style={styles.foodContainer}>
+          <Image
+            source={require('../../assets/Onboarding/food1.png')}
+            style={styles.foodImage1}
+          />
+        </View>
+
+        <View style={styles.foodContainer}>
+          <Image
+            source={require("../../assets/Onboarding/food9.png")}
+            style={styles.foodImage2}
+          />
+        </View>
+
+        <View style={styles.foodContainer}>
+          <Image
+            source={require("../../assets/Onboarding/food8.png")}
+            style={styles.foodImage3}
+          />
+        </View>
+        <Text style={styles.text}>DIDFOOD is Where Your Comfort {'\n'} Food Lives</Text>
+        <Text style={styles.text1}>Enjoy a fast and smooth food delivery at your {'\n'} doorstep.</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Next </Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
+  );
+}
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  foodContainer: {
+    width: 40,  
+    height: 40, 
+    marginBottom: 30,
+  },
+  foodImage1: {
+    width: 150,
+    height: 150,
+    marginLeft: -100,
+    marginTop: 180,
+  },
+  foodImage2: {
+    marginTop:-30,
+    marginLeft: -100,
+    width: 150,
+    height: 150,
+  },
+  foodImage3: {
+    marginTop: -40,
+    marginLeft: 30,
+    width: 150,
+    height: 150,
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 200,
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  text1: {
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: 'blue',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    height: 50,
+    width: 100,
+    marginTop: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+});
