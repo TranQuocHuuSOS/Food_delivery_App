@@ -171,6 +171,7 @@ const Home = () => {
                   justifyContent: "center",
                   borderRadius: 14,
                 }}
+                onPress={() => navigation.navigate("Onboarding_a")}
               >
                
                 <Ionicons

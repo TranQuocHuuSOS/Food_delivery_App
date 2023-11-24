@@ -7,6 +7,9 @@ import Profile from "./Screen/Profile/Profile";
 import Cart from "./Screen/Cart/Cart";
 import Message from "./Screen/Message/Message";
 import Filter from "./Screen/Filter/Filter";
+
+
+import Onboarding from "./Screen/Onboarding/Onboarding";
 import Payment from "./Screen/Payment/Payment";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
@@ -25,6 +28,15 @@ import SignUp from "./Screen/SignIn/SignUp";
 import SignUpNext from "./Screen/SignUpNext/SignUpNext";
 import { AuthContext, AuthProvider } from "./context/AuthContext";
 import DisplayFilter from "./Screen/Filter/DisplayFilter";
+
+import Onboarding_a from "./Screen/Onboarding/Onboarding_a";
+import Onboarding_b from "./Screen/Onboarding/Onboarding_b";
+
+
+const Stack = createNativeStackNavigator();
+
+
+
 const screenOptions = {
   tabBarShowLabel: true,
   headerShown: true,
@@ -310,7 +322,7 @@ export default function App() {
             options={{ headerShown: true }}
           />
         </Stack.Navigator>
-      </AuthProvider>
+        </AuthProvider>
     </NavigationContainer>
   );
 }
