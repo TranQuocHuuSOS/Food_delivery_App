@@ -7,6 +7,9 @@ import Profile from "./Screen/Profile/Profile";
 import Cart from "./Screen/Cart/Cart";
 import Message from "./Screen/Message/Message";
 import Filter from "./Screen/Filter/Filter";
+import Login from './Screen/Login/Login';
+// import SignUp from "./Screen/SignIn/SignUp"
+// import Onboarding from "./Screen/Onboarding/Onboarding";
 import Payment from "./Screen/Payment/Payment";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
@@ -27,9 +30,11 @@ import Signup from "./Screen/Account/Signup/Signup";
 import { AuthContext, AuthProvider } from "./context/AuthContext";
 
 import DisplayFilter from "./Screen/Filter/DisplayFilter";
+import Onboarding_a from "./Screen/Onboarding/Onboarding_a";
+import Onboarding_b from "./Screen/Onboarding/Onboarding_b";
 
 
-
+const Stack = createNativeStackNavigator();
 
 
 const screenOptions = {
@@ -352,7 +357,6 @@ export default function App() {
           component={Chat}
           // options={{ headerShown: false }}
         />
-        
         <Stack.Screen
           name="Confirm Order"
           component={Payment}
@@ -368,6 +372,23 @@ export default function App() {
           component={Shipping}
           // options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+          name="Onboarding_a"
+          component={Onboarding_a}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Onboarding_b" component={Onboarding_b} />
+        {/* <Stack.Screen
+          name="Login"
+          component={Login}
+          // options={{ headerShown: false }}
+        /> */}
+        {/* <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          // options={{ headerShown: false }}
+        /> */}
 
         <Stack.Screen
           name="Map"
