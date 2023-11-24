@@ -1,0 +1,1 @@
+export const BASE_URL='https://645f33db9d35038e2d1ec62a.mockapi.io/register';
