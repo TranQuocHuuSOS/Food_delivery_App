@@ -23,7 +23,9 @@ import Shipping from "./Screen/Shipping/Shipping";
 import Map from "./Screen/Map/Map";
 import Track from "./Screen/Track_order/Track";
 import DetailProduct from "./Screen/DetailProduct/DetailProduct";
-
+import Login from "./Screen/Account/Login/Login";
+import Signup from "./Screen/Account/Signup/Signup";
+import { AuthContext, AuthProvider } from "./context/AuthContext";
 const screenOptions = {
   tabBarShowLabel: true,
   headerShown: true,
@@ -40,12 +42,14 @@ const screenOptions = {
 export default function App() {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
+
   function BottomTabs() {
     return (
       <Tab.Navigator
         screenOptions={screenOptions}
         style={{ position: "absolute", backgroundColor: "black" }}
       >
+         <AuthProvider>
         <Tab.Screen
           style={{}}
           name="Home"
@@ -66,7 +70,7 @@ export default function App() {
                     }}
                   >
                     <Foundation
-                      name="home"
+                      name="Home"
                       size={24}
                       color={focused ? "#2A01FF" : "#856DFF"}
                     />
@@ -183,13 +187,11 @@ export default function App() {
             tabBarIcon: ({ focused }) => {
               return (
                 <View
-
                   style={{
                     alignItems: "center",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
-
                 >
                   <Entypo
                     name="message"
@@ -210,83 +212,102 @@ export default function App() {
             },
           })}
         ></Tab.Screen>
+        </AuthProvider>
       </Tab.Navigator>
     );
   }
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Main"
-          component={BottomTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="RestaurantDetail"
-          component={RestaurantDetail}
-           options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailRestaurant"
-          component={DetailRestaurant}
-          //  options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="MenuDetail"
-          component={MenuDetail}
-          //  options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Filter"
-          component={Filter}
-          // options={{ headerShown: false }}
-        />
-
-         <Stack.Screen
-          name="Chat"
-          component={Chat}
-          // options={{ headerShown: false }}
-        />
-
-        <Stack.Screen
-          name="Confirm Order"
-          component={Payment}
-          // options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Payment"
-          component={EditPayment}
-          // options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Shipping"
-          component={Shipping}
-          // options={{ headerShown: false }}
-        />
-
-        <Stack.Screen
-          name="Map"
-          component={Map}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Track"
-          component={Track}
-          options={{ headerShown: true }}
-        />
+    
+      <NavigationContainer>
+        <AuthProvider>
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
-          name="DetailProduct"
-          component={DetailProduct}
-          options={{ headerShown: false }}
-        />
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
-          name="Cart"
-          component={Cart}
-          options={{ headerShown: false }}
-        />
+            name="Signup"
+            component={Signup}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Main"
+            component={BottomTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RestaurantDetail"
+            component={RestaurantDetail}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailRestaurant"
+            component={DetailRestaurant}
+            //  options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MenuDetail"
+            component={MenuDetail}
+            //  options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Filter"
+            component={Filter}
+            // options={{ headerShown: false }}
+          />
 
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen
+            name="Chat"
+            component={Chat}
+            // options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="Confirm Order"
+            component={Payment}
+            // options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Payment"
+            component={EditPayment}
+            // options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Shipping"
+            component={Shipping}
+            // options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="Map"
+            component={Map}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Track"
+            component={Track}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="DetailProduct"
+            component={DetailProduct}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Cart"
+            component={Cart}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+        </AuthProvider>
+      </NavigationContainer>
+   
   );
 }
 
