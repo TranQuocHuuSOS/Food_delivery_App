@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
         return;
       }
       const response = await axios.post(`${BASE_URL}`, {
-        name,
+        name, 
         email,
         password,
       });
