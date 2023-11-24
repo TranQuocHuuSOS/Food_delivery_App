@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState,useContext, useEffect } from 'react';
 import { ImageBackground } from 'react-native';
-import { StyleSheet, StatusBar, View, TextInput, Image, Text, TouchableOpacity, Alert, Linking } from 'react-native';
-
-export default function Login() {
+import { StyleSheet, Image, Text, Alert, Linking, TouchableOpacity, View, TextInput, Button} from 'react-native';
+import { AuthContext } from '../../context/AuthContext';
+import Spinner from 'react-native-loading-spinner-overlay';
+export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const { isLoading, login } = useContext(AuthContext);
   const handleFacebookLogin = () => {
     Linking.openURL('https://www.facebook.com/login');
   };
@@ -17,17 +18,25 @@ export default function Login() {
   const handleForgotPassword = () => {
   };
 
-  const handleLogin = () => {
-    if (email === 'loanno@gmail.com' && password === 'pass123') {
-      Alert.alert('Login Successful', 'You are now logged in.');
-    } else {
-      Alert.alert('Login Failed', 'Please check your email and password.');
-    }
-  };
+  
+    const handleLogin = async () => {
+      const result = await login(email, password , navigation);
+      if (result.success) {
+        // Đăng nhập thành công, chuyển hướng đến trang Home
+        navigation.navigate('Main');
+      } else {
+        // Đăng nhập thất bại, xử lý tương ứng nếu cần
+        console.log('Login failed:', result.error);
+      }
+      
+    };
+  
 
   return (
     <ImageBackground style= {styles.background}>
     <View style={styles.container}>
+    <Spinner visible={isLoading} />
+    <Text>{login}</Text>
       <Image
         source={require("../../assets/loginimg/accout.png")}
         style={styles.image}
@@ -38,6 +47,7 @@ export default function Login() {
           style={styles.input}
           placeholder="Email"
           placeholderTextColor="#8E9098"
+          value={email}
           onChangeText={(text) => setEmail(text)}
         />
         <TextInput
@@ -45,6 +55,7 @@ export default function Login() {
           placeholder="Password"
           placeholderTextColor="#8E9098"
           secureTextEntry
+          value={password}
           onChangeText={(text) => setPassword(text)}
         />
         <Text style={styles.continue}>Or Continue With</Text>
@@ -61,7 +72,13 @@ export default function Login() {
         <TouchableOpacity style={styles.forgotPassword} onPress={handleForgotPassword}>
           <Text style={styles.forgotPasswordText}>Forgot Your Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+          <Text> Don't have an account?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <Text style={styles.link}>Register</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin()}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
       </View>
@@ -71,6 +88,9 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
+  link: {
+    color: 'blue',
+  },
   background: {
     flex: 1,
   },
