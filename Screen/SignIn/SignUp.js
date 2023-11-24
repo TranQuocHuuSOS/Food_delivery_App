@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext,useState } from "react";
 import {
   StyleSheet,
   View,
@@ -9,26 +9,20 @@ import {
   Image,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { AuthContext } from "../../context/AuthContext";
+import Spinner from 'react-native-loading-spinner-overlay';
+export default function SignUp({navigation}) {
+  const[name, setName] = useState(null);
+  const[email, setEmail] = useState(null);
+  const[password, setPassword]= useState(null);
+  const { isLoading, register } = useContext(AuthContext);
 
-export default function SignUp() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isChecked1, setIsChecked1] = useState(false);
-  const [isChecked2, setIsChecked2] = useState(false);
-
-  const handleSignUp = () => {
-    if (!name || !email || !password) {
-      Alert.alert('Error', 'Please fill in all fields.');
-    } else if (!isChecked1) {
-      Alert.alert('Error', 'Please accept the terms.');
-    } else {
-      Alert.alert('Success', 'Account created successfully.');
-    }
-  };
+  
 
   return (
     <View style={styles.container}>
+       <Spinner visible={isLoading}/>
+       <Text>{register}</Text>
       <Image
         source={require("../../assets/loginimg/accout.png")}
         style={styles.image}
@@ -43,6 +37,7 @@ export default function SignUp() {
             style={styles.icon}
           />
           <TextInput
+           value={name}
             style={styles.input}
             placeholder="Name"
             placeholderTextColor="#8E9098"
@@ -57,6 +52,7 @@ export default function SignUp() {
             style={styles.icon}
           />
           <TextInput
+            value={email}
             style={styles.input}
             placeholder="Email"
             placeholderTextColor="#8E9098"
@@ -71,6 +67,7 @@ export default function SignUp() {
             style={styles.icon}
           />
           <TextInput
+            value={password}
             style={styles.input}
             placeholder="Password"
             placeholderTextColor="#8E9098"
@@ -80,27 +77,11 @@ export default function SignUp() {
         </View>
         <View style={styles.checkBoxContainer}>
           <View style={styles.checkBoxRow}>
-            <TouchableOpacity
-              onPress={() => setIsChecked1(!isChecked1)}
-            >
-              <View style={[styles.checkBox, isChecked1 && styles.checked]}>
-                {isChecked1 && (
-                  <Text style={styles.checkText}>&#10003;</Text>
-                )}
-              </View>
-            </TouchableOpacity>
+           
             <Text style={styles.checkBoxLabel}>Keep Me Signed In</Text>
           </View>
           <View style={styles.checkBoxRow}>
-            <TouchableOpacity
-              onPress={() => setIsChecked2(!isChecked2)}
-            >
-              <View style={[styles.checkBox, isChecked2 && styles.checked]}>
-                {isChecked2 && (
-                  <Text style={styles.checkText}>&#10003;</Text>
-                )}
-              </View>
-            </TouchableOpacity>
+            
             <Text style={styles.checkBoxLabel}>
               Email Me About Special Pricing
             </Text>
@@ -108,13 +89,17 @@ export default function SignUp() {
         </View>
         <TouchableOpacity
           style={styles.signupButton}
-          onPress={handleSignUp}
+          onPress={()=>{
+            register(name, email,password, navigation)
+          }}
         >
-          <Text style={styles.signupButtonText}>Create Account</Text>
+          <Text style={styles.signupButtonText} >Create Account</Text>
         </TouchableOpacity>
         <View style={styles.signInTextContainer}>
           <Text style={styles.signInText}>Already have an account?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.signInLink}>Sign In</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
