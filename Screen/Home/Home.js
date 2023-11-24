@@ -172,6 +172,7 @@ const Home = () => {
                   borderRadius: 14,
                 }}
               >
+               
                 <Ionicons
                   name="notifications-outline"
                   size={20}

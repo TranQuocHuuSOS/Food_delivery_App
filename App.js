@@ -13,9 +13,7 @@ import React, { useState } from "react";
 import RestaurantDetail from "./Screen/RestaurantDetail/RestaurantDetail";
 import DetailRestaurant from "./Screen/DetailRestaurant/DetailRestaurant";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import Chat from "./Screen/Chat/Chat";
-
 import MenuDetail from "./Screen/MenuDetail/MenuDetail";
 import EditPayment from "./Screen/Payment/EditPayment";
 import Shipping from "./Screen/Shipping/Shipping";
@@ -23,9 +21,17 @@ import Shipping from "./Screen/Shipping/Shipping";
 import Map from "./Screen/Map/Map";
 import Track from "./Screen/Track_order/Track";
 import DetailProduct from "./Screen/DetailProduct/DetailProduct";
+
 import Login from "./Screen/Account/Login/Login";
 import Signup from "./Screen/Account/Signup/Signup";
 import { AuthContext, AuthProvider } from "./context/AuthContext";
+
+import DisplayFilter from "./Screen/Filter/DisplayFilter";
+
+
+
+
+
 const screenOptions = {
   tabBarShowLabel: true,
   headerShown: true,
@@ -212,12 +218,16 @@ export default function App() {
             },
           })}
         ></Tab.Screen>
+
         </AuthProvider>
+
+
+
       </Tab.Navigator>
     );
   }
   return (
-    
+ 
       <NavigationContainer>
         <AuthProvider>
         <Stack.Navigator initialRouteName="Login">
@@ -307,7 +317,81 @@ export default function App() {
         </Stack.Navigator>
         </AuthProvider>
       </NavigationContainer>
-   
+
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Main"
+          component={BottomTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RestaurantDetail"
+          component={RestaurantDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailRestaurant"
+          component={DetailRestaurant}
+          //  options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MenuDetail"
+          component={MenuDetail}
+          //  options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Filter"
+          component={Filter}
+          // options={{ headerShown: false }}
+        />
+
+
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          // options={{ headerShown: false }}
+        />
+        
+        <Stack.Screen
+          name="Confirm Order"
+          component={Payment}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Payment"
+          component={EditPayment}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Shipping"
+          component={Shipping}
+          // options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Map"
+          component={Map}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Track"
+          component={Track}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="DetailProduct"
+          component={DetailProduct}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DisplayFilter"
+          component={DisplayFilter}
+          options={{ headerShown: true }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+
   );
 }
 

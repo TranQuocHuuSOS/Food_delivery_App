@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -12,9 +12,126 @@ import {
 } from "react-native";
 import { Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
 import styles from "./FilterStyles";
+import { useNavigation } from "@react-navigation/native";
 const Filter = () => {
+  const navigation = useNavigation();
+  const [dishes, setDishes] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState({
+    type: "",
+    location: "",
+    food: "",
+  });
+  useEffect(() => {
+    // Hàm lấy dữ liệu từ API món ăn
+    const fetchDishes = async () => {
+      try {
+        const response = await fetch(
+          "https://646aaa197d3c1cae4ce2b26c.mockapi.io/dishs"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setDishes(data);
+        } else {
+          console.error(
+            "Lỗi khi lấy dữ liệu từ API món ăn:",
+            response.status,
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu từ API món ăn:", error);
+      }
+    };
 
-  
+    // Hàm lấy dữ liệu từ API nhà hàng
+    const fetchRestaurants = async () => {
+      try {
+        const response = await fetch(
+          "https://646aaa197d3c1cae4ce2b26c.mockapi.io/restaurants"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setRestaurants(data);
+        } else {
+          console.error(
+            "Lỗi khi lấy dữ liệu từ API nhà hàng:",
+            response.status,
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu từ API nhà hàng:", error);
+      }
+    };
+
+    fetchDishes();
+    fetchRestaurants();
+  }, []);
+
+  const toggleCategory = (category, group) => {
+    setSelectedCategories((prevCategories) => {
+      if (
+        (group === "type" && category === "Restaurant") ||
+        (group === "type" && category === "Food")
+      ) {
+        return {
+          ...prevCategories,
+          type: prevCategories.type === category ? "" : category,
+          location: "",
+          food: "",
+        };
+      } else if (group === "location" && prevCategories.type === "Food") {
+        return prevCategories;
+      } else {
+        return {
+          ...prevCategories,
+          [group]: prevCategories[group] === category ? "" : category,
+        };
+      }
+    });
+  };
+  console.log('====================================');
+  console.log("selectedCategories:",selectedCategories);
+  console.log('====================================');
+  const searchByCategories = () => {
+    const { type, location, food } = selectedCategories;
+
+    // If only Food is selected, set the type to Food
+    const effectiveType = type && food ? type : food && !location ? "Food" : type || "Restaurant";
+
+    let filteredData;
+
+    if (effectiveType === "Restaurant" || location) {
+      filteredData = [...restaurants].filter(
+        (restaurant) =>
+          (!location || restaurant.distance === parseInt(location)) &&
+          (!food ||
+            dishes.some(
+              (dish) =>
+                dish.type_food.toLowerCase() === food.toLowerCase() &&
+                dish.restaurant_id === parseInt(restaurant.id)
+            ))
+      );
+    } else if (effectiveType === "Food") {
+      filteredData = [...dishes].filter(
+        (dish) => !food || dish.type_food.toLowerCase() === food.toLowerCase()
+      );
+    }
+    if (type || location || food) {
+      navigation.navigate("DisplayFilter", {
+        Type: effectiveType,
+        Data: filteredData,
+      });
+    }
+    console.log('====================================');
+    console.log("filteredData:",filteredData);
+    console.log('====================================');
+    console.log('====================================');
+    console.log("filteredData:",effectiveType);
+    console.log('====================================');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -74,10 +191,31 @@ const Filter = () => {
               <Text style={styles.sectionTitle}>Type</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Restaurant</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+
+                      color:
+                        selectedCategories.type === "Restaurant"
+                          ? "red"
+                          : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Restaurant", "type")}
+                  >
+                    Restaurant
+                  </Text>
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Food</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.type === "Food" ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Food", "type")}
+                  >
+                    Food
+                  </Text>
                 </View>
               </ScrollView>
             </View>
@@ -85,14 +223,40 @@ const Filter = () => {
               <Text style={styles.sectionTitle}>Location</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>1 Km</Text>
-   
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.location === 1 ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory(1, "location")}
+                  >
+                    1 Km
+                  </Text>
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>10 Km</Text>    
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.location === 10 ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory(10, "location")}
+                  >
+                    10 Km
+                  </Text>
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>1 Km</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.location === 20 ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory(20, "location")}
+                  >
+                    20Km
+                  </Text>
                 </View>
               </ScrollView>
             </View>
@@ -100,17 +264,36 @@ const Filter = () => {
               <Text style={styles.sectionTitle}>Food</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>
-                    Restaurant
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.food === "Pizza" ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Pizza", "food")}
+                  >
+                    Pizza
                   </Text>
                 </View>
                 <View style={styles.categoryItem}>
-                  <Text style={{ fontSize: 15, color: "#6B50F6" }}>Food</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color:
+                        selectedCategories.food === "Soup" ? "red" : "#6B50F6",
+                    }}
+                    onPress={() => toggleCategory("Soup", "food")}
+                  >
+                    Soup
+                  </Text>
                 </View>
               </ScrollView>
             </View>
             <View style={{ paddingTop: 30 }}>
-              <TouchableOpacity style={styles.searchButton}>
+              <TouchableOpacity
+                style={styles.searchButton}
+                onPress={searchByCategories}
+              >
                 <Text style={styles.searchButtonText}>Search</Text>
               </TouchableOpacity>
             </View>
@@ -120,6 +303,4 @@ const Filter = () => {
     </SafeAreaView>
   );
 };
-
-
 export default Filter;

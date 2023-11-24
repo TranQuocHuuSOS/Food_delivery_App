@@ -189,7 +189,7 @@ const MenuDetail = () => {
               >
                 <Image
                   style={{ width: 70, height: 70, resizeMode: "contain" }}
-                  source={{ uri: item.dishImg }}
+                  source={{ uri: item.dishImg}}
                 />
                 <View
                   style={{
