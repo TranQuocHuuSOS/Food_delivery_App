@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Animated,
   PanResponder,
@@ -21,8 +21,9 @@ import {
   MaterialCommunityIcons,
   Fontisto,
 } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
-
+import axios from "axios";
 const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get("window");
 const BOTTOM_SHEET_MAX_HEIGHT = WINDOW_HEIGHT * 0.96;
 const BOTTOM_SHEET_MIN_HEIGHT = WINDOW_HEIGHT * 0.5;
@@ -32,9 +33,10 @@ const MAX_DOWNWARD_TRANSLATE_Y = 0;
 const DRAG_THRESHOLD = 50;
 
 const DetailProduct = () => {
- 
+  const navigation = useNavigation();
   const route = useRoute();
   const dish = route.params.dish;
+  // const [cart, setCart]= ;
   const animatedValue = useRef(new Animated.Value(0)).current;
   const lastGestureDy = useRef(0);
   const panResponder = useRef(
@@ -93,7 +95,6 @@ const DetailProduct = () => {
 
   const Testimonials = [
     {
-      
       image: require("../../assets/DetailProduct/PhotoProfile.png"),
       name: "Dianne Russell",
       star: 5,
@@ -120,11 +121,46 @@ const DetailProduct = () => {
         "This Is great, So delicious! You Must Here, With Your family ",
     },
   ];
+  const addToCart = async (cart) => {
+    try {
+      // Fetch the existing cart from the API
+      const response = await axios.get("https://645f33db9d35038e2d1ec62a.mockapi.io/Bill");
+      const existingCart = response.data.find((item) => item.user_id === 38);
+
+      if (existingCart) {
+        // Check if the dish already exists in the cart
+        const existingCartItem = existingCart.items.find(
+          (item) => item.dishId === cart.dishId
+        );
+
+        if (existingCartItem) {
+          // If the dish already exists, increment the quantity
+          existingCartItem.quantity += cart.quantity || 1;
+        } else {
+          // If the dish does not exist, add a new item
+          existingCart.items.push({ ...cart, quantity: cart.quantity || 1 });
+        }
+
+        // Update the existing cart in the API
+        await axios.put(`https://645f33db9d35038e2d1ec62a.mockapi.io/Bill/${existingCart.id}`, existingCart);
+      } else {
+        // If the user doesn't have a cart, create a new one with the item
+        await axios.post("https://645f33db9d35038e2d1ec62a.mockapi.io/Bill", {
+          user_id: 38,
+          items: [{ ...cart, quantity: cart.quantity || 1 }],
+        });
+      }
+
+      navigation.navigate("Cart");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={{uri:dish.dishImg}}
+        source={{ uri: dish.dishImg }}
         style={{
           width: "100%",
           height: "80%",
@@ -236,9 +272,7 @@ const DetailProduct = () => {
                 </Text>
               </Pressable>
             </View>
-            <Text>
-              {dish.dishDescription}
-            </Text>
+            <Text>{dish.dishDescription}</Text>
             <Text
               style={{
                 fontSize: 16,
@@ -253,7 +287,7 @@ const DetailProduct = () => {
             <View
               style={{
                 flexDirection: "column",
-                paddingBottom:70
+                paddingBottom: 70,
               }}
             >
               {Testimonials.map((item, index) => (
@@ -339,6 +373,10 @@ const DetailProduct = () => {
       </Animated.View>
 
       <TouchableOpacity
+        onPress={
+          () => addToCart(dish)
+          // navigation.navigate("Cart", { selectedDish: dish });
+        }
         style={{
           backgroundColor: "#6B50F6",
           height: 60,
@@ -347,10 +385,12 @@ const DetailProduct = () => {
           justifyContent: "center",
           marginHorizontal: 20,
           borderRadius: 10,
-          top:80
+          top: 80,
         }}
       >
-        <Text style={{color:"#ffff",fontWeight:'bold',fontSize:17}}>Add To Cart</Text>
+        <Text style={{ color: "#ffff", fontWeight: "bold", fontSize: 17 }}>
+          Add To Cart
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

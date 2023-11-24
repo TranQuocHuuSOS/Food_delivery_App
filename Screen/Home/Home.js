@@ -60,6 +60,7 @@ const Home = () => {
         dishDescription: dish.description,
         dishIdRestaurant: dish.restaurant_id,
         restaurantNames: restaurantName,
+        dishCount: dish.discount
       };
     });
 
