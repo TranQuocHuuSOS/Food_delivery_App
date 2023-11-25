@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     return emailRegex.test(email);
   };
 
-  const register = async (name, email, password ) => {
+  const register = async (name, email, password) => {
     setIsLoading(true);
     try {
       if (!name || !email || !password) {
@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
         name,
         email,
         password,
+       
       });
 
       let userInfo = response.data;
@@ -89,10 +90,73 @@ export const AuthProvider = ({ children }) => {
     }
   };
   
- 
+  const updateProfile = async (newInfoItem) => {
+    setIsLoading(true);
+    try {
+      // Ensure that the user is logged in before attempting to update the profile
+      if (!userInfo.id) {
+        setIsLoading(false);
+        console.log('User not logged in.');
+        return;
+      }
+  
+      // Kiểm tra nếu userInfo.info chưa được khởi tạo hoặc không phải là mảng, thì khởi tạo nó là một mảng rỗng
+      const updatedInfo = Array.isArray(userInfo.info) ? userInfo.info : [];
+  
+      // Kiểm tra xem đã có thông tin với 3 trường firstName, lastName, và mobileNumber chưa
+      const existingInfoIndex = updatedInfo.findIndex(item => 
+        item.firstName === newInfoItem.firstName &&
+        item.lastName === newInfoItem.lastName &&
+        item.mobileNumber === newInfoItem.mobileNumber
+      );
+  
+      if (existingInfoIndex !== -1) {
+        // Nếu đã tồn tại, cập nhật thông tin tại vị trí đó
+        updatedInfo[existingInfoIndex] = newInfoItem;
+      } else {
+        // Nếu chưa tồn tại, thêm mới thông tin
+        updatedInfo.push(newInfoItem);
+      }
+  
+      // Tạo một mảng mới để chứa thông tin mới
+      const updatedInfoArray = updatedInfo.map(item => ({
+        firstName: item.firstName || "",
+        lastName: item.lastName || "",
+        mobileNumber: item.mobileNumber || "",
+      }));
+  
+      // Cập nhật state và lưu vào AsyncStorage
+      const updatedUserInfo = {
+        ...userInfo,
+        info: updatedInfoArray,
+        firstName: "",
+        lastName: "",
+        mobileNumber: "",
+      };
+  
+      setUserInfo(updatedUserInfo);
+      await AsyncStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+  
+      // Update thông tin người dùng trên API của bạn
+      await axios.put(`${BASE_URL}/${userInfo.id}`, {
+        info: updatedInfoArray,
+      });
+  
+      setIsLoading(false);
+    } catch (error) {
+      console.log(`Update profile error: ${error}`);
+      setIsLoading(false);
+    }
+  };
+  
+  
+  
+  
+  
+  
 
   return (
-    <AuthContext.Provider value={{ isLoading, userInfo, register, login }}>
+    <AuthContext.Provider value={{ isLoading, userInfo, register, login, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

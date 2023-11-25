@@ -134,7 +134,7 @@ const Cart = () => {
   
 
   const renderRow = (
-    key,  
+    dishId,  // Thay vì key
     dishName,
     restaurantNames,
     dishPrice,
@@ -142,22 +142,22 @@ const Cart = () => {
     disCount,
     quantity
   ) => {
-    const isSelected = selectedItems.includes(key);
+    const isSelected = selectedItems.includes(dishId);
     if (isSelected) {
       return null;
     }
 
     return (
       <TouchableOpacity
-        onPress={() => console.log(`Item ${key} touched`)}
+        onPress={() => console.log(`Item ${dishId} touched`)}
         style={styles.itemContainer}
-        key={key}
+        key={dishId}
       >
         <Text style={styles.itemText}>
           <View style={styles.card}>
             <View style={{ flexDirection: "row" }}>
               <Image
-                source={dishImg}
+                source={{ uri: dishImg }}  // Sửa đường dẫn ảnh
                 style={{ width: 70, height: 70 }}
               ></Image>
               <View style={{ marginHorizontal: 10 }}>
@@ -177,14 +177,14 @@ const Cart = () => {
             <Pressable style={styles.amount}>
               <TouchableOpacity
                 style={styles.plus}
-                onPress={() => decreaseQuantity(key)}
+                onPress={() => decreaseQuantity(dishId)}
               >
                 <AntDesign name="minus" size={20} color="black" />
               </TouchableOpacity>
-              <Text style={styles.number}>{quantity||1}</Text>
+              <Text style={styles.number}>{quantity || 1}</Text>
               <TouchableOpacity
                 style={styles.minus}
-                onPress={() => increaseQuantity(key)}
+                onPress={() => increaseQuantity(dishId)}
               >
                 <AntDesign name="plus" size={20} color="white" />
               </TouchableOpacity>

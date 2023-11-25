@@ -28,29 +28,62 @@ const Card_price = () => {
 
   const calculateTotalPrice = (user) => {
     if (user && user.items && user.items.length > 0) {
-      const total = user.items.reduce((acc, item) => {
+      // Tính giá chưa trừ giảm giá
+      const subTotal = user.items.reduce((acc, item) => {
         if (
           item &&
           item.dishPrice !== undefined &&
-          item.disCount !== undefined &&
           item.quantity !== undefined
         ) {
-          const itemTotal = (item.dishPrice - item.disCount) * item.quantity;
+          const itemTotal = item.dishPrice * item.quantity;
           return acc + itemTotal;
         } else {
           console.error('Invalid item data:', item);
           return acc;
         }
       }, 0);
-      return total.toFixed(2);
+  
+      // Lấy tổng chiết khấu từ tất cả các món ăn
+      const totalDiscount = user.items.reduce((acc, item) => {
+        return acc + (item.dishCount !== undefined ? Math.min(item.dishCount, item.quantity) : 0);
+      }, 0);
+  
+      // Thêm chi phí giao hàng vào tổng giá
+      const deliveryCharge = 10;
+  
+      return {
+        subTotal: subTotal.toFixed(2),
+        total: (subTotal + deliveryCharge - totalDiscount).toFixed(2)
+      };
     }
-
+  
+    return {
+      subTotal: '0.00',
+      total: '0.00'
+    };
+  };
+  
+  const calculateSubTotal = (user) => {
+    if (user && user.items && user.items.length > 0) {
+      const subTotal = user.items.reduce((acc, item) => {
+        if (
+          item &&
+          item.dishPrice !== undefined &&
+          item.quantity !== undefined
+        ) {
+          const itemTotal = item.dishPrice * item.quantity;
+          return acc + itemTotal;
+        } else {
+          console.error('Invalid item data:', item);
+          return acc;
+        }
+      }, 0);
+  
+      return subTotal.toFixed(2);
+    }
+  
     return '0.00';
   };
-
-  if (loading) {
-    return <Text>Loading...</Text>;
-  }
 
   return (
     <View style={styles.container_total}>
@@ -64,7 +97,7 @@ const Card_price = () => {
             <View style={styles.sub_total}>
               <Text style={styles.text_total}>Sub_total</Text>
               <Text style={styles.number_total}>
-                ${calculateTotalPrice(userData)}
+              ${calculateSubTotal(userData)}
               </Text>
             </View>
             <View style={styles.delivery}>
@@ -81,11 +114,11 @@ const Card_price = () => {
           <View style={styles.total}>
             <Text style={styles.text_totals}>Total</Text>
             <Text style={styles.number_totals}>
-              ${calculateTotalPrice(userData)}
+            ${calculateTotalPrice(userData).total}
             </Text>
           </View>
         )}
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Confirm Order')}>
           <View style={styles.button}>
             <Text style={styles.text_button}>Place My Order</Text>
           </View>

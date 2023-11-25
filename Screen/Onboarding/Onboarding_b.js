@@ -1,8 +1,13 @@
 // Onboarding_b.js
 import React from 'react';
 import { ImageBackground, Image, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Onboarding_b() {
+  const navigation = useNavigation();
+    const handleNext = () => {
+        navigation.navigate('Login');
+      };
   return (
     <ImageBackground 
       source={require("../../assets/Onboarding/BdOnboarding.png")}
@@ -32,7 +37,7 @@ export default function Onboarding_b() {
         <Text style={styles.text}>DIDFOOD is Where Your Comfort {'\n'} Food Lives</Text>
         <Text style={styles.text1}>Enjoy a fast and smooth food delivery at your {'\n'} doorstep.</Text>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Next </Text>
+          <Text style={styles.buttonText} onPress={handleNext}>Next </Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

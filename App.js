@@ -8,8 +8,6 @@ import Cart from "./Screen/Cart/Cart";
 import Message from "./Screen/Message/Message";
 import Filter from "./Screen/Filter/Filter";
 
-
-import Onboarding from "./Screen/Onboarding/Onboarding";
 import Payment from "./Screen/Payment/Payment";
 import { Foundation, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
@@ -25,17 +23,16 @@ import Track from "./Screen/Track_order/Track";
 import DetailProduct from "./Screen/DetailProduct/DetailProduct";
 import Login from "./Screen/Login/Login";
 import SignUp from "./Screen/SignIn/SignUp";
-import SignUpNext from "./Screen/SignUpNext/SignUpNext";
+import InfoProfile from "./Screen/InfoProfile/InfoProfile";
 import { AuthContext, AuthProvider } from "./context/AuthContext";
 import DisplayFilter from "./Screen/Filter/DisplayFilter";
-
+import Onboarding from "./Screen/Onboarding/Onboarding";
 import Onboarding_a from "./Screen/Onboarding/Onboarding_a";
 import Onboarding_b from "./Screen/Onboarding/Onboarding_b";
-
-
+import ImgProfile from "./Screen/InfoProfile/ImgProfile";
+import UploadPhoto from "./Screen/InfoProfile/UploadPhoto";
+import SetLocation from "./Screen/InfoProfile/SetLocation";
 const Stack = createNativeStackNavigator();
-
-
 
 const screenOptions = {
   tabBarShowLabel: true,
@@ -227,7 +224,22 @@ export default function App() {
   return (
     <NavigationContainer>
       <AuthProvider>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Onboarding">
+          <Stack.Screen
+            name="Onboarding"
+            component={Onboarding}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Onboarding_a"
+            component={Onboarding_a}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Onboarding_b"
+            component={Onboarding_b}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Login"
             component={Login}
@@ -317,12 +329,27 @@ export default function App() {
             options={{ headerShown: true }}
           />
           <Stack.Screen
-            name="SignUpNext"
-            component={SignUpNext}
+            name="InfoProfile"
+            component={InfoProfile}
+            options={{ headerShown: true }}
+          />
+           <Stack.Screen
+            name="ImgProfile"
+            component={ImgProfile}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="UploadPhoto"
+            component={UploadPhoto}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="SetLocation"
+            component={SetLocation}
             options={{ headerShown: true }}
           />
         </Stack.Navigator>
-        </AuthProvider>
+      </AuthProvider>
     </NavigationContainer>
   );
 }

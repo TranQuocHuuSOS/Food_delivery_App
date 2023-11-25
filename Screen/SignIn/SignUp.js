@@ -15,6 +15,7 @@ export default function SignUp({navigation}) {
   const[name, setName] = useState(null);
   const[email, setEmail] = useState(null);
   const[password, setPassword]= useState(null);
+  
   const { isLoading, register } = useContext(AuthContext);
 
   

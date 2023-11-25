@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Animated,
   PanResponder,
@@ -11,19 +11,38 @@ import {
   SafeAreaView,
   Pressable,
   Image,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get("window");
 const BOTTOM_SHEET_MAX_HEIGHT = WINDOW_HEIGHT * 0.96;
 const BOTTOM_SHEET_MIN_HEIGHT = WINDOW_HEIGHT * 0.65;
 const MAX_UPWARD_TRANSLATE_Y =
-BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT; // negative number;
+  BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT; // negative number;
 const MAX_DOWNWARD_TRANSLATE_Y = 0;
 const DRAG_THRESHOLD = 50;
 
 const Profile = () => {
+  const [userInfo, setUserInfo] = useState(null);
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const storedUserInfo = await AsyncStorage.getItem("userInfo");
+        if (storedUserInfo) {
+          const parsedUserInfo = JSON.parse(storedUserInfo);
+          setUserInfo(parsedUserInfo);
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
   const listMenu = [
     {
       id: "0",
@@ -47,26 +66,26 @@ const Profile = () => {
       price: "$5",
     },
     {
-        id: "2",
-        image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-        menuName: "Green Noddle",
-        restaurantName: "Noodle Home",
-        price: "$5",
-      },
-      {
-        id: "2",
-        image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-        menuName: "Green Noddle",
-        restaurantName: "Noodle Home",
-        price: "$5",
-      },
-      {
-        id: "2",
-        image: require("../.././assets/MenuImage/PhotoMenu3.png"),
-        menuName: "Green Noddle",
-        restaurantName: "Noodle Home",
-        price: "$5",
-      },
+      id: "2",
+      image: require("../.././assets/MenuImage/PhotoMenu3.png"),
+      menuName: "Green Noddle",
+      restaurantName: "Noodle Home",
+      price: "$5",
+    },
+    {
+      id: "2",
+      image: require("../.././assets/MenuImage/PhotoMenu3.png"),
+      menuName: "Green Noddle",
+      restaurantName: "Noodle Home",
+      price: "$5",
+    },
+    {
+      id: "2",
+      image: require("../.././assets/MenuImage/PhotoMenu3.png"),
+      menuName: "Green Noddle",
+      restaurantName: "Noodle Home",
+      price: "$5",
+    },
   ];
   const animatedValue = useRef(new Animated.Value(0)).current;
   const lastGestureDy = useRef(0);
@@ -123,173 +142,216 @@ const Profile = () => {
       },
     ],
   };
-
+  const navigation = useNavigation();
+  const handleEdit = () => {
+    navigation.navigate("InfoProfile");
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <ImageBackground
-        source={require("../../assets/Profile/PhotoProfile.png")}
-        style={{
-          width: "100%",
-          height: "65%",
-        }}
-        resizeMode="cover"
-      ></ImageBackground>
-      <Animated.View style={[styles.bottomSheet, bottomSheetAnimation]}>
-        <View style={styles.draggableArea} {...panResponder.panHandlers}>
-          <View style={styles.dragHandle} />
-        </View>
+      {userInfo && (
+        <>
+          <ImageBackground
+            source={require("../../assets/Profile/PhotoProfile.png")}
+            style={{
+              width: "100%",
+              height: "65%",
+            }}
+            resizeMode="cover"
+          ></ImageBackground>
+          <Animated.View style={[styles.bottomSheet, bottomSheetAnimation]}>
+            <View style={styles.draggableArea} {...panResponder.panHandlers}>
+              <View style={styles.dragHandle} />
+            </View>
 
-        <View
-          style={{
-            marginHorizontal: 20,
-            paddingVertical: 8,
-            width: 120,
-            backgroundColor: "#e6fff0",
-            borderRadius: 23,
-            textAlign: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              color: "#6B50F6",
-              fontWeight: "500",
-            }}
-          >
-            Member good
-          </Text>
-        </View>
-        <View
-          style={{
-            marginHorizontal: 20,
-            paddingTop:15,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 25,
-              fontWeight: "bold",
-            }}
-          >
-            Võ Thành Tâm
-          </Text>
-          <Pressable>
-            <FontAwesome
-              name="edit"
-              size={30}
-              color="#6B50F6"
-              marginHorizontal={12}
-            />
-          </Pressable>
-        </View>
-        <Text
-          style={{ lineHeight: 17, color: "#BBBBBB", marginHorizontal: 20 }}
-        >
-          Tammaxdog@gmail.com
-        </Text>
-        <Pressable style={{
-          marginHorizontal: 20,
-          flexDirection:'row',
-          alignItems:'center',
-          textAlign:'center',
-          marginVertical:15
-        }} >
-            <Image  source={require("../../assets/Profile/VoucherIcon.png") } />
-            <Text style={{marginLeft:15,fontWeight:'700'}}>You have 3 Vocher</Text>
-        </Pressable>
-        <Text style={{fontSize:18,fontWeight:"700",marginHorizontal: 20,}}>Favorite</Text>
-        <ScrollView  showsVerticalScrollIndicator={false}
-            style={{
-              flexDirection: "column",
-              marginHorizontal: 20,
-              marginBottom:70
-            }}
-          >
-            {listMenu.map((item, index) => (
-              <View
-                key={index}
+            <View
+              style={{
+                marginHorizontal: 20,
+                paddingVertical: 8,
+                width: 120,
+                backgroundColor: "#e6fff0",
+                borderRadius: 23,
+                textAlign: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text
                 style={{
-                  flexDirection: "row",
-                  backgroundColor: "#ffffff",
-                  marginVertical: 10,
-                  borderRadius: 14,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingVertical: 15,
-                  paddingHorizontal: 15,
+                  color: "#6B50F6",
+                  fontWeight: "500",
                 }}
               >
-                <Image
-                  style={{ width: 70, height: 70, resizeMode: "contain" }}
-                  source={item.image}
-                />
+                Member good
+              </Text>
+            </View>
+            <View
+              style={{
+                marginHorizontal: 20,
+                paddingTop: 15,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 25,
+                  fontWeight: "bold",
+                }}
+              >
+                {userInfo.name}
+              </Text>
+              <Pressable>
+                <TouchableOpacity onPress={handleEdit}>
+                  <FontAwesome
+                    name="edit"
+                    size={30}
+                    color="#6B50F6"
+                    marginHorizontal={12}
+                  />
+                </TouchableOpacity>
+              </Pressable>
+            </View>
+            <Text
+              style={{ lineHeight: 17, color: "#BBBBBB", marginHorizontal: 20 }}
+            >
+              {userInfo.email}
+            </Text>
+            {userInfo.info && userInfo.info.length > 0 && (
+              <View
+                style={{
+                  marginHorizontal: 20,
+                  paddingTop: 15,
+                }}
+              >
+               
+                {userInfo.info.map((infoItem, index) => {
+                  console.log("infoItem", infoItem); // Log the infoItem to the console
+                  return (
+                    <View key={index}>
+                      <Text>User name  : {infoItem.firstName} {infoItem.lastName}</Text>
+                     
+                      <Text>Contact: {infoItem.mobileNumber}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
+
+            <Pressable
+              style={{
+                marginHorizontal: 20,
+                flexDirection: "row",
+                alignItems: "center",
+                textAlign: "center",
+                marginVertical: 15,
+              }}
+            >
+              <Image source={require("../../assets/Profile/VoucherIcon.png")} />
+              <Text style={{ marginLeft: 15, fontWeight: "700" }}>
+                You have 3 Vocher
+              </Text>
+            </Pressable>
+            <Text
+              style={{ fontSize: 18, fontWeight: "700", marginHorizontal: 20 }}
+            >
+              Favorite
+            </Text>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={{
+                flexDirection: "column",
+                marginHorizontal: 20,
+                marginBottom: 70,
+              }}
+            >
+              {listMenu.map((item, index) => (
                 <View
+                  key={index}
                   style={{
                     flexDirection: "row",
+                    backgroundColor: "#ffffff",
+                    marginVertical: 10,
+                    borderRadius: 14,
                     justifyContent: "space-between",
-                    width: 200,
                     alignItems: "center",
+                    paddingVertical: 15,
+                    paddingHorizontal: 15,
                   }}
                 >
+                  <Image
+                    style={{ width: 70, height: 70, resizeMode: "contain" }}
+                    source={item.image}
+                  />
                   <View
                     style={{
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      width: 200,
+                      alignItems: "center",
                     }}
                   >
-                    <Text
+                    <View
                       style={{
-                        textAlign: "center",
-                        fontSize: 16,
-                        fontWeight: "500",
-                        fontWeight: "900",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
                       }}
                     >
-                      {item?.menuName}
-                    </Text>
-                    <Text
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          fontSize: 16,
+                          fontWeight: "500",
+                          fontWeight: "900",
+                        }}
+                      >
+                        {item?.menuName}
+                      </Text>
+                      <Text
+                        style={{
+                          marginTop: 3,
+                          fontSize: 13,
+                          fontWeight: "500",
+                          lineHeight: 17,
+                          color: "#BBBBBB",
+                        }}
+                      >
+                        {item?.restaurantName}
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#6B50F6",
+                          fontSize: 18,
+                          fontWeight: "900",
+                        }}
+                      >
+                        {item?.price}
+                      </Text>
+                    </View>
+                    <Pressable
                       style={{
-                        marginTop: 3,
-                        fontSize: 13,
-                        fontWeight: "500",
-                        lineHeight: 17,
-                        color: "#BBBBBB",
+                        borderRadius: 17,
+                        backgroundColor: "#6B50F6",
+                        paddingVertical: 5,
+                        paddingHorizontal: 11,
                       }}
                     >
-                      {item?.restaurantName}
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#6B50F6",
-                        fontSize: 18,
-                        fontWeight: "900",
-                      }}
-                    >
-                      {item?.price}
-                    </Text>
+                      <Text
+                        style={{
+                          color: "#ffff",
+                          fontWeight: "500",
+                        }}
+                      >
+                        Buy Again
+                      </Text>
+                    </Pressable>
                   </View>
-                  <Pressable
-                    style={{
-                      borderRadius:17,
-                      backgroundColor: "#6B50F6",
-                      paddingVertical:5,
-                      paddingHorizontal:11
-                    }}
-                  >
-                    <Text  style={{
-                      color: "#ffff",
-                      fontWeight: "500",
-                    }}>Buy Again</Text>
-                  </Pressable>
                 </View>
-              </View>
-            ))}
-          </ScrollView>
-      </Animated.View>
+              ))}
+            </ScrollView>
+          </Animated.View>
+        </>
+      )}
     </SafeAreaView>
   );
 };
@@ -302,7 +364,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     height: BOTTOM_SHEET_MAX_HEIGHT,
-    
+
     bottom: BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT,
     ...Platform.select({
       android: { elevation: 3 },
@@ -316,7 +378,7 @@ const styles = StyleSheet.create({
         },
       },
     }),
-     backgroundColor: "#EEEEEE",
+    backgroundColor: "#EEEEEE",
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
   },

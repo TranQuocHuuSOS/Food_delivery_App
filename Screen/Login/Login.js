@@ -22,6 +22,7 @@ export default function Login({ navigation }) {
     const handleLogin = async () => {
       const result = await login(email, password , navigation);
       if (result.success) {
+        await AsyncStorage.setItem('userInfo', JSON.stringify(result.userInfo));
         // Đăng nhập thành công, chuyển hướng đến trang Home
         navigation.navigate('Main');
       } else {
